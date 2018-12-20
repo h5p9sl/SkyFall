@@ -1,9 +1,11 @@
 #include "BaseGame.hpp"
 
-#include "SkyFall.h"
+#include "SkyFall.hpp"
+
+using namespace SkyFall::Constants;
 
 BaseGame::BaseGame() :
-	mainWindow(sf::VideoMode(800, 600), SkyFall::Constants::windowName)
+	mainWindow(sf::VideoMode(windowSize_defualt.x, windowSize_defualt.y), windowName)
 {
 }
 
