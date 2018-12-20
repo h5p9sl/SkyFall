@@ -1,6 +1,6 @@
 #include "SkyFall.hpp"
 
-SkyFall::Globals::Globals()
+SkyFall::Globals::GlobalVarInitializer::GlobalVarInitializer()
 {
 	// TODO: Initialize globals :D
 }

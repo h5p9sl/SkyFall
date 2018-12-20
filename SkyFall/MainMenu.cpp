@@ -4,9 +4,9 @@
 using namespace SkyFall;
 
 MainMenu::MainMenu() :
-	newButton(Globals::UIButtonTexture,		{0,	0},		"New Game"),
-	loadButton(Globals::UIButtonTexture,	{0,	200},	"Load Game"),
-	exitButton(Globals::UIButtonTexture,	{0,	400},	"Exit Game")
+	newButton(*Globals::UIButtonTexture,		{0,	0},		"New Game"),
+	loadButton(*Globals::UIButtonTexture,	{0,	200},	"Load Game"),
+	exitButton(*Globals::UIButtonTexture,	{0,	400},	"Exit Game")
 {
 }
 
