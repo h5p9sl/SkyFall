@@ -20,11 +20,13 @@ namespace SkyFall
 		////////////////////////////////////////////////////////////
 		class GlobalVarInitializer
 		{
+		private:
+			void initializeVariables();
 		public:
 			GlobalVarInitializer();
-		};
+		} static globalVarInitializer;
 
-		static sf::Texture* UIButtonTexture =	nullptr;
-		static sf::Font* fontPLACEHOLDER =		nullptr;
+		extern sf::Texture* UIButtonTexture;
+		extern sf::Font* fontPLACEHOLDER;
 	};
 };

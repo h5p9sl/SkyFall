@@ -15,4 +15,5 @@ public:
 	GameObjectManager();
 public:
 	void drawObjects(sf::RenderTarget& renderTarget);
+	void updateObjects(float f_delta);
 };

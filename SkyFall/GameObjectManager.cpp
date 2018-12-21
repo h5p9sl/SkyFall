@@ -20,3 +20,16 @@ void GameObjectManager::drawObjects(sf::RenderTarget & renderTarget)
 		renderTarget.draw(*entity);
 	}
 }
+
+void GameObjectManager::updateObjects(float f_delta)
+{
+	for (auto entity : this->entityList) {
+		if (entity == nullptr) {
+			throw std::range_error("Entity pointer was null.");
+			continue;
+		}
+
+		// TODO: figure out a way to dynamically update entities
+		// entity->update(f_delta);
+	}
+}
