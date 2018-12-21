@@ -18,4 +18,6 @@ public:
 	/// \brief Draws the button
 	////////////////////////////////////////////////////////////
 	void draw(sf::RenderTarget& renderTarget);
+public:
+    void setRect(const sf::IntRect& rect) { this->sprite.setTextureRect(rect); }
 };

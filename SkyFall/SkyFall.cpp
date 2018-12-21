@@ -3,26 +3,14 @@
 
 using namespace SkyFall;
 
-sf::Font* Globals::fontPLACEHOLDER = nullptr;
-sf::Texture* Globals::UIButtonTexture = nullptr;
+SkyFall::GlobalVariables* SkyFall::globals = nullptr;
 
-void Globals::GlobalVarInitializer::initializeVariables()
+SkyFall::GlobalVariables::GlobalVariables()
 {
-	if (!Globals::fontPLACEHOLDER->loadFromFile("C:\\Windows\\Fonts\\Arial.ttf")) {
-		throw std::runtime_error("GlobalVarInitializer failed to open font");
-	}
-	if (!Globals::UIButtonTexture->loadFromFile("placeholder.txt")) {
-		throw std::runtime_error("GlobalVarInitializer failed to open UIButtonTexture");
-	}
-}
-
-Globals::GlobalVarInitializer::GlobalVarInitializer()
-{
-	Globals::fontPLACEHOLDER = new sf::Font();
-
-	// TODO: Figure out why the "mutex" object is NULL in void GlContext::initResource()
-	Globals::UIButtonTexture = new sf::Texture();
-
-	this->initializeVariables();
-
+    if (!this->fontPLACEHOLDER.loadFromFile("C:\\Windows\\Fonts\\Arial.ttf")) {
+        throw std::runtime_error("failed to open font");
+    }
+    if (!this->UIButtonTexture.loadFromFile("button.jpg")) {
+        throw std::runtime_error("failed to open UIButtonTexture");
+    }
 }

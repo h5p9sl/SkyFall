@@ -13,20 +13,15 @@ namespace SkyFall
 		static const sf::Vector2u windowSize_defualt = {800u, 600u};
 	};
 
-	namespace Globals
-	{
-		////////////////////////////////////////////////////////////
-		/// \brief Initializes global variables
-		////////////////////////////////////////////////////////////
-		class GlobalVarInitializer
-		{
-		private:
-			void initializeVariables();
-		public:
-			GlobalVarInitializer();
-		} static globalVarInitializer;
+    class GlobalVariables
+    {
+    public:
+        sf::Texture UIButtonTexture;
+        sf::Font fontPLACEHOLDER;
+    public:
+        GlobalVariables();
+    };
+    
+    extern GlobalVariables* globals;
 
-		extern sf::Texture* UIButtonTexture;
-		extern sf::Font* fontPLACEHOLDER;
-	};
 };

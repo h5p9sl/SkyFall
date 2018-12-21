@@ -5,7 +5,7 @@ using namespace SkyFall;
 
 UIButton::UIButton(const sf::Texture& texture, const sf::Vector2u& pos, const std::string& label) :
 	sprite(texture),
-	text(label, *Globals::fontPLACEHOLDER)
+	text(label, globals->fontPLACEHOLDER)
 {
 }
 
