@@ -8,7 +8,7 @@ private:
 	sf::Text text;
 	sf::Sprite sprite;
 public:
-	UIButton(const sf::Texture& texture, const sf::Vector2u& pos, const std::string& label);
+	UIButton(const sf::Texture& texture, const sf::Vector2f& pos, const std::string& label);
 private:
     bool isPressed();
 public:

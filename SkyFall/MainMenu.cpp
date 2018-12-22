@@ -4,13 +4,10 @@
 using namespace SkyFall;
 
 MainMenu::MainMenu() :
-	newButton( globals->UIButtonTexture,    {0,	0},     "New Game"),
-	loadButton(globals->UIButtonTexture,    {0,	200},   "Load Game"),
-	exitButton(globals->UIButtonTexture,    {0,	400},   "Exit Game")
+	newButton( globals->UIButtonTexture,    {0.f,	0.f},     "New Game"),
+	loadButton(globals->UIButtonTexture,    {0.f,	200.f},   "Load Game"),
+	exitButton(globals->UIButtonTexture,    {0.f,	400.f},   "Exit Game")
 {
-    newButton.setRect({  0, 0, 300, 200 });
-    loadButton.setRect({ 0, 0, 300, 200 });
-    exitButton.setRect({ 0, 0, 300, 200 });
 }
 
 void MainMenu::update()
