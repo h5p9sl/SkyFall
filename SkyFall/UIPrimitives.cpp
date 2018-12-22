@@ -8,6 +8,7 @@ UIButton::UIButton(const sf::Texture& texture, const sf::Vector2f& pos, const st
 	text(label, globals->fontPLACEHOLDER)
 {
     this->sprite.setPosition(pos);
+    this->text.setString(label);
 
     sf::Vector2f newScale;
     sf::FloatRect currentSize = this->sprite.getLocalBounds();
