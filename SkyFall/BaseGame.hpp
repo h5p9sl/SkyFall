@@ -10,9 +10,10 @@ class BaseGame
 {
 private:
 	uint8_t gameState;
-	sf::RenderWindow mainWindow;
 	MainMenu mainMenu;
 	GameObjectManager gameObjectManager;
+public:
+	sf::RenderWindow mainWindow;
 public:
 	BaseGame();
 private:

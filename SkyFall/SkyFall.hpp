@@ -16,6 +16,7 @@ namespace SkyFall
     class GlobalVariables
     {
     public:
+        sf::RenderWindow* mainWindow;
         sf::Texture UIButtonTexture;
         sf::Font fontPLACEHOLDER;
     public:

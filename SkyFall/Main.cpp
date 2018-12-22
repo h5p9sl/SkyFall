@@ -6,6 +6,7 @@ int main()
     SkyFall::globals = new SkyFall::GlobalVariables();
 
 	BaseGame* baseGame = new BaseGame();
+    SkyFall::globals->mainWindow = &baseGame->mainWindow;
 
 	baseGame->beginGameLoop();
 

@@ -9,6 +9,8 @@ private:
 	sf::Sprite sprite;
 public:
 	UIButton(const sf::Texture& texture, const sf::Vector2u& pos, const std::string& label);
+private:
+    bool isPressed();
 public:
 	////////////////////////////////////////////////////////////
 	/// \brief Updates button's dimensions and returns true if clicked.
