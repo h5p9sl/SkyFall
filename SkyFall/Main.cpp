@@ -1,15 +1,16 @@
 #include "BaseGame.hpp"
 #include "SkyFall.hpp"
 
+using namespace SkyFall;
+
 int main()
 {
-    SkyFall::globals = new SkyFall::GlobalVariables();
+    globals = new SkyFall::GlobalVariables();
 
-	BaseGame* baseGame = new BaseGame();
-    SkyFall::globals->mainWindow = &baseGame->mainWindow;
+	globals->baseGame = new BaseGame();
 
-	baseGame->beginGameLoop();
+	globals->baseGame->beginGameLoop();
 
-	delete baseGame;
+	delete globals->baseGame;
 	return 0;
 }

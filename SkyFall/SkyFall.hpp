@@ -5,6 +5,8 @@
 
 #include <SFML/Graphics.hpp>
 
+#include "BaseGame.hpp"
+
 namespace SkyFall
 {
 	namespace Constants
@@ -16,7 +18,7 @@ namespace SkyFall
     class GlobalVariables
     {
     public:
-        sf::RenderWindow* mainWindow;
+        BaseGame* baseGame;
         sf::Texture UIButtonTexture;
         sf::Font fontPLACEHOLDER;
     public:

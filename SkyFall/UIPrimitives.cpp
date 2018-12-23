@@ -20,9 +20,11 @@ UIButton::UIButton(const sf::Texture& texture, const sf::Vector2f& pos, const st
 
 bool UIButton::isPressed()
 {
+    sf::Window& mainWindow = globals->baseGame->mainWindow;
+
     if (sf::Mouse::isButtonPressed(sf::Mouse::Left) &&
-        SkyFall::globals->mainWindow->hasFocus()) {
-        auto mousePos = sf::Mouse::getPosition(*SkyFall::globals->mainWindow);
+        mainWindow.hasFocus()) {
+        auto mousePos = sf::Mouse::getPosition(mainWindow);
         auto myPos = this->sprite.getGlobalBounds();
 
         return (
