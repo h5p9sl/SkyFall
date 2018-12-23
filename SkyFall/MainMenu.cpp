@@ -20,6 +20,7 @@ void MainMenu::update()
 	}
 	if (this->exitButton.update()) {
 		// Exit game
+        globals->baseGame->setGameState(GameState_t::EXITING_GAME);
 	}
 }
 

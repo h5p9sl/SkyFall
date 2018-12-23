@@ -6,7 +6,7 @@ using namespace SkyFall::Constants;
 
 BaseGame::BaseGame() :
 	mainWindow(sf::VideoMode(windowSize_defualt.x, windowSize_defualt.y), windowName),
-	gameState(0)
+	gameState(MAIN_MENU)
 {
 }
 
@@ -14,10 +14,10 @@ void BaseGame::drawGameStateCode()
 {
 	switch (this->gameState)
 	{
-	case 0:
+	case MAIN_MENU:
 		this->mainMenu.draw(this->mainWindow);
 		break;
-	case 1:
+	case IN_GAME:
 		this->gameObjectManager.drawObjects(this->mainWindow);
 		break;
 	}
@@ -27,10 +27,12 @@ void BaseGame::updateGameStateCode()
 {
 	switch (this->gameState)
 	{
-	case 0:
+    case EXITING_GAME:
+        break;
+	case MAIN_MENU:
 		this->mainMenu.update();
 		break;
-	case 1:
+	case IN_GAME:
 		// TODO: create actual delta time
 		this->gameObjectManager.updateObjects(0.1f);
 		break;
@@ -39,7 +41,9 @@ void BaseGame::updateGameStateCode()
 
 void BaseGame::beginGameLoop()
 {
-	while (this->mainWindow.isOpen()) {
+	while (this->mainWindow.isOpen() &&
+        this->gameState != GameState_t::EXITING_GAME)
+    {
 
 		sf::Event event;
 
