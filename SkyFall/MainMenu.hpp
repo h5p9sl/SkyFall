@@ -7,12 +7,12 @@
 class MainMenu
 {
 private:
-	UIButton newButton;
-	UIButton loadButton;
-	UIButton exitButton;
+    UIButton newButton;
+    UIButton loadButton;
+    UIButton exitButton;
 public:
-	MainMenu();
+    MainMenu();
 public:
-	void update();
-	void draw(sf::RenderTarget& renderTarget);
+    void update();
+    void draw(sf::RenderTarget& renderTarget);
 };

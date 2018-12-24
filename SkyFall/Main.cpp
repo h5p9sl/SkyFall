@@ -7,10 +7,10 @@ int main()
 {
     globals = new SkyFall::GlobalVariables();
 
-	globals->baseGame = new BaseGame();
+    globals->baseGame = new BaseGame();
 
-	globals->baseGame->beginGameLoop();
+    globals->baseGame->beginGameLoop();
 
-	delete globals->baseGame;
-	return 0;
+    delete globals->baseGame;
+    return 0;
 }

@@ -9,11 +9,11 @@
 
 namespace SkyFall
 {
-	namespace Constants
-	{
-		static const char* windowName = "SkyFall";
-		static const sf::Vector2u windowSize_defualt = {800u, 600u};
-	};
+    namespace Constants
+    {
+        static const char* windowName = "SkyFall";
+        static const sf::Vector2u windowSize_defualt = {800u, 600u};
+    };
 
     class GlobalVariables
     {

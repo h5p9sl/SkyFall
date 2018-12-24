@@ -17,23 +17,23 @@ class BaseGame
 {
 private:
     GameState_t gameState;
-	MainMenu mainMenu;
-	GameObjectManager gameObjectManager;
+    MainMenu mainMenu;
+    GameObjectManager gameObjectManager;
 public:
-	sf::RenderWindow mainWindow;
+    sf::RenderWindow mainWindow;
 public:
-	BaseGame();
+    BaseGame();
 private:
-	////////////////////////
-	/// \brief Draws objects based on what the current gameState is
-	////////////////////////
-	void drawGameStateCode();
-	////////////////////////
-	/// \brief Draws objects based on what the current gameState is
-	////////////////////////
-	void updateGameStateCode();
+    ////////////////////////
+    /// \brief Draws objects based on what the current gameState is
+    ////////////////////////
+    void drawGameStateCode();
+    ////////////////////////
+    /// \brief Draws objects based on what the current gameState is
+    ////////////////////////
+    void updateGameStateCode();
 public:
-	void beginGameLoop();
+    void beginGameLoop();
     GameState_t getGameState() { return this->gameState; }
     void setGameState(GameState_t t_gameState) { this->gameState = t_gameState; }
 };
