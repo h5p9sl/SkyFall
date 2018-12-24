@@ -8,6 +8,7 @@
 class MainMenu
 {
 private:
+    sf::Text title;
     UIButton newButton;
     UIButton loadButton;
     UIButton exitButton;

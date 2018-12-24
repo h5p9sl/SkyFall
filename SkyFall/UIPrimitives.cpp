@@ -3,7 +3,7 @@
 
 using namespace SkyFall;
 
-UIButton::UIButton(const sf::Texture& texture, const sf::Vector2f& pos, const std::string& label) :
+UIButton::UIButton(const sf::Texture& texture, const sf::IntRect& rect, const std::string& label) :
     sprite(texture),
     text(label, globals->fontPLACEHOLDER)
 {
@@ -13,15 +13,15 @@ UIButton::UIButton(const sf::Texture& texture, const sf::Vector2f& pos, const st
         0xff - this->highlightAmount,
         0xff));
 
-    this->sprite.setPosition(pos);
+    this->sprite.setPosition(rect.left, rect.top);
     this->text.setString(label);
     this->text.setOutlineColor(sf::Color::Black);
     this->text.setOutlineThickness(2.f);
 
     sf::Vector2f newScale;
     sf::FloatRect currentSize = this->sprite.getLocalBounds();
-    newScale.x = 400.f / currentSize.width;
-    newScale.y = 200.f / currentSize.height;
+    newScale.x = rect.width / currentSize.width;
+    newScale.y = rect.height / currentSize.height;
 
     this->sprite.setScale(newScale);
 }
