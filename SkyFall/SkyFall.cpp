@@ -13,7 +13,10 @@ SkyFall::GlobalVariables::GlobalVariables()
     if (!this->UIButtonTexture.loadFromFile("button.png")) {
         throw std::runtime_error("failed to open UIButtonTexture");
     }
-    /*if (!this->musicMainMenu.openFromFile("MainMenu.ogg")) {
+    if (!this->musicMainMenu.openFromFile("MainMenu.ogg")) {
         throw std::runtime_error("failed to open musicMainMenu");
-    }*/
+    }
+    else {
+        this->musicMainMenu.setLoop(true);
+    }
 }

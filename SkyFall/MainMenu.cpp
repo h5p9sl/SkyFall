@@ -16,14 +16,21 @@ MainMenu::MainMenu() :
 
 void MainMenu::update()
 {
+    if (globals->musicMainMenu.getStatus() != sf::Music::Status::Playing) {
+        globals->musicMainMenu.play();
+    }
+
     if (this->newButton.update()) {
         // Start new game
+        globals->musicMainMenu.stop();
     }
     if (this->loadButton.update()) {
         // Load game
+        globals->musicMainMenu.stop();
     }
     if (this->exitButton.update()) {
         // Exit game
+        globals->musicMainMenu.stop();
         globals->baseGame->setGameState(GameState_t::EXITING_GAME);
     }
 }
