@@ -19,6 +19,9 @@ namespace SkyFall
     {
     public:
         BaseGame* baseGame;
+    public:
+        sf::Music musicMainMenu;
+    public:
         sf::Texture UIButtonTexture;
         sf::Font fontPLACEHOLDER;
     public:
