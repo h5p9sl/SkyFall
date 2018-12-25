@@ -7,13 +7,13 @@ SkyFall::GlobalVariables* SkyFall::globals = nullptr;
 
 SkyFall::GlobalVariables::GlobalVariables()
 {
-    if (!this->fontPLACEHOLDER.loadFromFile("C:\\Windows\\Fonts\\Arial.ttf")) {
+    if (!this->fontPLACEHOLDER.loadFromFile("../GFX/font/bebas_neue/BebasNeue-Regular.ttf")) {
         throw std::runtime_error("failed to open font");
     }
-    if (!this->UIButtonTexture.loadFromFile("button.png")) {
+    if (!this->UIButtonTexture.loadFromFile("../GFX/button.png")) {
         throw std::runtime_error("failed to open UIButtonTexture");
     }
-    if (!this->musicMainMenu.openFromFile("MainMenu.ogg")) {
+    if (!this->musicMainMenu.openFromFile("../SFX/MainMenu.ogg")) {
         throw std::runtime_error("failed to open musicMainMenu");
     }
     else {

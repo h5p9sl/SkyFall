@@ -1,4 +1,10 @@
 #pragma once
+#include "BaseEntity.hpp"
+
+class LocalPlayer : public BaseEntity
+{
+public:
+};
 
 class PlayerSave {
 public:
