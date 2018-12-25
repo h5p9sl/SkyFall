@@ -51,6 +51,18 @@ void BaseGame::beginGameLoop()
             if (event.type == sf::Event::Closed) {
                 this->mainWindow.close();
             }
+
+            if (event.type == sf::Event::Resized) {
+                sf::Vector2i oldPosition = this->mainWindow.getPosition();
+
+                // Re-create window
+                this->mainWindow.create(
+                    sf::VideoMode(event.size.width, event.size.height),
+                    SkyFall::Constants::windowName
+                );
+
+                this->mainWindow.setPosition(oldPosition);
+            }
         }
 
         // Update all game objects
