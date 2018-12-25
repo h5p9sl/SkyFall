@@ -13,7 +13,8 @@ UIButton::UIButton(const sf::Texture& texture, const sf::IntRect& rect, const st
         0xff - this->highlightAmount,
         0xff));
 
-    this->sprite.setPosition(rect.left, rect.top);
+    this->sprite.setPosition(static_cast<float>(rect.left),
+        static_cast<float>(rect.top));
     this->text.setString(label);
     this->text.setOutlineColor(sf::Color::Black);
     this->text.setOutlineThickness(2.f);
@@ -31,7 +32,8 @@ bool __inline UIButton::isMouseOnButton()
     sf::Window& mainWindow = globals->baseGame->mainWindow;
     sf::Vector2i mousePos = sf::Mouse::getPosition(mainWindow);
     sf::FloatRect myRect = this->sprite.getGlobalBounds();
-    return myRect.contains(mousePos.x, mousePos.y);
+    return myRect.contains(static_cast<float>(mousePos.x),
+        static_cast<float>(mousePos.y));
 }
 
 bool UIButton::isPressed()
