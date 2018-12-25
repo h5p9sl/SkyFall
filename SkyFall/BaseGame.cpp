@@ -61,4 +61,5 @@ void BaseGame::beginGameLoop()
         this->drawGameStateCode();
         this->mainWindow.display();
     }
+    if (this->mainWindow.isOpen()) this->mainWindow.close();
 }
