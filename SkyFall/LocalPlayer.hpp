@@ -1,11 +1,18 @@
 #pragma once
 #include "BaseEntity.hpp"
+#include "BaseWeapon.hpp"
+#include <vector>
 
 class LocalPlayer : public BaseEntity
 {
+private:
+    std::vector<BaseWeapon*> weapons;
 public:
+    virtual void draw(sf::RenderTarget& renderTarget);
+    virtual void update(float f_delta);
 };
 
+// TODO: Move this code somewhere else...
 class PlayerSave {
 public:
 	std::string NName;	//Is the name the player wants to enter in for the new game save.

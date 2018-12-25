@@ -39,11 +39,11 @@
     <ClCompile Include="GameObjectManager.cpp">
       <Filter>Source Files\Game Objects</Filter>
     </ClCompile>
+    <ClCompile Include="LocalPlayer.cpp">
+      <Filter>Source Files\Game Objects</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="BaseGame.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="MainMenu.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -56,10 +56,19 @@
     <ClInclude Include="GameObjectManager.hpp">
       <Filter>Header Files\Game Objects</Filter>
     </ClInclude>
-    <ClInclude Include="BaseEntity.hpp">
+    <ClInclude Include="LocalPlayer.hpp">
       <Filter>Header Files\Game Objects</Filter>
     </ClInclude>
+    <ClInclude Include="BaseGame.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="BaseWeapon.hpp">
+      <Filter>Header Files\Game Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="BaseObject.hpp">
+      <Filter>Header Files\Game Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="BaseEntity.hpp">
       <Filter>Header Files\Game Objects</Filter>
     </ClInclude>
   </ItemGroup>

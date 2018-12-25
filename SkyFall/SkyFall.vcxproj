@@ -135,14 +135,19 @@
   <ItemGroup>
     <ClCompile Include="BaseGame.cpp" />
     <ClCompile Include="GameObjectManager.cpp" />
+    <ClCompile Include="LocalPlayer.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="MainMenu.cpp" />
     <ClCompile Include="SkyFall.cpp" />
     <ClCompile Include="UIPrimitives.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="BaseEntity.hpp" />
+    <ClInclude Include="BaseObject.hpp" />
     <ClInclude Include="BaseGame.hpp" />
+    <ClInclude Include="BaseWeapon.hpp" />
     <ClInclude Include="GameObjectManager.hpp" />
+    <ClInclude Include="LocalPlayer.hpp" />
     <ClInclude Include="MainMenu.hpp" />
     <ClInclude Include="SkyFall.hpp" />
     <ClInclude Include="UIPrimitives.hpp" />

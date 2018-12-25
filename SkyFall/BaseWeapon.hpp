@@ -1,7 +1,7 @@
 #pragma once
 #include "BaseEntity.hpp"
 
-class BaseWeapon : public BaseEntity
+class BaseWeapon : public BaseObject
 {
 private:
     unsigned int currentAmmo;
