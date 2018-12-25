@@ -23,7 +23,7 @@ void BaseGame::drawGameStateCode()
     }
 }
 
-void BaseGame::updateGameStateCode()
+void BaseGame::updateGameStateCode(float f_delta)
 {
     switch (this->gameState)
     {
@@ -33,17 +33,20 @@ void BaseGame::updateGameStateCode()
         this->mainMenu.update();
         break;
     case IN_GAME:
-        // TODO: create actual delta time
-        this->gameObjectManager.updateObjects(0.1f);
+        this->gameObjectManager.updateObjects(f_delta);
         break;
     }
 }
 
 void BaseGame::beginGameLoop()
 {
+    sf::Clock clock;
+
     while (this->mainWindow.isOpen() &&
         this->gameState != GameState_t::EXITING_GAME)
     {
+        float f_delta = clock.getElapsedTime().asMilliseconds() / 1000.f;
+        clock.restart();
 
         sf::Event event;
 
@@ -66,7 +69,7 @@ void BaseGame::beginGameLoop()
         }
 
         // Update all game objects
-        this->updateGameStateCode();
+        this->updateGameStateCode(f_delta);
 
         this->mainWindow.clear();
         // Draw all game objects
