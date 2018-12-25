@@ -17,7 +17,7 @@ void GameObjectManager::drawObjects(sf::RenderTarget & renderTarget)
             continue;
         }
 
-        renderTarget.draw(*entity);
+        entity->draw(renderTarget);
     }
 }
 
@@ -29,7 +29,6 @@ void GameObjectManager::updateObjects(float f_delta)
             continue;
         }
 
-        // TODO: figure out a way to dynamically update entities
-        // entity->update(f_delta);
+        entity->update(f_delta);
     }
 }
