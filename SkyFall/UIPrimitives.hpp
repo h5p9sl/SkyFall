@@ -5,10 +5,6 @@
 class UIButton
 {
 private:
-    static const uint8_t highlightAmount = 100;
-    bool lastHighlightState = false;
-    sf::Color lastHighlightColor;
-private:
     sf::Text text;
     sf::Sprite sprite;
 public:

@@ -3,26 +3,22 @@
 
 using namespace SkyFall;
 
-UIButton::UIButton(const sf::Texture& texture, const sf::IntRect& rect, const std::string& label) :
+UIButton::UIButton(const sf::Texture& texture, const sf::IntRect& dimensions, const std::string& label) :
     sprite(texture),
     text(label, globals->fontPLACEHOLDER)
 {
-    this->sprite.setColor(sf::Color(
-        0xff - this->highlightAmount,
-        0xff - this->highlightAmount,
-        0xff - this->highlightAmount,
-        0xff));
+    this->sprite.setTextureRect({ 0, 0, 100, 40 });
 
-    this->sprite.setPosition(static_cast<float>(rect.left),
-        static_cast<float>(rect.top));
+    this->sprite.setPosition(static_cast<float>(dimensions.left),
+        static_cast<float>(dimensions.top));
     this->text.setString(label);
     this->text.setOutlineColor(sf::Color::Black);
     this->text.setOutlineThickness(2.f);
 
     sf::Vector2f newScale;
     sf::FloatRect currentSize = this->sprite.getLocalBounds();
-    newScale.x = rect.width / currentSize.width;
-    newScale.y = rect.height / currentSize.height;
+    newScale.x = dimensions.width / currentSize.width;
+    newScale.y = dimensions.height / currentSize.height;
 
     this->sprite.setScale(newScale);
 }
@@ -58,23 +54,15 @@ void UIButton::highlightOnHover()
     currentState =  this->isMouseOnButton();
     mousedown =     sf::Mouse::isButtonPressed(sf::Mouse::Left);
 
-    if (currentState && !this->lastHighlightState) {
-        sf::Color currentColor = this->sprite.getColor();
-        this->lastHighlightColor = currentColor;
-        
-        uint8_t t_highlightAmount = (mousedown) ? this->highlightAmount : this->highlightAmount / 2;
-
-        currentColor.r += t_highlightAmount;
-        currentColor.g += t_highlightAmount;
-        currentColor.b += t_highlightAmount;
-
-        this->sprite.setColor(currentColor);
+    if (mousedown && currentState) {
+        this->sprite.setTextureRect({ 200, 0, 100, 40 });
     }
-    else if (!currentState && this->lastHighlightState) {
-        this->sprite.setColor(this->lastHighlightColor);
+    else if (currentState) {
+        this->sprite.setTextureRect({ 100, 0, 100, 40 });
     }
-
-    lastHighlightState = currentState;
+    else {
+        this->sprite.setTextureRect({ 0, 0, 100, 40 });
+    }
 }
 
 void UIButton::centerText()
