@@ -14,13 +14,10 @@ private:
 
 class PlayerInfo {
 public:
-	int PA = 0;	//Players Primary Weapon ammo amount
-	int SA = 0;	//Players Secondary Weapon ammo amount  
-	int PHealth = 100;	//Players Health
-	int PShield = 50;	//Players shield
-	int SAmmo = SA;	//Players Secondary Ammo
-	int PAmmo = PA;	//Players Primary ammo
-	double Pstamina = 200;	//Players Stamina
+	double PHealth = 100;	//Players Health
+	double PShield = 50;	//Players shield
+	double PStamina = 200;	//Players Stamina
+	double StaminaRegenRate = .1;	//Stamina Regen tic rate
 
 private:
 
@@ -31,7 +28,22 @@ class PlayerWeapon {
 public:
 	void ChoosePrimary();	//Player chooses there primary weapon
 	void ChooseSecondary();	//Player chooses there secondary weapon
+	void PrimaryAmmoPickup();	//Function that will add random amount of bullets to the local player current amount of primary ammo
+	void SecondaryAmmoPickup();	//Function that will add random amount of bullets to the local player current amount of secondary ammo
+
+	int PA = 0;	//Players Primary Weapon ammo amount
+	int SA = 0;	//Players Secondary Weapon ammo amount  
+	int SAmmo = SA;	//Players Secondary Ammo
+	int PAmmo = PA;	//Players Primary ammo
 
 private:
+
+};
+
+class PlayerPickup : PlayerInfo {
+public:
+	double HealthPickup();	//Adds Health to the local players current Health
+	double ShieldPickup();	//Adds Shield to the local players current shield
+	double StaminaRegenPickup();	//Adds a increase to the stamina regen rate for a short period of time
 
 };
