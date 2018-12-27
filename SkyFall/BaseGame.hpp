@@ -31,7 +31,7 @@ private:
     ////////////////////////
     /// \brief Draws objects based on what the current gameState is
     ////////////////////////
-    void updateGameStateCode();
+    void updateGameStateCode(float f_delta);
 public:
     void beginGameLoop();
     GameState_t getGameState() { return this->gameState; }

@@ -4,9 +4,9 @@
 using namespace SkyFall;
 
 MainMenu::MainMenu() :
-    newButton( globals->UIButtonTexture,    {0, 300, 400, 100}, "New Game"),
-    loadButton(globals->UIButtonTexture,    {0, 400, 400, 100}, "Load Game"),
-    exitButton(globals->UIButtonTexture,    {0, 500, 400, 100}, "Exit Game"),
+    newButton( globals->UIButtonTexture,    {0, 300, 300, 100}, "New Game"),
+    loadButton(globals->UIButtonTexture,    {0, 400, 300, 100}, "Load Game"),
+    exitButton(globals->UIButtonTexture,    {0, 500, 300, 100}, "Exit Game"),
     title("SkyFall", globals->fontPLACEHOLDER, 100)
 {
     title.setPosition({ 25.f, 100.f });

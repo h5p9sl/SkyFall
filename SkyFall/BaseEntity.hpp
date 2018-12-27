@@ -1,15 +1,11 @@
 #pragma once
-
-// Forward declarations
-namespace sf {
-    class RenderTarget;
-    class Drawable;
-}
+#include <SFML/Graphics.hpp>
+#include "BaseObject.hpp"
 
 // Pure virtual class
-class BaseEntity
+class BaseEntity : public BaseObject
 {
-public:
-    virtual void draw(sf::RenderTarget& renderTarget) = 0;
-    virtual void update(float f_delta) = 0;
+protected:
+    unsigned int m_health;
+    sf::Vector2f m_position;
 };
