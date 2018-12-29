@@ -19,6 +19,9 @@
     <Filter Include="Source Files\Game Objects">
       <UniqueIdentifier>{bc010cb5-f930-4c54-a61b-17504bd4d3b6}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Game Objects\SaveSystem">
+      <UniqueIdentifier>{f7453d1e-cc63-4849-ae94-1e19c4fd49a7}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
@@ -70,6 +73,12 @@
     </ClInclude>
     <ClInclude Include="BaseEntity.hpp">
       <Filter>Header Files\Game Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="GameSave.hpp">
+      <Filter>Header Files\Game Objects\SaveSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="GameSaveManager.hpp">
+      <Filter>Header Files\Game Objects\SaveSystem</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

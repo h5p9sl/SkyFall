@@ -147,6 +147,8 @@
     <ClInclude Include="BaseGame.hpp" />
     <ClInclude Include="BaseWeapon.hpp" />
     <ClInclude Include="GameObjectManager.hpp" />
+    <ClInclude Include="GameSave.hpp" />
+    <ClInclude Include="GameSaveManager.hpp" />
     <ClInclude Include="LocalPlayer.hpp" />
     <ClInclude Include="MainMenu.hpp" />
     <ClInclude Include="SkyFall.hpp" />

@@ -51,13 +51,15 @@ void BaseGame::beginGameLoop()
         sf::Event event;
 
         while (this->mainWindow.pollEvent(event)) {
-            if (event.type == sf::Event::Closed) {
+            switch (event.type)
+            {
+            case sf::Event::Closed:
                 this->mainWindow.close();
-            }
+                break;
 
-            if (event.type == sf::Event::Resized) {
+            case sf::Event::Resized:
                 sf::Vector2i oldPosition = this->mainWindow.getPosition();
-
+                
                 // Re-create window
                 this->mainWindow.create(
                     sf::VideoMode(event.size.width, event.size.height),
@@ -65,6 +67,8 @@ void BaseGame::beginGameLoop()
                 );
 
                 this->mainWindow.setPosition(oldPosition);
+                
+                break;
             }
         }
 

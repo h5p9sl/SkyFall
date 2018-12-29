@@ -6,6 +6,7 @@
 #include <SFML/Graphics.hpp>
 
 #include "BaseGame.hpp"
+#include "GameSaveManager.hpp"
 
 namespace SkyFall
 {
@@ -19,6 +20,7 @@ namespace SkyFall
     {
     public:
         BaseGame* baseGame;
+        GameSaveManager* gameSaveManager;
     public:
         sf::Music musicMainMenu;
     public:
