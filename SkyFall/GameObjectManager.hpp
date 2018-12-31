@@ -10,7 +10,7 @@ namespace sf {
 
 class GameObjectManager
 {
-private:
+public:
     std::vector<BaseObject*> entityList;
 public:
     GameObjectManager();
