@@ -19,7 +19,10 @@ SkyFall::GlobalVariables::GlobalVariables()
     else {
         this->musicMainMenu.setLoop(true);
     }
+}
 
+void SkyFall::GlobalVariables::initializeGlobals()
+{
     this->baseGame = new BaseGame();
     this->gameSaveManager = new GameSaveManager();
 }

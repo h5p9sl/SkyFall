@@ -6,6 +6,7 @@ using namespace SkyFall;
 int main()
 {
     globals = new SkyFall::GlobalVariables();
+    globals->initializeGlobals();
 
     globals->baseGame->beginGameLoop();
 

@@ -28,11 +28,13 @@ void MainMenu::update()
     if (this->newButton.update()) {
         // Start new game
         globals->musicMainMenu.stop();
+        globals->baseGame->setGameState(GameState_t::IN_GAME);
     }
     if (this->loadButton.update()) {
         // Load game
         globals->musicMainMenu.stop();
-        globals->gameSaveManager->loadGameSaves();
+        // TODO: Implement
+        //globals->gameSaveManager->loadGameSaves();
         this->b_shouldDrawLoadGamePrompt = true;
     }
     if (this->exitButton.update()) {

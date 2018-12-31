@@ -28,6 +28,7 @@ namespace SkyFall
         sf::Font fontPLACEHOLDER;
     public:
         GlobalVariables();
+        void initializeGlobals();
     };
     
     extern GlobalVariables* globals;
