@@ -45,6 +45,12 @@
     <ClCompile Include="LocalPlayer.cpp">
       <Filter>Source Files\Game Objects</Filter>
     </ClCompile>
+    <ClCompile Include="Pistol.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="BaseWeapon.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="MainMenu.hpp">
@@ -79,6 +85,12 @@
     </ClInclude>
     <ClInclude Include="GameSaveManager.hpp">
       <Filter>Header Files\Game Objects\SaveSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="PhysicsObject.hpp">
+      <Filter>Header Files\Game Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="Pistol.hpp">
+      <Filter>Header Files\Game Objects</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

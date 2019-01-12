@@ -8,4 +8,5 @@ class BaseEntity : public BaseObject
 protected:
     unsigned int m_health;
     sf::Vector2f m_position;
+    bool m_onGround;
 };

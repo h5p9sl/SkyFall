@@ -54,10 +54,14 @@ void BaseGame::updateGameStateCode(float f_delta)
 void BaseGame::beginGameLoop()
 {
     sf::Clock clock;
+    sf::Clock time;
 
     while (this->mainWindow.isOpen() &&
         this->gameState != GameState_t::EXITING_GAME)
     {
+        // Set current time
+        SkyFall::globals->currentTime = time.getElapsedTime().asSeconds();
+
         // Set gamestate
         this->lastGameState = this->gameState;
         this->gameState = this->nextGameState;

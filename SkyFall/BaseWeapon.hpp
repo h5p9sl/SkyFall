@@ -3,10 +3,22 @@
 
 class BaseWeapon : public BaseObject
 {
-private:
+protected:
+    const float reloadTime;
+    const unsigned magazineSize;
+    const bool infiniteReserve = false;
+protected:
+    bool reloading;
     unsigned int currentAmmo;
     unsigned int reserveAmmo;
+protected:
+    BaseWeapon(const float reloadTime,
+        const unsigned magazineSize,
+        const bool infiniteReserve);
 public:
-    virtual void draw(sf::RenderTarget& renderTarget) = 0;
-    virtual void update(float f_delta) = 0;
+    BaseWeapon() = default;
+public:
+    virtual void updatePosition(sf::Vector2f& position) = 0;
+    virtual void fire() = 0;
+    virtual void reload() = 0;
 };
