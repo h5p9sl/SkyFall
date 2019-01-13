@@ -22,6 +22,9 @@
     <Filter Include="Header Files\Game Objects\SaveSystem">
       <UniqueIdentifier>{f7453d1e-cc63-4849-ae94-1e19c4fd49a7}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Game Objects\Guns">
+      <UniqueIdentifier>{16255c16-1f42-42ea-b4b1-ea28855be484}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
@@ -45,10 +48,16 @@
     <ClCompile Include="LocalPlayer.cpp">
       <Filter>Source Files\Game Objects</Filter>
     </ClCompile>
-    <ClCompile Include="Pistol.cpp">
+    <ClCompile Include="BaseWeapon.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="BaseWeapon.cpp">
+    <ClCompile Include="BulletProjectile.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="WeaponPistol.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Input.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -89,8 +98,14 @@
     <ClInclude Include="PhysicsObject.hpp">
       <Filter>Header Files\Game Objects</Filter>
     </ClInclude>
-    <ClInclude Include="Pistol.hpp">
-      <Filter>Header Files\Game Objects</Filter>
+    <ClInclude Include="BulletProjectile.hpp">
+      <Filter>Header Files\Game Objects\Guns</Filter>
+    </ClInclude>
+    <ClInclude Include="WeaponPistol.hpp">
+      <Filter>Header Files\Game Objects\Guns</Filter>
+    </ClInclude>
+    <ClInclude Include="Input.hpp">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

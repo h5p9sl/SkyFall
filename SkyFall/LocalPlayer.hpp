@@ -8,11 +8,12 @@ class LocalPlayer : public BaseEntity
 {
 private:
     // For determining which direction the player is facing
+    bool m_enablePlayerControls;
     bool m_isFlipped;
-    sf::RectangleShape placeHolder;
+    sf::RectangleShape m_sprite;
     sf::Vector2f m_velocity;
     sf::Vector2f m_movement;
-    unsigned int m_animState;
+    int m_animState;
 private:
     BaseWeapon* currentWeapon;
     std::vector<BaseWeapon*> weapons;

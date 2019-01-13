@@ -6,7 +6,7 @@
 using namespace SkyFall::Constants;
 
 BaseGame::BaseGame() :
-    mainWindow(sf::VideoMode(windowSize_defualt.x, windowSize_defualt.y), windowName, 
+    mainWindow(sf::VideoMode(windowSize_defualt.x, windowSize_defualt.y), windowName,
         sf::Style::Titlebar | sf::Style::Close),
     gameState(MAIN_MENU),
     nextGameState(MAIN_MENU),
@@ -89,18 +89,26 @@ void BaseGame::beginGameLoop()
                 );
 
                 this->mainWindow.setPosition(oldPosition);
-                
                 break;
+                /*
+            case sf::Event::KeyPressed:
+                break;
+            case sf::Event::KeyReleased:
+                break;
+                */
             }
         }
 
-        // Update all game objects
-        this->updateGameStateCode(f_delta);
+        if (this->mainWindow.hasFocus()) {
+            // Update all game objects
+            this->updateGameStateCode(f_delta);
 
-        this->mainWindow.clear();
-        // Draw all game objects
-        this->drawGameStateCode();
-        this->mainWindow.display();
+            this->mainWindow.clear(sf::Color(120, 120, 120));
+
+            // Draw all game objects
+            this->drawGameStateCode();
+            this->mainWindow.display();
+        }
     }
     if (this->mainWindow.isOpen()) this->mainWindow.close();
 }

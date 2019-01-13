@@ -25,9 +25,14 @@ namespace SkyFall
     public:
         BaseGame* baseGame;
         GameSaveManager* gameSaveManager;
+    private:
+        sf::SoundBuffer SFBPistolShoot1;
+    public:
+        sf::Sound SFXPistolShoot1;
     public:
         sf::Music musicMainMenu;
     public:
+        sf::Texture SPBulletTracer;
         sf::Texture SPPlayer;
         sf::Texture SPPistol;
         sf::Texture UIButtonTexture;

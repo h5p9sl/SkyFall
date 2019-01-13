@@ -4,6 +4,8 @@
 class WeaponPistol : public BaseWeapon
 {
 private:
+    // For determining which direction the player is facing
+    bool m_isFlipped;
     sf::RectangleShape m_sprite;
 public:
     WeaponPistol();

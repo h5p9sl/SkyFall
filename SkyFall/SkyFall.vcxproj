@@ -135,11 +135,13 @@
   <ItemGroup>
     <ClCompile Include="BaseGame.cpp" />
     <ClCompile Include="BaseWeapon.cpp" />
+    <ClCompile Include="BulletProjectile.cpp" />
     <ClCompile Include="GameObjectManager.cpp" />
+    <ClCompile Include="Input.cpp" />
     <ClCompile Include="LocalPlayer.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="MainMenu.cpp" />
-    <ClCompile Include="Pistol.cpp" />
+    <ClCompile Include="WeaponPistol.cpp" />
     <ClCompile Include="SkyFall.cpp" />
     <ClCompile Include="UIPrimitives.cpp" />
   </ItemGroup>
@@ -148,13 +150,15 @@
     <ClInclude Include="BaseObject.hpp" />
     <ClInclude Include="BaseGame.hpp" />
     <ClInclude Include="BaseWeapon.hpp" />
+    <ClInclude Include="BulletProjectile.hpp" />
     <ClInclude Include="GameObjectManager.hpp" />
     <ClInclude Include="GameSave.hpp" />
     <ClInclude Include="GameSaveManager.hpp" />
+    <ClInclude Include="Input.hpp" />
     <ClInclude Include="LocalPlayer.hpp" />
     <ClInclude Include="MainMenu.hpp" />
     <ClInclude Include="PhysicsObject.hpp" />
-    <ClInclude Include="Pistol.hpp" />
+    <ClInclude Include="WeaponPistol.hpp" />
     <ClInclude Include="SkyFall.hpp" />
     <ClInclude Include="UIPrimitives.hpp" />
   </ItemGroup>

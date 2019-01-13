@@ -25,8 +25,8 @@ private:
     // Last game state
     GameState_t lastGameState;
     MainMenu mainMenu;
-    GameObjectManager gameObjectManager;
 public:
+    GameObjectManager gameObjectManager;
     sf::RenderWindow mainWindow;
 public:
     BaseGame();

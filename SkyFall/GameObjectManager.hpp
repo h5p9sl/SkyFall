@@ -17,4 +17,8 @@ public:
 public:
     void drawObjects(sf::RenderTarget& renderTarget);
     void updateObjects(float f_delta);
+public:
+    void __inline addEntity(BaseObject* entity) {
+        this->entityList.emplace_back(entity);
+    }
 };
