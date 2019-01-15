@@ -16,6 +16,7 @@ protected:
     bool reloading;
     int currentAmmo;
     int reserveAmmo;
+    std::vector<std::shared_ptr<BulletProjectile>> projectiles;
 protected:
     BaseWeapon(const float reloadTime,
         const float fireRate,

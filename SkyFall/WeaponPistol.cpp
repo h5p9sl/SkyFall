@@ -3,15 +3,21 @@
 #include "SkyFall.hpp"
 
 #include <iostream>
+#include <algorithm>
 
 using namespace SkyFall;
 
+constexpr float flt_fireRate = 0.3f;
+constexpr float flt_reloadTime = 1.f;
+constexpr int int_magazineCapacity = 18;
+
 WeaponPistol::WeaponPistol() :
-    BaseWeapon(1.f, 0.3f, 18, true),
+    BaseWeapon(flt_reloadTime, flt_fireRate, int_magazineCapacity, true),
     m_sprite({16.f * 4, 5.f * 4})
 {
     this->m_sprite.setTexture(&globals->SPPistol);
     this->m_sprite.setOrigin(1.5f * 4, 3.5f * 4);
+    this->projectiles.reserve(static_cast<int>(1.f / flt_fireRate) + 1);
 }
 
 WeaponPistol::~WeaponPistol()
@@ -20,6 +26,10 @@ WeaponPistol::~WeaponPistol()
 
 void WeaponPistol::draw(sf::RenderTarget & renderTarget)
 {
+    for (auto bullet : this->projectiles) {
+        bullet->draw(renderTarget);
+    }
+
     renderTarget.draw(this->m_sprite);
 }
 
@@ -30,6 +40,7 @@ void WeaponPistol::update(float f_delta)
     sf::Vector2f mouseVector = { (float)mousePosition.x - this->m_sprite.getPosition().x, (float)mousePosition.y - this->m_sprite.getPosition().y };
     float angle = atan2f(mouseVector.y, mouseVector.x) * 180.f / Constants::PI;
 
+    // Flip to face cursor
     if (mouseVector.x < 0.f) {
         this->m_sprite.setScale(-1.f, 1.f);
         this->m_isFlipped = true;
@@ -39,9 +50,9 @@ void WeaponPistol::update(float f_delta)
         this->m_sprite.setScale(1.f, 1.f);
         this->m_isFlipped = false;
     }
-
     this->m_sprite.setRotation(angle);
 
+    // Reloading logic
     static bool lastReloadingState = false;
     if (this->reloading)
     {
@@ -70,6 +81,19 @@ void WeaponPistol::update(float f_delta)
         }
     }
     lastReloadingState = this->reloading;
+
+    // Erase bullets that should be deleted
+    this->projectiles.erase(
+        std::remove_if(this->projectiles.begin(), this->projectiles.end(), [](std::shared_ptr<BulletProjectile> bullet) {
+            return bullet->shouldDelete();
+        }),
+        this->projectiles.end()
+    );
+
+    // Update all projectiles
+    for (auto bullet : this->projectiles) {
+        bullet->update(f_delta);
+    }
 }
 
 void WeaponPistol::updatePosition(sf::Vector2f& position)
@@ -89,14 +113,14 @@ void WeaponPistol::fire()
 
         if (this->m_isFlipped)
         {
-            globals->baseGame->gameObjectManager.addEntity(new BulletProjectile(
+            this->projectiles.push_back(std::make_unique<BulletProjectile>(
                 this->m_sprite.getPosition(),
                 this->m_sprite.getRotation() + 180.f,
                 7000.f));
         }
         else
         {
-            globals->baseGame->gameObjectManager.addEntity(new BulletProjectile(
+            this->projectiles.push_back(std::make_unique<BulletProjectile>(
                 this->m_sprite.getPosition(),
                 this->m_sprite.getRotation(),
                 7000.f));

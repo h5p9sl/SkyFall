@@ -6,13 +6,14 @@
 
 class BulletProjectile : public BaseObject
 {
-public:
-    bool shouldDelete;
 protected:
-    float timeCreated;
-    sf::RectangleShape sprite;
-    sf::Vector2f direction;
-    float velocity;
+    bool m_shouldDelete;
+protected:
+    float m_timeCreated;
+    sf::RectangleShape m_sprite;
+    sf::Vector2f m_velocity;
+public:
+    bool shouldDelete();
 public:
     BulletProjectile(const sf::Vector2f& src, float direction, float velocity);
 public:

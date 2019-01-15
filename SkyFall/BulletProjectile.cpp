@@ -2,35 +2,40 @@
 
 #include "SkyFall.hpp"
 
+bool BulletProjectile::shouldDelete()
+{
+    return this->m_shouldDelete;
+}
+
 BulletProjectile::BulletProjectile(
     const sf::Vector2f & src, 
     float direction, 
     float velocity) :
 
-    velocity(velocity),
-    sprite({velocity * 0.01f, 4.5f}),
-    timeCreated(SkyFall::globals->currentTime)
+    m_sprite({velocity * 0.01f, 4.5f}),
+    m_timeCreated(SkyFall::globals->currentTime),
+    m_shouldDelete(false)
 {
-    this->sprite.setTexture(&SkyFall::globals->SPBulletTracer);
-    this->sprite.setPosition(src);
-    this->sprite.setRotation(direction);
-    this->sprite.setOrigin(0.f, this->sprite.getSize().y / 2);
+    this->m_sprite.setTexture(&SkyFall::globals->SPBulletTracer);
+    this->m_sprite.setPosition(src);
+    this->m_sprite.setRotation(direction);
+    this->m_sprite.setOrigin(0.f, this->m_sprite.getSize().y / 2);
 
-    this->direction.x = cosf(direction / 180.f * SkyFall::Constants::PI);
-    this->direction.y = sinf(direction / 180.f * SkyFall::Constants::PI);
+    this->m_velocity.x = cosf(direction / 180.f * SkyFall::Constants::PI) * velocity;
+    this->m_velocity.y = sinf(direction / 180.f * SkyFall::Constants::PI) * velocity;
 }
 
 void BulletProjectile::draw(sf::RenderTarget & renderTarget)
 {
-    renderTarget.draw(this->sprite);
+    renderTarget.draw(this->m_sprite);
 }
 
 void BulletProjectile::update(float f_delta)
 {
-    sf::Vector2f newOffset = this->direction * velocity * f_delta;
-    this->sprite.move(newOffset);
+    sf::Vector2f newOffset = this->m_velocity * f_delta;
+    this->m_sprite.move(newOffset);
 
-    if (SkyFall::globals->currentTime - this->timeCreated > 1.5f) {
-        this->shouldDelete = true;
+    if (SkyFall::globals->currentTime - this->m_timeCreated > 1.5f) {
+        this->m_shouldDelete = true;
     }
 }
