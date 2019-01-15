@@ -105,7 +105,7 @@ void LocalPlayer::updatePhysics(float f_delta)
     // Cap horizontal velocity
     {
         float horizontalVelocity = abs(m_velocity.x);
-        if (horizontalVelocity > 800.f) {
+        if (horizontalVelocity > globals->baseGame->mainWindow.getView().getSize().x) {
             m_velocity.x /= horizontalVelocity;
         }
     }
@@ -113,7 +113,7 @@ void LocalPlayer::updatePhysics(float f_delta)
     // TODO: Remove this once implimented global physics
     if (this->m_position.y >= globals->baseGame->mainWindow.getView().getSize().y)
     {
-        this->m_position.y = 600.f;
+        this->m_position.y = globals->baseGame->mainWindow.getView().getSize().y;
         this->m_onGround = true;
         this->m_velocity.y = 0;
     }

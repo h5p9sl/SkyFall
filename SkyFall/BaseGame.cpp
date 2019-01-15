@@ -12,6 +12,7 @@ BaseGame::BaseGame() :
     nextGameState(MAIN_MENU),
     lastGameState(MAIN_MENU)
 {
+    mainWindow.setFramerateLimit(60u);
 }
 
 void BaseGame::initializeInGameObjects()
@@ -67,7 +68,7 @@ void BaseGame::beginGameLoop()
         this->gameState = this->nextGameState;
 
         // Get delta time
-        float f_delta = clock.getElapsedTime().asMicroseconds() / 1000.f / 1000.f;
+        float f_delta = clock.getElapsedTime().asMilliseconds() / 1000.f;
         clock.restart();
 
         // Poll window events
