@@ -12,7 +12,7 @@ BaseGame::BaseGame() :
     nextGameState(MAIN_MENU),
     lastGameState(MAIN_MENU)
 {
-    mainWindow.setFramerateLimit(60u);
+    this->mainWindow.setFramerateLimit(60u);
 }
 
 void BaseGame::initializeInGameObjects()
@@ -71,6 +71,9 @@ void BaseGame::beginGameLoop()
         float f_delta = clock.getElapsedTime().asMilliseconds() / 1000.f;
         clock.restart();
 
+        // Update input states
+        Input::updateStates();
+
         // Poll window events
         sf::Event event;
         while (this->mainWindow.pollEvent(event)) {
@@ -79,30 +82,32 @@ void BaseGame::beginGameLoop()
             case sf::Event::Closed:
                 this->mainWindow.close();
                 break;
-
-            case sf::Event::Resized:
-                sf::Vector2i oldPosition = this->mainWindow.getPosition();
-                
-                // Re-create window
-                this->mainWindow.create(
-                    sf::VideoMode(event.size.width, event.size.height),
-                    SkyFall::Constants::windowName
-                );
-
-                this->mainWindow.setPosition(oldPosition);
-                break;
-                /*
             case sf::Event::KeyPressed:
+                Input::onKeyDown(event.key.code);
                 break;
             case sf::Event::KeyReleased:
+                Input::onKeyUp(event.key.code);
                 break;
-                */
+            case sf::Event::MouseButtonPressed:
+                Input::onButtonDown(event.mouseButton.button);
+                break;
+            case sf::Event::MouseButtonReleased:
+                Input::onButtonUp(event.mouseButton.button);
+                break;
             }
         }
 
         if (this->mainWindow.hasFocus()) {
             // Update all game objects
             this->updateGameStateCode(f_delta);
+
+            // TODO: Make this less janky
+            // Update camera
+            /*if (this->localPlayer != nullptr) {
+                sf::Vector2i mousePosition = sf::Mouse::getPosition();
+                sf::Vector2f f_mousePosition = { (float)mousePosition.x, (float)mousePosition.y };
+                this->mainWindow.setView(sf::View(f_mousePosition, { 800.f, 600.f }));
+            }*/
 
             this->mainWindow.clear(sf::Color(120, 120, 120));
 

@@ -43,11 +43,17 @@ SkyFall::GlobalVariables::GlobalVariables()
     }
 }
 
+SkyFall::GlobalVariables::~GlobalVariables()
+{
+    if (this->inputSystem) delete this->inputSystem;
+    if (this->gameSaveManager) delete this->gameSaveManager;
+    if (this->baseGame) delete this->baseGame;
+}
+
 void SkyFall::GlobalVariables::initializeGlobals()
 {
     std::cout << "Initializing CBaseGame..." << std::endl;
     this->baseGame = new BaseGame();
     std::cout << "Initializing GameSaveManager..." << std::endl;
     this->gameSaveManager = new GameSaveManager();
-
 }

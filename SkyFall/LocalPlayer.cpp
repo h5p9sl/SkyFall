@@ -42,28 +42,30 @@ void LocalPlayer::update(float f_delta)
     if (this->m_enablePlayerControls) {
 
         // Update movement vector
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::W) && this->m_onGround) {
+        if (Input::wasKeyPressed(sf::Keyboard::W) && this->m_onGround) {
             this->m_movement.y = -1.f;
         }
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::A)) {
+        if (Input::isKeyPressed(sf::Keyboard::A)) {
             this->m_movement.x = -1.f;
         }
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::D)) {
+        if (Input::isKeyPressed(sf::Keyboard::D)) {
             this->m_movement.x = 1.f;
         }
 
         // Shooting
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::R)) {
+        if (Input::wasKeyPressed(sf::Keyboard::R) &&
+            this->currentWeapon != nullptr)
+        {
             this->currentWeapon->reload();
         }
-        if (sf::Mouse::isButtonPressed(sf::Mouse::Left)) {
+        if (Input::isButtonPressed(sf::Mouse::Left)) {
             if (this->currentWeapon != nullptr) {
                 this->currentWeapon->fire();
             }
         }
 
         // Switch weapons
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Num1)) {
+        if (Input::wasKeyPressed(sf::Keyboard::Num1)) {
             if (this->currentWeapon == this->weapons.at(0)) {
                 this->currentWeapon = nullptr;
             }

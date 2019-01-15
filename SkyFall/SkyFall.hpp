@@ -7,6 +7,7 @@
 
 #include "BaseGame.hpp"
 #include "GameSaveManager.hpp"
+#include "Input.hpp"
 
 namespace SkyFall
 {
@@ -14,7 +15,7 @@ namespace SkyFall
     {
         static const float PI = 3.1415926535897932384626433832795028841971693993751058209749445923078164062f;
         static const char* windowName = "SkyFall";
-        static const sf::Vector2u windowSize_defualt = {1024u, 576u};
+        static const sf::Vector2u windowSize_defualt = {800u, 600u};
         static const float globalGravity = 15.f;
     };
 
@@ -24,6 +25,7 @@ namespace SkyFall
         float currentTime;
     public:
         BaseGame* baseGame;
+        Input* inputSystem;
         GameSaveManager* gameSaveManager;
     private:
         sf::SoundBuffer SFBPistolShoot1;
@@ -39,6 +41,7 @@ namespace SkyFall
         sf::Font fontPLACEHOLDER;
     public:
         GlobalVariables();
+        ~GlobalVariables();
         void initializeGlobals();
     };
     
