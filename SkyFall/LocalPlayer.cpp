@@ -143,7 +143,8 @@ void LocalPlayer::updateAnimation()
     }
 
     // Get vector between mouse and position
-    sf::Vector2i mousePosition = sf::Mouse::getPosition(globals->baseGame->mainWindow);
+    // sf::Vector2i mousePosition = sf::Mouse::getPosition(globals->baseGame->mainWindow);
+    sf::Vector2f mousePosition = globals->baseGame->mainWindow.getView().getCenter();
     sf::Vector2f mouseVector = { (float)mousePosition.x - armPosition.x, (float)mousePosition.y - armPosition.y };
     float angle = atan2f(mouseVector.y, mouseVector.x) * 180.f / Constants::PI;
     // Variable to store coordinates for spritesheet
