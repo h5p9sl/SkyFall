@@ -36,8 +36,9 @@ void WeaponPistol::draw(sf::RenderTarget & renderTarget)
 void WeaponPistol::update(float f_delta)
 {
     // Get vector between mouse and position
-    sf::Vector2i mousePosition = sf::Mouse::getPosition(globals->baseGame->mainWindow);
-    sf::Vector2f mouseVector = { (float)mousePosition.x - this->m_sprite.getPosition().x, (float)mousePosition.y - this->m_sprite.getPosition().y };
+    // sf::Vector2i mousePosition = sf::Mouse::getPosition(globals->baseGame->mainWindow);
+    sf::Vector2f mousePosition = globals->baseGame->mainWindow.getView().getCenter();
+    sf::Vector2f mouseVector = { mousePosition.x - this->m_sprite.getPosition().x, mousePosition.y - this->m_sprite.getPosition().y };
     float angle = atan2f(mouseVector.y, mouseVector.x) * 180.f / Constants::PI;
 
     // Flip to face cursor

@@ -103,13 +103,26 @@ void BaseGame::beginGameLoop()
 
             // TODO: Make this less janky
             // Update camera
-            /*if (this->localPlayer != nullptr) {
-                sf::Vector2i mousePosition = sf::Mouse::getPosition();
+            if (this->localPlayer != nullptr) {
+                
+                sf::Vector2f cameraPosition = this->localPlayer->getPosition();
+                cameraPosition.y -= 18.f * 4.f;
+                
+                sf::Vector2i mousePosition = sf::Mouse::getPosition(this->mainWindow);
                 sf::Vector2f f_mousePosition = { (float)mousePosition.x, (float)mousePosition.y };
-                this->mainWindow.setView(sf::View(f_mousePosition, { 800.f, 600.f }));
-            }*/
+                // Offset mouse position by half the size of the window
+                f_mousePosition.x -= 800.f / 2.f;
+                f_mousePosition.y -= 600.f / 2.f;
+                
+                // Offset camera position by hypotenuse of mousePosition
+                sf::Vector2f vector = cameraPosition - f_mousePosition;
 
-            this->mainWindow.clear(sf::Color(120, 120, 120));
+                cameraPosition += f_mousePosition;
+                
+                this->mainWindow.setView(sf::View(cameraPosition, { 800.f, 600.f }));
+            }
+
+            this->mainWindow.clear(sf::Color(0x31, 0x41, 0x59));
 
             // Draw all game objects
             this->drawGameStateCode();

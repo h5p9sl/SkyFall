@@ -42,7 +42,7 @@ void LocalPlayer::update(float f_delta)
     if (this->m_enablePlayerControls) {
 
         // Update movement vector
-        if (Input::wasKeyPressed(sf::Keyboard::W) && this->m_onGround) {
+        if (Input::isKeyPressed(sf::Keyboard::W) && this->m_onGround) {
             this->m_movement.y = -1.f;
         }
         if (Input::isKeyPressed(sf::Keyboard::A)) {
@@ -75,8 +75,9 @@ void LocalPlayer::update(float f_delta)
         }
 
         // Get vector between mouse and position
-        sf::Vector2i mousePosition = sf::Mouse::getPosition(globals->baseGame->mainWindow);
-        sf::Vector2f mouseVector = { (float)mousePosition.x - this->m_position.x, (float)mousePosition.y - this->m_position.y };
+        //sf::Vector2i mousePosition = sf::Mouse::getPosition(globals->baseGame->mainWindow);
+        sf::Vector2f mousePosition = globals->baseGame->mainWindow.getView().getCenter();
+        sf::Vector2f mouseVector = { mousePosition.x - this->m_position.x, mousePosition.y - this->m_position.y };
         if (mouseVector.x < 0.f) {
             this->m_sprite.setScale({ -1.f, 1.f });
             this->m_isFlipped = true;
