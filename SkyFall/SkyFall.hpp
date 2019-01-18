@@ -5,6 +5,7 @@
 
 #include <SFML/Graphics.hpp>
 
+#include "Scenes.hpp"
 #include "BaseGame.hpp"
 #include "GameSaveManager.hpp"
 #include "Input.hpp"
@@ -17,6 +18,11 @@ namespace SkyFall
         static const char* windowName = "SkyFall";
         static const sf::Vector2u windowSize_defualt = {800u, 600u};
         static const float globalGravity = 15.f;
+    };
+
+    namespace Scenes
+    {
+        class Scene1;
     };
 
     class GlobalVariables
@@ -34,6 +40,7 @@ namespace SkyFall
     public:
         sf::Music musicMainMenu;
     public:
+        sf::Texture SPScene1Background;
         sf::Texture SPBulletTracer;
         sf::Texture SPPlayer;
         sf::Texture SPPistol;

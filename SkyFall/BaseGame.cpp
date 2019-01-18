@@ -3,7 +3,10 @@
 #include "SkyFall.hpp"
 #include "LocalPlayer.hpp"
 
+#include <iostream>
+
 using namespace SkyFall::Constants;
+using namespace SkyFall::Scenes;
 
 BaseGame::BaseGame() :
     mainWindow(sf::VideoMode(windowSize_defualt.x, windowSize_defualt.y), windowName,
@@ -17,8 +20,11 @@ BaseGame::BaseGame() :
 
 void BaseGame::initializeInGameObjects()
 {
+    this->currentScene = new Scene1();
     this->localPlayer = new LocalPlayer();
-    this->gameObjectManager.entityList.push_back(this->localPlayer);
+
+    this->gameObjectManager.addEntity(this->currentScene);
+    this->gameObjectManager.addEntity(this->localPlayer);
 }
 
 void BaseGame::drawGameStateCode()
@@ -105,24 +111,36 @@ void BaseGame::beginGameLoop()
             // Update camera
             if (this->localPlayer != nullptr) {
                 
+                sf::Vector2u windowSize = this->mainWindow.getSize();
+                sf::Vector2f f_windowSize = { (float)windowSize.x, (float)windowSize.y };
+
                 sf::Vector2f cameraPosition = this->localPlayer->getPosition();
                 cameraPosition.y -= 18.f * 4.f;
                 
                 sf::Vector2i mousePosition = sf::Mouse::getPosition(this->mainWindow);
                 sf::Vector2f f_mousePosition = { (float)mousePosition.x, (float)mousePosition.y };
                 // Offset mouse position by half the size of the window
-                f_mousePosition.x -= 800.f / 2.f;
-                f_mousePosition.y -= 600.f / 2.f;
+                f_mousePosition.x -= f_windowSize.x / 2.f;
+                f_mousePosition.y -= f_windowSize.y / 2.f;
                 
-                // Offset camera position by hypotenuse of mousePosition
-                sf::Vector2f vector = cameraPosition - f_mousePosition;
+                float hyp = hypot<float>(f_mousePosition.x, f_mousePosition.y);
 
-                cameraPosition += f_mousePosition;
+                float xV = f_mousePosition.x / f_windowSize.x;
+                float yV = f_mousePosition.y / f_windowSize.y;
+                float hV = 1.f - hypotf(xV, yV);
+
+                // Offset camera position by vector of mousePosition
+                cameraPosition += f_mousePosition * hV;
                 
-                this->mainWindow.setView(sf::View(cameraPosition, { 800.f, 600.f }));
+                this->mainWindow.setView(sf::View(cameraPosition, f_windowSize));
             }
 
-            this->mainWindow.clear(sf::Color(0x31, 0x41, 0x59));
+            if (this->currentScene != nullptr) {
+                this->mainWindow.clear(this->currentScene->getBackgroundColor());
+            }
+            else {
+                this->mainWindow.clear(sf::Color(0x31, 0x41, 0x59));
+            }
 
             // Draw all game objects
             this->drawGameStateCode();

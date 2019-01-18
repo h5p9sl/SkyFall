@@ -3,6 +3,7 @@
 #include "GameObjectManager.hpp"
 #include "MainMenu.hpp"
 #include "LocalPlayer.hpp"
+#include "BaseScene.hpp"
 
 enum GameState_t : uint8_t
 {
@@ -17,6 +18,7 @@ enum GameState_t : uint8_t
 class BaseGame
 {
 private:
+    BaseScene* currentScene;
     LocalPlayer* localPlayer;
     // Next game state set by BaseGame::setGameState()
     GameState_t nextGameState;

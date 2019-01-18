@@ -25,6 +25,9 @@
     <Filter Include="Header Files\Game Objects\Guns">
       <UniqueIdentifier>{16255c16-1f42-42ea-b4b1-ea28855be484}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Game Objects\Scenes">
+      <UniqueIdentifier>{e00cf1f1-fefe-4b03-87f8-f126c3ddb2c4}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
@@ -58,6 +61,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Input.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Scene1.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -106,6 +112,15 @@
     </ClInclude>
     <ClInclude Include="Input.hpp">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="BaseScene.hpp">
+      <Filter>Header Files\Game Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="Scene1.hpp">
+      <Filter>Header Files\Game Objects\Scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="Scenes.hpp">
+      <Filter>Header Files\Game Objects\Scenes</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

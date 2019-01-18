@@ -141,6 +141,7 @@
     <ClCompile Include="LocalPlayer.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="MainMenu.cpp" />
+    <ClCompile Include="Scene1.cpp" />
     <ClCompile Include="WeaponPistol.cpp" />
     <ClCompile Include="SkyFall.cpp" />
     <ClCompile Include="UIPrimitives.cpp" />
@@ -149,6 +150,7 @@
     <ClInclude Include="BaseEntity.hpp" />
     <ClInclude Include="BaseObject.hpp" />
     <ClInclude Include="BaseGame.hpp" />
+    <ClInclude Include="BaseScene.hpp" />
     <ClInclude Include="BaseWeapon.hpp" />
     <ClInclude Include="BulletProjectile.hpp" />
     <ClInclude Include="GameObjectManager.hpp" />
@@ -158,6 +160,8 @@
     <ClInclude Include="LocalPlayer.hpp" />
     <ClInclude Include="MainMenu.hpp" />
     <ClInclude Include="PhysicsObject.hpp" />
+    <ClInclude Include="Scene1.hpp" />
+    <ClInclude Include="Scenes.hpp" />
     <ClInclude Include="WeaponPistol.hpp" />
     <ClInclude Include="SkyFall.hpp" />
     <ClInclude Include="UIPrimitives.hpp" />
