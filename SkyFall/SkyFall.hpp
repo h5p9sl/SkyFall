@@ -4,6 +4,7 @@
 #include <exception>
 
 #include <SFML/Graphics.hpp>
+#include <math.h>
 
 #include "Scenes.hpp"
 #include "BaseGame.hpp"

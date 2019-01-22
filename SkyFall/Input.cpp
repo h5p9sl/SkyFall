@@ -1,5 +1,7 @@
 #include "Input.hpp"
 
+#include <string.h>
+
 Input* Input::instance = nullptr;
 
 Input::Input()

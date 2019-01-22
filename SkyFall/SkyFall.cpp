@@ -1,15 +1,16 @@
 #include "SkyFall.hpp"
 #include "UIPrimitives.hpp"
 #include <iostream>
+#include <string>
 
 using namespace SkyFall;
 
 SkyFall::GlobalVariables* SkyFall::globals = nullptr;
 
-bool __inline loadGFXAsset(sf::Texture& t_resource, const sf::String& t_directory);
-bool __inline loadGFXAsset(sf::Font& t_resource, const sf::String& t_directory);
-bool __inline loadSFXAsset(sf::Music& t_resource, const sf::String& t_directory);
-bool __inline loadSFXAsset(sf::SoundBuffer& t_resource, const sf::String& t_directory);
+bool __inline loadGFXAsset(sf::Texture& t_resource, const std::string& t_directory);
+bool __inline loadGFXAsset(sf::Font& t_resource, const std::string& t_directory);
+bool __inline loadSFXAsset(sf::Music& t_resource, const std::string& t_directory);
+bool __inline loadSFXAsset(sf::SoundBuffer& t_resource, const std::string& t_directory);
 
 SkyFall::GlobalVariables::GlobalVariables()
 {
@@ -55,7 +56,7 @@ void SkyFall::GlobalVariables::initializeGlobals()
 
 
 
-bool __inline loadGFXAsset(sf::Texture& t_resource, const sf::String& t_directory) {
+bool __inline loadGFXAsset(sf::Texture& t_resource, const std::string& t_directory) {
     if (!t_resource.loadFromFile(t_directory)) {
         throw std::runtime_error("Failed to open " + t_directory);
         return false;
@@ -63,7 +64,7 @@ bool __inline loadGFXAsset(sf::Texture& t_resource, const sf::String& t_director
     return true;
 }
 
-bool __inline loadGFXAsset(sf::Font & t_resource, const sf::String & t_directory)
+bool __inline loadGFXAsset(sf::Font & t_resource, const std::string & t_directory)
 {
     if (!t_resource.loadFromFile(t_directory)) {
         throw std::runtime_error("Failed to open " + t_directory);
@@ -72,7 +73,7 @@ bool __inline loadGFXAsset(sf::Font & t_resource, const sf::String & t_directory
     return true;
 }
 
-bool __inline loadSFXAsset(sf::Music& t_resource, const sf::String& t_directory) {
+bool __inline loadSFXAsset(sf::Music& t_resource, const std::string& t_directory) {
     if (!t_resource.openFromFile(t_directory)) {
         throw std::runtime_error("Failed to open " + t_directory);
         return false;
@@ -80,7 +81,7 @@ bool __inline loadSFXAsset(sf::Music& t_resource, const sf::String& t_directory)
     return true;
 }
 
-bool __inline loadSFXAsset(sf::SoundBuffer& t_resource, const sf::String& t_directory) {
+bool __inline loadSFXAsset(sf::SoundBuffer& t_resource, const std::string& t_directory) {
     if (!t_resource.loadFromFile(t_directory)) {
         throw std::runtime_error("Failed to open " + t_directory);
         return false;
