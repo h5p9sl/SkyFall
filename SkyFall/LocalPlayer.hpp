@@ -23,6 +23,7 @@ public:
 public:
     virtual void draw(sf::RenderTarget& renderTarget) override;
     virtual void update(float f_delta) override;
+    void updateCamera(sf::RenderWindow& parentWindow);
 private:
     void updatePhysics(float f_delta);
     void updateAnimation();

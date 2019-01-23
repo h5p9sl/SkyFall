@@ -94,6 +94,34 @@ void LocalPlayer::update(float f_delta)
     this->updateAnimation();
 }
 
+void LocalPlayer::updateCamera(sf::RenderWindow& parentWindow)
+{
+    sf::Vector2u windowSize = parentWindow.getSize();
+    sf::Vector2f f_windowSize = { (float)windowSize.x, (float)windowSize.y };
+
+    sf::Vector2f cameraPosition = this->getPosition();
+    cameraPosition.y -= 18.f * 4.f;
+                
+    sf::Vector2i mousePosition = sf::Mouse::getPosition(parentWindow);
+    // Clamp mouse position to the size of the window
+    mousePosition.x = std::min(std::max(mousePosition.x, 0), (int)windowSize.x);
+    mousePosition.y = std::min(std::max(mousePosition.y, 0), (int)windowSize.y);
+                
+    sf::Vector2f f_mousePosition = { (float)mousePosition.x, (float)mousePosition.y };
+    // Offset mouse position by half the size of the window
+    f_mousePosition.x -= f_windowSize.x / 2.f;
+    f_mousePosition.y -= f_windowSize.y / 2.f;
+                
+    float xV = f_mousePosition.x / f_windowSize.x;
+    float yV = f_mousePosition.y / f_windowSize.y;
+    float hV = 1.f - hypotf(xV, yV);
+
+    // Offset camera position by vector of mousePosition
+    cameraPosition += f_mousePosition * hV;
+                
+    parentWindow.setView(sf::View(cameraPosition, f_windowSize));
+}
+
 void LocalPlayer::updatePhysics(float f_delta)
 {
     // Update horizontal velocity

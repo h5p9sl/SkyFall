@@ -18,8 +18,8 @@ enum GameState_t : uint8_t
 class BaseGame
 {
 private:
-    BaseScene* currentScene;
-    LocalPlayer* localPlayer;
+    BaseScene* currentScene =   nullptr;
+    LocalPlayer* localPlayer =  nullptr;
     // Next game state set by BaseGame::setGameState()
     GameState_t nextGameState;
     // Current game state
