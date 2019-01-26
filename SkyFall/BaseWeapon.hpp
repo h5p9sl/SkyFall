@@ -16,7 +16,7 @@ protected:
     bool reloading;
     int currentAmmo;
     int reserveAmmo;
-    std::vector<std::shared_ptr<BulletProjectile>> projectiles;
+    std::vector<std::unique_ptr<BulletProjectile>> projectiles;
 protected:
     BaseWeapon(const float reloadTime,
         const float fireRate,
@@ -24,8 +24,10 @@ protected:
         const bool infiniteReserve);
 public:
     BaseWeapon() = default;
+    virtual ~BaseWeapon();
 public:
     virtual void updatePosition(sf::Vector2f& position) = 0;
     virtual void fire() = 0;
     virtual void reload() = 0;
 };
+

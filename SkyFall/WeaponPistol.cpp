@@ -4,6 +4,7 @@
 
 #include <iostream>
 #include <algorithm>
+#include <memory>
 
 using namespace SkyFall;
 
@@ -26,7 +27,7 @@ WeaponPistol::~WeaponPistol()
 
 void WeaponPistol::draw(sf::RenderTarget & renderTarget)
 {
-    for (auto bullet : this->projectiles) {
+    for (auto& bullet : this->projectiles) {
         bullet->draw(renderTarget);
     }
 
@@ -85,14 +86,14 @@ void WeaponPistol::update(float f_delta)
 
     // Erase bullets that should be deleted
     this->projectiles.erase(
-        std::remove_if(this->projectiles.begin(), this->projectiles.end(), [](std::shared_ptr<BulletProjectile> bullet) {
+        std::remove_if(this->projectiles.begin(), this->projectiles.end(), [](std::unique_ptr<BulletProjectile>& bullet) {
             return bullet->shouldDelete();
         }),
         this->projectiles.end()
     );
 
     // Update all projectiles
-    for (auto bullet : this->projectiles) {
+    for (auto& bullet : this->projectiles) {
         bullet->update(f_delta);
     }
 }

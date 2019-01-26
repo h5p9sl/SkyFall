@@ -14,3 +14,8 @@ BaseWeapon::BaseWeapon(const float reloadTime,
     reserveAmmo(magazineSize * 3)
 {
 }
+
+BaseWeapon::~BaseWeapon() {
+	// Erase all projectiles (and free memory)
+	this->projectiles.clear();
+}
