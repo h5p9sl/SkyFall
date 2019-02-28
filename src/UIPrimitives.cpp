@@ -34,10 +34,9 @@ bool __inline UIButton::isMouseOnButton()
 
 bool UIButton::isPressed()
 {
-    // TODO: Make this return true when mouse1 is *RELEASED*
     sf::Window& mainWindow = globals->baseGame->mainWindow;
 
-    if (sf::Mouse::isButtonPressed(sf::Mouse::Left) &&
+    if (Input::wasButtonReleased(sf::Mouse::Left) &&
         mainWindow.hasFocus())
     {
         return this->isMouseOnButton();
