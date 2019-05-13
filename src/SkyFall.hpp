@@ -43,7 +43,14 @@ namespace SkyFall
     public:
         sf::Texture SPScene1Background;
         sf::Texture SPBulletTracer;
-        sf::Texture SPPlayer;
+        sf::Texture SPPlayer_Gas1Dark;
+        sf::Texture SPPlayer_Gas1Light;
+        sf::Texture SPPlayer_Gas2Dark;
+        sf::Texture SPPlayer_Gas2Light;
+        sf::Texture SPPlayer_OriginalDark;
+        sf::Texture SPPlayer_OriginalLight;
+        sf::Texture SPPlayer_KiverDark;
+        sf::Texture SPPlayer_KiverLight;
         sf::Texture SPPistol;
         sf::Texture UIButtonTexture;
         sf::Font fontPLACEHOLDER;

@@ -8,12 +8,25 @@
 
 using namespace SkyFall;
 
+// TODO: Remove this when done debugging
+sf::Texture* playerSprites[8] = { nullptr };
+static int playerSpriteIndex = 0;
+
 LocalPlayer::LocalPlayer() :
-    m_sprite({ 20.f * 4, 32.f * 4 }),
+    m_sprite({ 21.f * 4, 32.f * 4 }),
     m_enablePlayerControls(true)
 {
-    m_sprite.setTexture(&globals->SPPlayer);
-    m_sprite.setTextureRect({ 0, 0, 20, 32 });
+    playerSprites[0] = &globals->SPPlayer_Gas1Dark;
+    playerSprites[1] = &globals->SPPlayer_Gas1Light;
+    playerSprites[2] = &globals->SPPlayer_Gas2Dark;
+    playerSprites[3] = &globals->SPPlayer_Gas2Light;
+    playerSprites[4] = &globals->SPPlayer_OriginalDark;
+    playerSprites[5] = &globals->SPPlayer_OriginalLight;
+    playerSprites[6] = &globals->SPPlayer_KiverDark;
+    playerSprites[7] = &globals->SPPlayer_KiverLight;
+    printf("playerSprites[0] = 0x%016x\n", playerSprites[0]);
+    m_sprite.setTexture(playerSprites[0]);
+    m_sprite.setTextureRect({ 0, 0, 21, 32 });
     
     // Set origin
     sf::FloatRect bottomCenter = this->m_sprite.getLocalBounds();
@@ -40,6 +53,16 @@ void LocalPlayer::update(float f_delta)
     this->m_movement = { 0.f, 0.f };
 
     if (this->m_enablePlayerControls) {
+
+        // Cycle through spritesheets **FOR DEBUGGING**
+        if (Input::wasKeyPressed(sf::Keyboard::Right)) {
+            if (playerSpriteIndex >= 7) playerSpriteIndex = -1;
+            this->m_sprite.setTexture(playerSprites[++playerSpriteIndex]);
+        }
+        if (Input::wasKeyPressed(sf::Keyboard::Left)) {
+            if (playerSpriteIndex <= 0) playerSpriteIndex = 8;
+            this->m_sprite.setTexture(playerSprites[--playerSpriteIndex]);
+        }
 
         // Update movement vector
         if (Input::isKeyPressed(sf::Keyboard::W) && this->m_onGround) {
@@ -236,7 +259,7 @@ void LocalPlayer::updateAnimation()
 
     // Next frame
     textureCoords.x = m_animState % 5;
-    textureCoords.x *= 20;
+    textureCoords.x *= 21;
     textureCoords.y *= 32;
-    this->m_sprite.setTextureRect({ textureCoords.x, textureCoords.y, 20, 32 });
+    this->m_sprite.setTextureRect({ textureCoords.x, textureCoords.y, 21, 32 });
 }

@@ -18,7 +18,14 @@ SkyFall::GlobalVariables::GlobalVariables()
 
     // LOAD GFX
     loadGFXAsset(this->UIButtonTexture,         "../GFX/button.png");
-    loadGFXAsset(this->SPPlayer,                "../GFX/Player.png");
+    loadGFXAsset(this->SPPlayer_Gas1Dark,       "../GFX/player/Gas1Dark.png");
+    loadGFXAsset(this->SPPlayer_Gas1Light,      "../GFX/player/Gas1Light.png");
+    loadGFXAsset(this->SPPlayer_Gas2Dark,       "../GFX/player/Gas2Dark.png");
+    loadGFXAsset(this->SPPlayer_Gas2Light,      "../GFX/player/Gas2Light.png");
+    loadGFXAsset(this->SPPlayer_OriginalDark,   "../GFX/player/OriginalDark.png");
+    loadGFXAsset(this->SPPlayer_OriginalLight,  "../GFX/player/OriginalLight.png");
+    loadGFXAsset(this->SPPlayer_KiverDark,      "../GFX/player/KiverDark.png");
+    loadGFXAsset(this->SPPlayer_KiverLight,     "../GFX/player/KiverLight.png");
     loadGFXAsset(this->SPPistol,                "../GFX/PlayerPistol.png");
     loadGFXAsset(this->SPBulletTracer,          "../GFX/BulletTracer.png");
     loadGFXAsset(this->SPScene1Background,      "../GFX/Scene1Background.png");
