@@ -40,6 +40,7 @@ namespace SkyFall
         sf::Sound SFXPistolShoot1;
     public:
         sf::Music musicMainMenu;
+        sf::Music musicBackground01;
     public:
         sf::Texture SPScene1Background;
         sf::Texture SPBulletTracer;

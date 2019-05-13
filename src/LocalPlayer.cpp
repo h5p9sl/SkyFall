@@ -24,7 +24,6 @@ LocalPlayer::LocalPlayer() :
     playerSprites[5] = &globals->SPPlayer_OriginalLight;
     playerSprites[6] = &globals->SPPlayer_KiverDark;
     playerSprites[7] = &globals->SPPlayer_KiverLight;
-    printf("playerSprites[0] = 0x%016x\n", playerSprites[0]);
     m_sprite.setTexture(playerSprites[0]);
     m_sprite.setTextureRect({ 0, 0, 21, 32 });
     
@@ -98,10 +97,9 @@ void LocalPlayer::update(float f_delta)
         }
 
         // Get vector between mouse and position
-        //sf::Vector2i mousePosition = sf::Mouse::getPosition(globals->baseGame->mainWindow);
         sf::Vector2f mousePosition = globals->baseGame->mainWindow.getView().getCenter();
-        sf::Vector2f mouseVector = { mousePosition.x - this->m_position.x, mousePosition.y - this->m_position.y };
-        if (mouseVector.x < 0.f) {
+        float vector = mousePosition.x - this->m_position.x;
+        if (vector < 0.f) {
             this->m_sprite.setScale({ -1.f, 1.f });
             this->m_isFlipped = true;
         }
@@ -187,48 +185,27 @@ void LocalPlayer::updateAnimation()
     sf::Vector2f armPosition = this->m_position;
     // Set arm position
     armPosition.y -= 18.f * 4;
-    // Offset x position based on which direction player is facing
-    (this->m_isFlipped) ? armPosition.x -= 1.5f * 4 : armPosition.x += 1.5f * 4;
     if (this->currentWeapon != nullptr) {
         this->currentWeapon->updatePosition(armPosition);
     }
 
-    // Get vector between mouse and position
+    // Get normalized vector between mouse and player position
     // sf::Vector2i mousePosition = sf::Mouse::getPosition(globals->baseGame->mainWindow);
     sf::Vector2f mousePosition = globals->baseGame->mainWindow.getView().getCenter();
-    sf::Vector2f mouseVector = { (float)mousePosition.x - armPosition.x, (float)mousePosition.y - armPosition.y };
-    float angle = atan2f(mouseVector.y, mouseVector.x) * 180.f / Constants::PI;
+    sf::Vector2f mvec = { (float)mousePosition.x - armPosition.x, (float)mousePosition.y - armPosition.y };
+    float hyp = hypotf(mvec.x, mvec.y);
+    mvec.x /= hyp;
+    mvec.y /= hyp;
     // Variable to store coordinates for spritesheet
     sf::Vector2i textureCoords;
-
-    // TODO: fix this spaghetti code
-    if (this->m_isFlipped) {
-        if (angle > -155 && angle < -90.f) {
-            // Looking up
-            textureCoords.y = 1;
-        }
-        else if (angle < 155.f && angle > 90.f) {
-            // Looking down
-            textureCoords.y = 2;
-        }
-        else {
-            // Looking straight
-            textureCoords.y = 0;
-        }
+    if (mvec.y <= -0.5f) {
+        textureCoords.y = 1; // Looking up
+    }
+    else if (mvec.y >= 0.5f) {
+        textureCoords.y = 2; // Looking down
     }
     else {
-        if (angle > -90.f && angle < -25.f) {
-            // Looking up
-            textureCoords.y = 1;
-        }
-        else if (angle < 90.f && angle > 25.f) {
-            // Looking down
-            textureCoords.y = 2;
-        }
-        else {
-            // Looking straight
-            textureCoords.y = 0;
-        }
+        textureCoords.y = 0; // Looking straight
     }
 
     // Play run cycle if player is moving horizontally

@@ -31,8 +31,11 @@ SkyFall::GlobalVariables::GlobalVariables()
     loadGFXAsset(this->SPScene1Background,      "../GFX/Scene1Background.png");
 
     // LOAD SFX
-    if (loadSFXAsset(this->musicMainMenu,       "../SFX/MainMenu.ogg")) {
+    if (loadSFXAsset(this->musicMainMenu,       "../SFX/Skullcrusher.ogg")) {
         this->musicMainMenu.setLoop(true);
+    }
+    if (loadSFXAsset(this->musicBackground01,    "../SFX/BG01.ogg")) {
+        this->musicBackground01.setLoop(true);
     }
     if (loadSFXAsset(this->SFBPistolShoot1,     "../SFX/PistolShoot1.ogg")) {
         this->SFXPistolShoot1.setBuffer(this->SFBPistolShoot1);

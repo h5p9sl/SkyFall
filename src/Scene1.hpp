@@ -4,6 +4,7 @@
 #include "SkyFall.hpp"
 
 #include <SFML/Graphics.hpp>
+#include <SFML/Audio.hpp>
 
 namespace SkyFall
 {
