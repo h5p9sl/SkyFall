@@ -44,7 +44,7 @@ void WeaponPistol::updateAnimation() {
         // The player just shot a bullet.
         this->m_sprite.setTextureRect(this->m_spriteSheet->getSpriteAt(1, 0));
         if (t == 0.f) t = globals->currentTime;
-        if (globals->currentTime - t > 0.05f) {
+        if (globals->currentTime - t > 0.1f) {
             t = 0.f;
             this->m_animState = 2;
         }
