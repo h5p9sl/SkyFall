@@ -13,6 +13,16 @@ bool __inline loadSFXAsset(sf::Music& t_resource, const std::string& t_directory
 bool __inline loadSFXAsset(sf::SoundBuffer& t_resource, const std::string& t_directory);
 
 SkyFall::GlobalVariables::GlobalVariables()
+:
+    // Player Sprites
+    SPPlayer_Gas1Dark(3, 7, {20, 32}),
+    SPPlayer_Gas1Light(3, 7, {20, 32}),
+    SPPlayer_Gas2Dark(3, 7, {20, 32}),
+    SPPlayer_Gas2Light(3, 7, {20, 32}),
+    SPPlayer_OriginalDark(3, 7, {20, 32}),
+    SPPlayer_OriginalLight(3, 7, {20, 32}),
+    SPPlayer_KiverDark(3, 7, {20, 32}),
+    SPPlayer_KiverLight(3, 7, {20, 32})
 {
     std::cout << "Loading assets..." << std::endl;
 

@@ -9,11 +9,10 @@
 using namespace SkyFall;
 
 // TODO: Remove this when done debugging
-sf::Texture* playerSprites[8] = { nullptr };
+SpriteSheet* playerSprites[8] = { nullptr };
 static int playerSpriteIndex = 0;
 
 LocalPlayer::LocalPlayer() :
-    m_sprite({ 20.f * 4, 32.f * 4 }),
     m_enablePlayerControls(true)
 {
     playerSprites[0] = &globals->SPPlayer_Gas1Dark;
@@ -24,9 +23,16 @@ LocalPlayer::LocalPlayer() :
     playerSprites[5] = &globals->SPPlayer_OriginalLight;
     playerSprites[6] = &globals->SPPlayer_KiverDark;
     playerSprites[7] = &globals->SPPlayer_KiverLight;
-    m_sprite.setTexture(playerSprites[0]);
-    m_sprite.setTextureRect({ 0, 0, 20, 32 });
-    
+    this->m_spriteSheet = playerSprites[0];
+
+    // Initialize m_sprite size
+    this->m_sprite.setSize(
+        sf::Vector2f(
+            this->m_spriteSheet->m_spriteSize.x * 4.f,
+            this->m_spriteSheet->m_spriteSize.y * 4.f
+        )
+    );
+
     // Set origin
     sf::FloatRect bottomCenter = this->m_sprite.getLocalBounds();
     bottomCenter.left += bottomCenter.width / 2.f;
@@ -56,11 +62,11 @@ void LocalPlayer::update(float f_delta)
         // Cycle through spritesheets **FOR DEBUGGING**
         if (Input::wasKeyPressed(sf::Keyboard::Right)) {
             if (playerSpriteIndex >= 7) playerSpriteIndex = -1;
-            this->m_sprite.setTexture(playerSprites[++playerSpriteIndex]);
+            this->m_spriteSheet = playerSprites[++playerSpriteIndex];
         }
         if (Input::wasKeyPressed(sf::Keyboard::Left)) {
             if (playerSpriteIndex <= 0) playerSpriteIndex = 8;
-            this->m_sprite.setTexture(playerSprites[--playerSpriteIndex]);
+            this->m_spriteSheet = playerSprites[--playerSpriteIndex];
         }
 
         // Update movement vector
@@ -190,7 +196,6 @@ void LocalPlayer::updateAnimation()
     }
 
     // Get normalized vector between mouse and player position
-    // sf::Vector2i mousePosition = sf::Mouse::getPosition(globals->baseGame->mainWindow);
     sf::Vector2f mousePosition = globals->baseGame->mainWindow.getView().getCenter();
     sf::Vector2f mvec = { (float)mousePosition.x - armPosition.x, (float)mousePosition.y - armPosition.y };
     float hyp = hypotf(mvec.x, mvec.y);
@@ -217,13 +222,13 @@ void LocalPlayer::updateAnimation()
                 !this->m_isFlipped && this->m_movement.x < 0.f) {
                 this->m_animState--;
                 if (this->m_animState < 1) {
-                    this->m_animState = 6;
+                    this->m_animState = this->m_spriteSheet->m_columns - 1;
                 }
             }
             // Run normally
             else {
                 this->m_animState++;
-                if (this->m_animState > 6) {
+                if (this->m_animState >= this->m_spriteSheet->m_columns) {
                     this->m_animState = 1;
                 }
             }
@@ -234,9 +239,9 @@ void LocalPlayer::updateAnimation()
         this->m_animState = 0;
     }
 
+    // Set sprite texture
+    this->m_sprite.setTexture(this->m_spriteSheet);
     // Next frame
     textureCoords.x = m_animState;
-    textureCoords.x *= 20;
-    textureCoords.y *= 32;
-    this->m_sprite.setTextureRect({ textureCoords.x, textureCoords.y, 20, 32 });
+    this->m_sprite.setTextureRect(this->m_spriteSheet->getSpriteAt(textureCoords));
 }

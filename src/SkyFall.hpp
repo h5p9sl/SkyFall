@@ -10,6 +10,7 @@
 #include "BaseGame.hpp"
 #include "GameSaveManager.hpp"
 #include "Input.hpp"
+#include "SpriteSheet.hpp"
 
 namespace SkyFall
 {
@@ -44,14 +45,14 @@ namespace SkyFall
     public:
         sf::Texture SPScene1Background;
         sf::Texture SPBulletTracer;
-        sf::Texture SPPlayer_Gas1Dark;
-        sf::Texture SPPlayer_Gas1Light;
-        sf::Texture SPPlayer_Gas2Dark;
-        sf::Texture SPPlayer_Gas2Light;
-        sf::Texture SPPlayer_OriginalDark;
-        sf::Texture SPPlayer_OriginalLight;
-        sf::Texture SPPlayer_KiverDark;
-        sf::Texture SPPlayer_KiverLight;
+        SpriteSheet SPPlayer_Gas1Dark;
+        SpriteSheet SPPlayer_Gas1Light;
+        SpriteSheet SPPlayer_Gas2Dark;
+        SpriteSheet SPPlayer_Gas2Light;
+        SpriteSheet SPPlayer_OriginalDark;
+        SpriteSheet SPPlayer_OriginalLight;
+        SpriteSheet SPPlayer_KiverDark;
+        SpriteSheet SPPlayer_KiverLight;
         sf::Texture SPPistol;
         sf::Texture UIButtonTexture;
         sf::Font fontPLACEHOLDER;

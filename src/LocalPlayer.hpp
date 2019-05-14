@@ -4,12 +4,15 @@
 #include "PhysicsObject.hpp"
 #include <vector>
 
+class SpriteSheet;
+
 class LocalPlayer : public BaseEntity
 {
 private:
     // For determining which direction the player is facing
     bool m_enablePlayerControls;
     bool m_isFlipped;
+    SpriteSheet* m_spriteSheet;
     sf::RectangleShape m_sprite;
     sf::Vector2f m_velocity;
     sf::Vector2f m_movement;
