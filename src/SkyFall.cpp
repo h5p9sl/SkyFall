@@ -22,7 +22,8 @@ SkyFall::GlobalVariables::GlobalVariables()
     SPPlayer_OriginalDark(3, 7, {20, 32}),
     SPPlayer_OriginalLight(3, 7, {20, 32}),
     SPPlayer_KiverDark(3, 7, {20, 32}),
-    SPPlayer_KiverLight(3, 7, {20, 32})
+    SPPlayer_KiverLight(3, 7, {20, 32}),
+    SPPistol(1, 3, {16, 9})
 {
     std::cout << "Loading assets..." << std::endl;
 

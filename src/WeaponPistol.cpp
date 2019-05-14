@@ -14,15 +14,50 @@ constexpr int int_magazineCapacity = 18;
 
 WeaponPistol::WeaponPistol() :
     BaseWeapon(flt_reloadTime, flt_fireRate, int_magazineCapacity, true),
-    m_sprite({16.f * 4, 5.f * 4})
+    m_spriteSheet(&globals->SPPistol),
+    m_animState(0)
 {
-    this->m_sprite.setTexture(&globals->SPPistol);
-    this->m_sprite.setOrigin(1.5f * 4, 3.5f * 4);
+    // Initialize m_sprite size
+    this->m_sprite.setSize(
+        sf::Vector2f(
+            this->m_spriteSheet->m_spriteSize.x * 4.f,
+            this->m_spriteSheet->m_spriteSize.y * 4.f
+        )
+    );
+    this->m_sprite.setOrigin(1.5f * 4.f, 7.5f * 4.f);
+    this->m_sprite.setTexture(this->m_spriteSheet);
     this->projectiles.reserve(static_cast<int>(1.f / flt_fireRate) + 1);
 }
 
 WeaponPistol::~WeaponPistol()
 {
+}
+
+void WeaponPistol::updateAnimation() {
+    static float t = 0.f;
+
+    switch (this->m_animState) {
+    case 0:
+        this->m_sprite.setTextureRect(this->m_spriteSheet->getSpriteAt(0, 0));
+        break;
+    case 1:
+        // The player just shot a bullet.
+        this->m_sprite.setTextureRect(this->m_spriteSheet->getSpriteAt(1, 0));
+        if (t == 0.f) t = globals->currentTime;
+        if (globals->currentTime - t > 0.05f) {
+            t = 0.f;
+            this->m_animState = 2;
+        }
+        break;
+    case 2:
+        this->m_sprite.setTextureRect(this->m_spriteSheet->getSpriteAt(2, 0));
+        if (t == 0.f) t = globals->currentTime;
+        if (globals->currentTime - t > 0.1f) {
+            t = 0.f;
+            this->m_animState = 0;
+        }
+        break;
+    }
 }
 
 void WeaponPistol::draw(sf::RenderTarget & renderTarget)
@@ -96,6 +131,8 @@ void WeaponPistol::update(float f_delta)
     for (auto& bullet : this->projectiles) {
         bullet->update(f_delta);
     }
+
+    this->updateAnimation();
 }
 
 void WeaponPistol::updatePosition(sf::Vector2f& position)
@@ -110,6 +147,9 @@ void WeaponPistol::fire()
         this->currentAmmo > 0 &&
         globals->currentTime >= nextShot)
     {
+        // Start shooting animation
+        this->m_animState = 1;
+
         nextShot = globals->currentTime + this->fireRate;
         this->currentAmmo--;
 

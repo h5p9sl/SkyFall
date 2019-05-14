@@ -35,16 +35,3 @@ sf::IntRect SpriteSheet::getSpriteAt(unsigned int x, unsigned int y) {
     return sf::IntRect();
 }
 
-sf::IntRect SpriteSheet::getSpriteAt(unsigned int index) {
-    if (index > this->m_rows * this->m_columns) {
-        std::cerr << "ERROR in SpriteSheet::getSpriteAt(unsigned). 'index' is greater than number of total sprites.\n";
-    }
-    else {
-        unsigned int x, y;
-        x = index % this->m_rows;
-        y = index - x / this->m_columns;
-        return this->getSpriteAt(x, y);
-    }
-    return sf::IntRect();
-}
-

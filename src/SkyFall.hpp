@@ -53,7 +53,7 @@ namespace SkyFall
         SpriteSheet SPPlayer_OriginalLight;
         SpriteSheet SPPlayer_KiverDark;
         SpriteSheet SPPlayer_KiverLight;
-        sf::Texture SPPistol;
+        SpriteSheet SPPistol;
         sf::Texture UIButtonTexture;
         sf::Font fontPLACEHOLDER;
     public:

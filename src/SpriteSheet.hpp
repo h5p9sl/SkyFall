@@ -12,7 +12,6 @@ public:
     // Dimensions of a singe sprite/frame
     const sf::Vector2i m_spriteSize;
 public:
-    sf::IntRect getSpriteAt(unsigned int index);
     sf::IntRect getSpriteAt(unsigned int x, unsigned int y);
     sf::IntRect getSpriteAt(sf::Vector2i coords) { return this->getSpriteAt(coords.x, coords.y); }
 public:
