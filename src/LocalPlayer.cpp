@@ -13,7 +13,7 @@ sf::Texture* playerSprites[8] = { nullptr };
 static int playerSpriteIndex = 0;
 
 LocalPlayer::LocalPlayer() :
-    m_sprite({ 21.f * 4, 32.f * 4 }),
+    m_sprite({ 20.f * 4, 32.f * 4 }),
     m_enablePlayerControls(true)
 {
     playerSprites[0] = &globals->SPPlayer_Gas1Dark;
@@ -25,7 +25,7 @@ LocalPlayer::LocalPlayer() :
     playerSprites[6] = &globals->SPPlayer_KiverDark;
     playerSprites[7] = &globals->SPPlayer_KiverLight;
     m_sprite.setTexture(playerSprites[0]);
-    m_sprite.setTextureRect({ 0, 0, 21, 32 });
+    m_sprite.setTextureRect({ 0, 0, 20, 32 });
     
     // Set origin
     sf::FloatRect bottomCenter = this->m_sprite.getLocalBounds();
@@ -217,13 +217,13 @@ void LocalPlayer::updateAnimation()
                 !this->m_isFlipped && this->m_movement.x < 0.f) {
                 this->m_animState--;
                 if (this->m_animState < 1) {
-                    this->m_animState = 4;
+                    this->m_animState = 6;
                 }
             }
             // Run normally
             else {
                 this->m_animState++;
-                if (this->m_animState > 4) {
+                if (this->m_animState > 6) {
                     this->m_animState = 1;
                 }
             }
@@ -235,8 +235,8 @@ void LocalPlayer::updateAnimation()
     }
 
     // Next frame
-    textureCoords.x = m_animState % 5;
-    textureCoords.x *= 21;
+    textureCoords.x = m_animState;
+    textureCoords.x *= 20;
     textureCoords.y *= 32;
-    this->m_sprite.setTextureRect({ textureCoords.x, textureCoords.y, 21, 32 });
+    this->m_sprite.setTextureRect({ textureCoords.x, textureCoords.y, 20, 32 });
 }
