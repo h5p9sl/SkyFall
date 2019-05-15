@@ -3,7 +3,11 @@
 
 #include <iostream>
 #include <string>
+#ifdef _WIN32
+#include <direct.h>
+#else
 #include <unistd.h>
+#endif
 #include <errno.h>
 
 using namespace SkyFall;
@@ -23,7 +27,11 @@ void changeDirectory(char const* binLocation)
 
     bin.erase(++lastSlash, bin.length() - lastSlash);
 
+#ifdef _WIN32
+    int r = _chdir(bin.c_str());
+#else
     int r = chdir(bin.c_str());
+#endif
     if (r == -1) {
         std::cerr << "errno = " << errno << '\n';
         throw std::runtime_error("chdir returned -1.");
