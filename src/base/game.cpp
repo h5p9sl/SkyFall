@@ -1,7 +1,7 @@
 #include "BaseGame.hpp"
 
 #include "SkyFall.hpp"
-#include "LocalPlayer.hpp"
+#include "../localplayer.hpp"
 
 #include <iostream>
 

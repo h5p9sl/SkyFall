@@ -1,9 +1,9 @@
 #pragma once
 #include <SFML/Graphics.hpp>
-#include "GameObjectManager.hpp"
-#include "MainMenu.hpp"
-#include "LocalPlayer.hpp"
-#include "BaseScene.hpp"
+#include "../game/gameobjectmanager.hpp"
+#include "../mainmenu.hpp"
+#include "../localplayer.hpp"
+#include "scene.hpp"
 
 enum GameState_t : uint8_t
 {

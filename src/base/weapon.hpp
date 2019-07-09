@@ -1,7 +1,7 @@
 #pragma once
-#include "BaseEntity.hpp"
+#include "entity.hpp"
 
-#include "BulletProjectile.hpp"
+#include "../bulletprojectile.hpp"
 
 #include <memory>
 
