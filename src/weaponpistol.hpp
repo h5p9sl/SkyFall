@@ -1,5 +1,5 @@
 #pragma once
-#include "BaseWeapon.hpp"
+#include "base/weapon.hpp"
 
 class SpriteSheet;
 

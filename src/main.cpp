@@ -1,5 +1,5 @@
-#include "BaseGame.hpp"
-#include "SkyFall.hpp"
+#include "base/game.hpp"
+#include "skyfall.hpp"
 
 #include <iostream>
 #include <string>
