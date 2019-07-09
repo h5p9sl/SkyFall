@@ -1,22 +1,30 @@
+#include <iostream>
+#include <string>
+#include "LocalPlayer.hpp"
+
 #include "WeaponPistol.hpp"
 
 #include "SkyFall.hpp"
 
-#include <iostream>
-#include <algorithm>
-#include <memory>
-
 using namespace SkyFall;
 
-constexpr float flt_fireRate = 0.3f;
-constexpr float flt_reloadTime = 1.f;
-constexpr int int_magazineCapacity = 18;
+// TODO: Remove this when done debugging
+SpriteSheet* playerSprites[8] = { nullptr };
+static int playerSpriteIndex = 0;
 
-WeaponPistol::WeaponPistol() :
-    BaseWeapon(flt_reloadTime, flt_fireRate, int_magazineCapacity, true),
-    m_spriteSheet(&globals->SPPistol),
-    m_animState(0)
+LocalPlayer::LocalPlayer() :
+    m_enablePlayerControls(true)
 {
+    playerSprites[0] = &globals->SPPlayer_Gas1Dark;
+    playerSprites[1] = &globals->SPPlayer_Gas1Light;
+    playerSprites[2] = &globals->SPPlayer_Gas2Dark;
+    playerSprites[3] = &globals->SPPlayer_Gas2Light;
+    playerSprites[4] = &globals->SPPlayer_OriginalDark;
+    playerSprites[5] = &globals->SPPlayer_OriginalLight;
+    playerSprites[6] = &globals->SPPlayer_KiverDark;
+    playerSprites[7] = &globals->SPPlayer_KiverLight;
+    this->m_spriteSheet = playerSprites[0];
+
     // Initialize m_sprite size
     this->m_sprite.setSize(
         sf::Vector2f(
@@ -24,166 +32,216 @@ WeaponPistol::WeaponPistol() :
             this->m_spriteSheet->m_spriteSize.y * 4.f
         )
     );
-    this->m_sprite.setOrigin(1.5f * 4.f, 7.5f * 4.f);
-    this->m_sprite.setTexture(this->m_spriteSheet);
-    this->projectiles.reserve(static_cast<int>(1.f / flt_fireRate) + 1);
+
+    // Set origin
+    sf::FloatRect bottomCenter = this->m_sprite.getLocalBounds();
+    bottomCenter.left += bottomCenter.width / 2.f;
+    bottomCenter.top += bottomCenter.height;
+    m_sprite.setOrigin(bottomCenter.left, bottomCenter.top);
+
+    this->weapons.push_back(new WeaponPistol());
+    this->currentWeapon = this->weapons.at(0);
 }
 
-WeaponPistol::~WeaponPistol()
+LocalPlayer::~LocalPlayer()
 {
 }
 
-void WeaponPistol::updateAnimation() {
-    static float t = 0.f;
-
-    switch (this->m_animState) {
-    case 0:
-        this->m_sprite.setTextureRect(this->m_spriteSheet->getSpriteAt(0, 0));
-        break;
-    case 1:
-        // The player just shot a bullet.
-        this->m_sprite.setTextureRect(this->m_spriteSheet->getSpriteAt(1, 0));
-        if (t == 0.f) t = globals->currentTime;
-        if (globals->currentTime - t > 0.1f) {
-            t = 0.f;
-            this->m_animState = 2;
-        }
-        break;
-    case 2:
-        this->m_sprite.setTextureRect(this->m_spriteSheet->getSpriteAt(2, 0));
-        if (t == 0.f) t = globals->currentTime;
-        if (globals->currentTime - t > 0.1f) {
-            t = 0.f;
-            this->m_animState = 0;
-        }
-        break;
-    }
-}
-
-void WeaponPistol::draw(sf::RenderTarget & renderTarget)
+void LocalPlayer::draw(sf::RenderTarget & renderTarget)
 {
-    for (auto& bullet : this->projectiles) {
-        bullet->draw(renderTarget);
-    }
-
     renderTarget.draw(this->m_sprite);
+    if (this->currentWeapon != nullptr) this->currentWeapon->draw(renderTarget);
 }
 
-void WeaponPistol::update(float f_delta)
+void LocalPlayer::update(float f_delta)
 {
-    // Get vector between mouse and position
-    // sf::Vector2i mousePosition = sf::Mouse::getPosition(globals->baseGame->mainWindow);
-    sf::Vector2f mousePosition = globals->baseGame->mainWindow.getView().getCenter();
-    sf::Vector2f mouseVector = { mousePosition.x - this->m_sprite.getPosition().x, mousePosition.y - this->m_sprite.getPosition().y };
-    float angle = atan2f(mouseVector.y, mouseVector.x) * 180.f / Constants::PI;
+    this->m_movement = { 0.f, 0.f };
 
-    // Flip to face cursor
-    if (mouseVector.x < 0.f) {
-        this->m_sprite.setScale(-1.f, 1.f);
-        this->m_isFlipped = true;
-        angle += 180.f;
-    }
-    else {
-        this->m_sprite.setScale(1.f, 1.f);
-        this->m_isFlipped = false;
-    }
-    this->m_sprite.setRotation(angle);
+    if (this->m_enablePlayerControls) {
 
-    // Reloading logic
-    static bool lastReloadingState = false;
-    if (this->reloading)
-    {
-        static float timeStamp = 0.f;
-        
-        if (!lastReloadingState) {
-            timeStamp = globals->currentTime + this->reloadTime;
+        // Cycle through spritesheets **FOR DEBUGGING**
+        if (Input::wasKeyPressed(sf::Keyboard::Right)) {
+            if (playerSpriteIndex >= 7) playerSpriteIndex = -1;
+            this->m_spriteSheet = playerSprites[++playerSpriteIndex];
+        }
+        if (Input::wasKeyPressed(sf::Keyboard::Left)) {
+            if (playerSpriteIndex <= 0) playerSpriteIndex = 8;
+            this->m_spriteSheet = playerSprites[--playerSpriteIndex];
         }
 
-        if (globals->currentTime >= timeStamp) {
-            this->reloading = false;
-            if (!this->infiniteReserve) {
-                int diff = this->magazineSize - this->currentAmmo;
-                if (reserveAmmo - diff > 0) {
-                    currentAmmo += diff;
-                    reserveAmmo -= diff;
-                }
-                else {
-                    currentAmmo += reserveAmmo;
-                    reserveAmmo = 0;
-                }
+        // Update movement vector
+        if (Input::isKeyPressed(sf::Keyboard::W) && this->m_onGround) {
+            this->m_movement.y = -1.f;
+        }
+        if (Input::isKeyPressed(sf::Keyboard::A)) {
+            this->m_movement.x = -1.f;
+        }
+        if (Input::isKeyPressed(sf::Keyboard::D)) {
+            this->m_movement.x = 1.f;
+        }
+
+        // Shooting
+        if (Input::wasKeyPressed(sf::Keyboard::R) &&
+            this->currentWeapon != nullptr)
+        {
+            this->currentWeapon->reload();
+        }
+        if (Input::isButtonPressed(sf::Mouse::Left)) {
+            if (this->currentWeapon != nullptr) {
+                this->currentWeapon->fire();
+            }
+        }
+
+        // Switch weapons
+        if (Input::wasKeyPressed(sf::Keyboard::Num1)) {
+            if (this->currentWeapon == this->weapons.at(0)) {
+                this->currentWeapon = nullptr;
             }
             else {
-                this->currentAmmo = this->magazineSize;
+                this->currentWeapon = this->weapons.at(0);
             }
         }
+
+        // Get vector between mouse and position
+        sf::Vector2f mousePosition = globals->baseGame->mainWindow.getView().getCenter();
+        float vector = mousePosition.x - this->m_position.x;
+        if (vector < 0.f) {
+            this->m_sprite.setScale({ -1.f, 1.f });
+            this->m_isFlipped = true;
+        }
+        else {
+            this->m_sprite.setScale({ 1.f, 1.f });
+            this->m_isFlipped = false;
+        }
+
     }
-    lastReloadingState = this->reloading;
 
-    // Erase bullets that should be deleted
-    this->projectiles.erase(
-        std::remove_if(this->projectiles.begin(), this->projectiles.end(), [](std::unique_ptr<BulletProjectile>& bullet) {
-            return bullet->shouldDelete();
-        }),
-        this->projectiles.end()
-    );
-
-    // Update all projectiles
-    for (auto& bullet : this->projectiles) {
-        bullet->update(f_delta);
-    }
-
+    if (this->currentWeapon != nullptr) this->currentWeapon->update(f_delta);
+    this->updatePhysics(f_delta);
     this->updateAnimation();
 }
 
-void WeaponPistol::updatePosition(sf::Vector2f& position)
+void LocalPlayer::updateCamera(sf::RenderWindow& parentWindow)
 {
-    this->m_sprite.setPosition(position);
+    sf::Vector2u windowSize = parentWindow.getSize();
+    sf::Vector2f f_windowSize = { (float)windowSize.x, (float)windowSize.y };
+
+    sf::Vector2f cameraPosition = this->getPosition();
+    cameraPosition.y -= 18.f * 4.f;
+                
+    sf::Vector2i mousePosition = sf::Mouse::getPosition(parentWindow);
+    // Clamp mouse position to the size of the window
+    mousePosition.x = std::min(std::max(mousePosition.x, 0), (int)windowSize.x);
+    mousePosition.y = std::min(std::max(mousePosition.y, 0), (int)windowSize.y);
+                
+    sf::Vector2f f_mousePosition = { (float)mousePosition.x, (float)mousePosition.y };
+    // Offset mouse position by half the size of the window
+    f_mousePosition.x -= f_windowSize.x / 2.f;
+    f_mousePosition.y -= f_windowSize.y / 2.f;
+                
+    float xV = f_mousePosition.x / f_windowSize.x;
+    float yV = f_mousePosition.y / f_windowSize.y;
+    float hV = 1.f - hypotf(xV, yV);
+
+    // Offset camera position by vector of mousePosition
+    cameraPosition += f_mousePosition * hV;
+                
+    parentWindow.setView(sf::View(cameraPosition, f_windowSize));
 }
 
-void WeaponPistol::fire()
+void LocalPlayer::updatePhysics(float f_delta)
 {
-    static float nextShot = 0.f;
-    if (!this->reloading &&
-        this->currentAmmo > 0 &&
-        globals->currentTime >= nextShot)
+    // Update horizontal velocity
+    this->m_velocity.x += this->m_movement.x * 30.f;
+    // Update vertical velocity
+    this->m_velocity.y += this->m_movement.y * 550.f;
+    // Apply gravity
+    this->m_velocity.y += Constants::globalGravity;
+    // Update position member
+    this->m_position += this->m_velocity * f_delta;
+    
+    // Cap horizontal velocity
     {
-        // Start shooting animation
-        this->m_animState = 1;
-
-        nextShot = globals->currentTime + this->fireRate;
-        this->currentAmmo--;
-
-        if (this->m_isFlipped)
-        {
-            this->projectiles.push_back(std::make_unique<BulletProjectile>(
-                this->m_sprite.getPosition(),
-                this->m_sprite.getRotation() + 180.f,
-                7000.f));
+        float horizontalVelocity = abs(m_velocity.x);
+        if (horizontalVelocity > globals->baseGame->mainWindow.getView().getSize().x) {
+            m_velocity.x /= horizontalVelocity;
         }
-        else
-        {
-            this->projectiles.push_back(std::make_unique<BulletProjectile>(
-                this->m_sprite.getPosition(),
-                this->m_sprite.getRotation(),
-                7000.f));
-        }
-        std::cout << "Pew! " << this->currentAmmo << std::endl;
+    }
+    
+    // TODO: Remove this once implimented global physics
+    if (this->m_position.y >= globals->baseGame->mainWindow.getView().getSize().y)
+    {
+        this->m_position.y = globals->baseGame->mainWindow.getView().getSize().y;
+        this->m_onGround = true;
+        this->m_velocity.y = 0;
+    }
+    else {
+        this->m_onGround = false;
+    }
+    
         
-        globals->SFXPistolShoot1.play();
-
-        // Automatically reload
-        if (this->currentAmmo == 0) {
-            this->reload();
-        }
-    }
+    // Decay horizontal velocity 
+    this->m_velocity.x *= 0.9f;
+    // Update collider
+    this->m_sprite.setPosition(m_position);
 }
 
-void WeaponPistol::reload()
+void LocalPlayer::updateAnimation()
 {
-    if (!this->reloading &&
-        this->currentAmmo < (int)this->magazineSize)
-    {
-        this->reloading = true;
-        std::cout << "Reloading..." << std::endl;
+    sf::Vector2f armPosition = this->m_position;
+    // Set arm position
+    armPosition.y -= 18.f * 4;
+    if (this->currentWeapon != nullptr) {
+        this->currentWeapon->updatePosition(armPosition);
     }
+
+    // Get normalized vector between mouse and player position
+    sf::Vector2f mousePosition = globals->baseGame->mainWindow.getView().getCenter();
+    sf::Vector2f mvec = { (float)mousePosition.x - armPosition.x, (float)mousePosition.y - armPosition.y };
+    float hyp = hypotf(mvec.x, mvec.y);
+    mvec.x /= hyp;
+    mvec.y /= hyp;
+    // Variable to store coordinates for spritesheet
+    sf::Vector2i textureCoords;
+    if (mvec.y <= -0.5f) {
+        textureCoords.y = 1; // Looking up
+    }
+    else if (mvec.y >= 0.5f) {
+        textureCoords.y = 2; // Looking down
+    }
+    else {
+        textureCoords.y = 0; // Looking straight
+    }
+
+    // Play run cycle if player is moving horizontally
+    if (this->m_movement.x != 0.f) {
+        static float nextAnimStateChange;
+        if (globals->currentTime >= nextAnimStateChange) {
+            // If player is running backwards; backpedal
+            if (this->m_isFlipped && this->m_movement.x > 0.f ||
+                !this->m_isFlipped && this->m_movement.x < 0.f) {
+                this->m_animState--;
+                if (this->m_animState < 1) {
+                    this->m_animState = this->m_spriteSheet->m_columns - 1;
+                }
+            }
+            // Run normally
+            else {
+                this->m_animState++;
+                if (this->m_animState >= this->m_spriteSheet->m_columns) {
+                    this->m_animState = 1;
+                }
+            }
+            nextAnimStateChange = globals->currentTime + 0.2f;
+        }
+    }
+    else {
+        this->m_animState = 0;
+    }
+
+    // Set sprite texture
+    this->m_sprite.setTexture(this->m_spriteSheet);
+    // Next frame
+    textureCoords.x = m_animState;
+    this->m_sprite.setTextureRect(this->m_spriteSheet->getSpriteAt(textureCoords));
 }
