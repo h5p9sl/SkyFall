@@ -1,6 +1,6 @@
 #pragma once
 #include <vector>
-#include "BaseObject.hpp"
+#include "../base/object.hpp"
 
 // Forward declarations
 namespace sf {

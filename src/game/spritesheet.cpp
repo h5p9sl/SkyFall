@@ -1,4 +1,4 @@
-#include "SpriteSheet.hpp"
+#include "spritesheet.hpp"
 
 #include <iostream>
 

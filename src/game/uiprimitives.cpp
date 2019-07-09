@@ -1,5 +1,5 @@
-#include "UIPrimitives.hpp"
-#include "SkyFall.hpp"
+#include "uiprimitives.hpp"
+#include "../skyfall.hpp"
 
 using namespace SkyFall;
 

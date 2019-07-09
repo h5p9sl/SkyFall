@@ -1,7 +1,7 @@
 #pragma once
 #include <vector>
 
-#include "GameSave.hpp"
+#include "gamesave.hpp"
 
 class GameSaveManager
 {

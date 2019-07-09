@@ -1,7 +1,7 @@
-#include "GameObjectManager.hpp"
+#include "gameobjectmanager.hpp"
 
 #include <SFML/Graphics.hpp>
-#include "SkyFall.hpp"
+#include "../skyfall.hpp"
 
 
 GameObjectManager::GameObjectManager()
