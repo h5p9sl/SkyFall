@@ -17,14 +17,14 @@ void SkyFall::Scenes::Scene1::draw(sf::RenderTarget & renderTarget)
 {
     renderTarget.draw(this->m_background);
 
-    for (auto object : this->m_sceneObjects) {
+    for (auto& object : this->m_sceneObjects) {
         object->draw(renderTarget);
     }
 }
 
 void SkyFall::Scenes::Scene1::update(float f_delta)
 {
-    for (auto object : this->m_sceneObjects) {
+    for (auto& object : this->m_sceneObjects) {
         object->update(f_delta);
     }
 }

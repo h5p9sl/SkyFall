@@ -11,7 +11,7 @@ GameObjectManager::GameObjectManager()
 
 void GameObjectManager::drawObjects(sf::RenderTarget & renderTarget)
 {
-    for (auto entity : this->entityList) {
+    for (auto& entity : this->entityList) {
         if (entity == nullptr) {
             throw std::range_error("Entity pointer was null.");
             continue;
@@ -23,7 +23,7 @@ void GameObjectManager::drawObjects(sf::RenderTarget & renderTarget)
 
 void GameObjectManager::updateObjects(float f_delta)
 {
-    for (auto entity : this->entityList) {
+    for (auto& entity : this->entityList) {
         if (entity == nullptr) {
             throw std::range_error("Entity pointer was null.");
             continue;
