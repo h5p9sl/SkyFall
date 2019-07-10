@@ -1,6 +1,6 @@
-#include "BaseGame.hpp"
+#include "basegame.hpp"
 
-#include "SkyFall.hpp"
+#include "../skyfall.hpp"
 #include "../localplayer.hpp"
 
 #include <iostream>

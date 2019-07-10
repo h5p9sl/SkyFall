@@ -1,4 +1,4 @@
-#include "BaseWeapon.hpp"
+#include "baseweapon.hpp"
 
 BaseWeapon::BaseWeapon(const float reloadTime,
     const float fireRate,
