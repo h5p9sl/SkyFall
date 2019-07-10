@@ -1,7 +1,7 @@
 #pragma once
 #include "base/entity.hpp"
 #include "base/weapon.hpp"
-#include "game/physicsobject.hpp""
+#include "game/physicsobject.hpp"
 #include <vector>
 
 class SpriteSheet;
