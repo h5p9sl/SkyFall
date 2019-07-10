@@ -1,7 +1,7 @@
 #pragma once
 
-#include "BaseScene.hpp"
-#include "SkyFall.hpp"
+#include "../base/scene.hpp"
+#include "../skyfall.hpp"
 
 #include <SFML/Graphics.hpp>
 #include <SFML/Audio.hpp>

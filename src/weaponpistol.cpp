@@ -1,6 +1,6 @@
-#include "WeaponPistol.hpp"
+#include "weaponpistol.hpp"
 
-#include "SkyFall.hpp"
+#include "skyfall.hpp"
 
 #include <iostream>
 #include <algorithm>

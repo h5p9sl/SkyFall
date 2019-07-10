@@ -3,7 +3,7 @@
 #include <SFML/Graphics.hpp>
 #include <SFML/Audio.hpp>
 
-#include "game/uiprimitives"
+#include "game/uiprimitives.hpp"
 
 class MainMenu
 {

@@ -1,5 +1,5 @@
-#include "SkyFall.hpp"
-#include "game/uiprimitives"
+#include "skyfall.hpp"
+#include "game/uiprimitives.hpp"
 #include <iostream>
 #include <string>
 

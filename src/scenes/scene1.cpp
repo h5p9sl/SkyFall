@@ -1,6 +1,6 @@
-#include "Scene1.hpp"
+#include "scene1.hpp"
 
-#include "SkyFall.hpp"
+#include "../skyfall.hpp"
 
 SkyFall::Scenes::Scene1::Scene1() :
     m_background({ (float)globals->baseGame->mainWindow.getSize().x, (float)globals->baseGame->mainWindow.getSize().y }),
