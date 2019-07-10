@@ -17,7 +17,7 @@ file(GLOB SRCFILES
     "${CMAKE_CURRENT_SOURCE_DIR}/src/scenes/*.cpp"
 )
 
-find_package(SFML REQUIRED system window graphics network audio)
+find_package(SFML REQUIRED system window graphics audio)
 if (SFML_FOUND)
     include_directories(${SFML_INCLUDE_DIRS})
     link_libraries(${SFML_LIBRARIES})
