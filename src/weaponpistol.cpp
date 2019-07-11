@@ -170,9 +170,11 @@ void WeaponPistol::fire()
         globals->SFXPistolShoot1.play();
 
         // Automatically reload
+        /*
         if (this->currentAmmo == 0) {
             this->reload();
         }
+        */
     }
 }
 
