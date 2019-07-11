@@ -3,6 +3,8 @@
 
 #include "skyfall.hpp"
 
+#include <cmath>
+
 using namespace SkyFall;
 
 Enemy::Enemy() :
@@ -32,6 +34,27 @@ void Enemy::draw(sf::RenderTarget& renderTarget) {
 
 void Enemy::update(float f_delta) {
     this->updatePhysics(f_delta);
+    this->updateAnimation();
+}
+
+void Enemy::updateAnimation() {
+    LocalPlayer* player = globals->baseGame->getLocalPlayer();
+    if (player == nullptr) return;
+
+    sf::Vector2f ppos = player->getPosition();
+    sf::Vector2f vec = ppos - this->m_position;
+    vec /= hypotf(vec.x, vec.y);
+
+    if (vec.x > 0.f) {
+        // Player is behind enemy
+        this->m_sprite.setScale({ -1.f, 1.f });
+        this->m_isFlipped = true;
+    } else {
+        // Player is in front of enemy
+        this->m_sprite.setScale({ 1.f, 1.f });
+        this->m_isFlipped = false;
+    }
+
     // Set sprite texture
     this->m_sprite.setTexture(this->m_spriteSheet);
 }
