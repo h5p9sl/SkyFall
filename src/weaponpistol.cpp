@@ -41,10 +41,15 @@ void WeaponPistol::updateAnimation() {
         this->m_sprite.setTextureRect(this->m_spriteSheet->getSpriteAt(0, 0));
         break;
     case 1:
+        // The player just shot a bullet.
         this->m_sprite.setTextureRect(this->m_spriteSheet->getSpriteAt(1, 0));
+        if (t == 0.f) t = globals->currentTime;
+        if (globals->currentTime - t > 0.1f) {
+            t = 0.f;
+            this->m_animState = 2;
+        }
         break;
     case 2:
-        // The player just shot a bullet.
         this->m_sprite.setTextureRect(this->m_spriteSheet->getSpriteAt(2, 0));
         if (t == 0.f) t = globals->currentTime;
         if (globals->currentTime - t > 0.1f) {
@@ -89,8 +94,6 @@ void WeaponPistol::update(float f_delta)
     if (this->reloading)
     {
         static float timeStamp = 0.f;
-
-        this->m_animState = 1;
         
         if (!lastReloadingState) {
             timeStamp = globals->currentTime + this->reloadTime;
@@ -98,7 +101,6 @@ void WeaponPistol::update(float f_delta)
 
         if (globals->currentTime >= timeStamp) {
             this->reloading = false;
-            this->m_animState = 0;
             if (!this->infiniteReserve) {
                 int diff = this->magazineSize - this->currentAmmo;
                 if (reserveAmmo - diff > 0) {
@@ -146,7 +148,7 @@ void WeaponPistol::fire()
         globals->currentTime >= nextShot)
     {
         // Start shooting animation
-        this->m_animState = 2;
+        this->m_animState = 1;
 
         nextShot = globals->currentTime + this->fireRate;
         this->currentAmmo--;
