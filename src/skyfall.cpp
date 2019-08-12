@@ -24,7 +24,7 @@ SkyFall::GlobalVariables::GlobalVariables()
     SPPlayer_KiverDark(3, 7, {20, 32}),
     SPPlayer_KiverLight(3, 7, {20, 32}),
     SPPistol(1, 3, {16, 9}),
-    SPEnemy01(1, 1, {30, 26})
+    SPEnemy01(1, 1, {27, 33})
 {
     std::cout << "Loading assets..." << std::endl;
 
