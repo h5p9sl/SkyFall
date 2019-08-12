@@ -1,7 +1,8 @@
-#include "BaseGame.hpp"
+#include "game.hpp"
 
-#include "SkyFall.hpp"
-#include "LocalPlayer.hpp"
+#include "../skyfall.hpp"
+#include "../localplayer.hpp"
+#include "../enemy.hpp"
 
 #include <iostream>
 
@@ -27,6 +28,7 @@ void BaseGame::initializeInGameObjects()
 
     this->gameObjectManager.addEntity(this->currentScene);
     this->gameObjectManager.addEntity(this->localPlayer);
+    this->gameObjectManager.addEntity(new Enemy());
 }
 
 void BaseGame::drawGameStateCode()

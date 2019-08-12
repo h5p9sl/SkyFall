@@ -6,11 +6,11 @@
 #include <SFML/Graphics.hpp>
 #include <math.h>
 
-#include "Scenes.hpp"
-#include "BaseGame.hpp"
-#include "GameSaveManager.hpp"
-#include "Input.hpp"
-#include "SpriteSheet.hpp"
+#include "scenes.hpp"
+#include "base/game.hpp"
+#include "game/gamesavemanager.hpp"
+#include "game/input.hpp"
+#include "game/spritesheet.hpp"
 
 namespace SkyFall
 {
@@ -54,6 +54,7 @@ namespace SkyFall
         SpriteSheet SPPlayer_KiverDark;
         SpriteSheet SPPlayer_KiverLight;
         SpriteSheet SPPistol;
+        SpriteSheet SPEnemy01;
         sf::Texture UIButtonTexture;
         sf::Font fontPLACEHOLDER;
     public:

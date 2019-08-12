@@ -1,6 +1,7 @@
 #pragma once
 #include <vector>
-#include "BaseObject.hpp"
+#include <memory>
+#include "../base/object.hpp"
 
 // Forward declarations
 namespace sf {
@@ -11,7 +12,7 @@ namespace sf {
 class GameObjectManager
 {
 public:
-    std::vector<BaseObject*> entityList;
+    std::vector<std::unique_ptr<BaseObject>> entityList;
 public:
     GameObjectManager();
 public:

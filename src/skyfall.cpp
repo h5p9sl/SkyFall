@@ -1,5 +1,5 @@
-#include "SkyFall.hpp"
-#include "UIPrimitives.hpp"
+#include "skyfall.hpp"
+#include "game/uiprimitives.hpp"
 #include <iostream>
 #include <string>
 
@@ -23,7 +23,8 @@ SkyFall::GlobalVariables::GlobalVariables()
     SPPlayer_OriginalLight(3, 7, {20, 32}),
     SPPlayer_KiverDark(3, 7, {20, 32}),
     SPPlayer_KiverLight(3, 7, {20, 32}),
-    SPPistol(1, 3, {16, 9})
+    SPPistol(1, 3, {16, 9}),
+    SPEnemy01(1, 1, {27, 33})
 {
     std::cout << "Loading assets..." << std::endl;
 
@@ -40,6 +41,7 @@ SkyFall::GlobalVariables::GlobalVariables()
     loadGFXAsset(this->SPPistol,                "../GFX/PlayerPistol.png");
     loadGFXAsset(this->SPBulletTracer,          "../GFX/BulletTracer.png");
     loadGFXAsset(this->SPScene1Background,      "../GFX/Scene1Background.png");
+    loadGFXAsset(this->SPEnemy01,               "../GFX/enemies/enemy01.png");
 
     // LOAD SFX
     if (loadSFXAsset(this->musicMainMenu,       "../SFX/Skullcrusher.ogg")) {

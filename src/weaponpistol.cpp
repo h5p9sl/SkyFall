@@ -1,6 +1,6 @@
-#include "WeaponPistol.hpp"
+#include "weaponpistol.hpp"
 
-#include "SkyFall.hpp"
+#include "skyfall.hpp"
 
 #include <iostream>
 #include <algorithm>
@@ -42,7 +42,7 @@ void WeaponPistol::updateAnimation() {
         break;
     case 1:
         // The player just shot a bullet.
-        this->m_sprite.setTextureRect(this->m_spriteSheet->getSpriteAt(1, 0));
+        this->m_sprite.setTextureRect(this->m_spriteSheet->getSpriteAt(2, 0));
         if (t == 0.f) t = globals->currentTime;
         if (globals->currentTime - t > 0.1f) {
             t = 0.f;
@@ -50,7 +50,7 @@ void WeaponPistol::updateAnimation() {
         }
         break;
     case 2:
-        this->m_sprite.setTextureRect(this->m_spriteSheet->getSpriteAt(2, 0));
+        this->m_sprite.setTextureRect(this->m_spriteSheet->getSpriteAt(1, 0));
         if (t == 0.f) t = globals->currentTime;
         if (globals->currentTime - t > 0.1f) {
             t = 0.f;
@@ -172,9 +172,11 @@ void WeaponPistol::fire()
         globals->SFXPistolShoot1.play();
 
         // Automatically reload
+        /*
         if (this->currentAmmo == 0) {
             this->reload();
         }
+        */
     }
 }
 

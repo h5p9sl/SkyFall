@@ -2,7 +2,7 @@
 
 #include <SFML/Graphics.hpp>
 
-#include "BaseObject.hpp"
+#include "base/object.hpp"
 
 class BulletProjectile : public BaseObject
 {

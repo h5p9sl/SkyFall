@@ -1,4 +1,4 @@
-#include "Input.hpp"
+#include "input.hpp"
 
 #include <string.h>
 

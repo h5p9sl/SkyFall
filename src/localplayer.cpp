@@ -1,10 +1,10 @@
 #include <iostream>
 #include <string>
-#include "LocalPlayer.hpp"
+#include "localplayer.hpp"
 
-#include "WeaponPistol.hpp"
+#include "weaponpistol.hpp"
 
-#include "SkyFall.hpp"
+#include "skyfall.hpp"
 
 using namespace SkyFall;
 

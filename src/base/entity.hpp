@@ -1,6 +1,6 @@
 #pragma once
 #include <SFML/Graphics.hpp>
-#include "BaseObject.hpp"
+#include "object.hpp"
 
 // Pure virtual class
 class BaseEntity : public BaseObject

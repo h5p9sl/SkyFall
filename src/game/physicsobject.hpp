@@ -1,5 +1,5 @@
 #pragma once
-#include "BaseObject.hpp"
+#include "../base/object.hpp"
 
 class PhysicsObject : public BaseObject
 {

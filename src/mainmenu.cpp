@@ -1,5 +1,5 @@
-#include "MainMenu.hpp"
-#include "SkyFall.hpp"
+#include "mainmenu.hpp"
+#include "skyfall.hpp"
 
 using namespace SkyFall;
 

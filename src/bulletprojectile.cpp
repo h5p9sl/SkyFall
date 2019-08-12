@@ -1,6 +1,6 @@
-#include "BulletProjectile.hpp"
+#include "bulletprojectile.hpp"
 
-#include "SkyFall.hpp"
+#include "skyfall.hpp"
 
 bool BulletProjectile::shouldDelete()
 {
