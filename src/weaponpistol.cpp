@@ -54,7 +54,9 @@ void WeaponPistol::updateAnimation() {
         if (t == 0.f) t = globals->currentTime;
         if (globals->currentTime - t > 0.1f) {
             t = 0.f;
-            this->m_animState = 0;
+            if (this->currentAmmo > 0) {
+                this->m_animState = 0;
+            }
         }
         break;
     }
