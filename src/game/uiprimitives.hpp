@@ -5,10 +5,11 @@
 class UIButton
 {
 private:
-    sf::Text text;
-    sf::Sprite sprite;
+    sf::Text* text;
+    sf::Sprite* sprite;
 public:
     UIButton(const sf::Texture& texture, const sf::IntRect& rect, const std::string& label);
+    ~UIButton();
 private:
     bool isMouseOnButton();
     bool isPressed();
@@ -24,5 +25,5 @@ public:
     ////////////////////////////////////////////////////////////
     void draw(sf::RenderTarget& renderTarget);
 public:
-    void setRect(const sf::IntRect& rect) { this->sprite.setTextureRect(rect); }
+    void setRect(const sf::IntRect& rect) { this->sprite->setTextureRect(rect); }
 };

@@ -12,9 +12,9 @@ using namespace SkyFall::Scenes;
 BaseGame::BaseGame() :
     mainWindow(sf::VideoMode(windowSize_defualt.x, windowSize_defualt.y), windowName,
         sf::Style::Titlebar | sf::Style::Close),
-    gameState(MAIN_MENU),
     nextGameState(MAIN_MENU),
-    lastGameState(MAIN_MENU)
+    gameState(INVALID_STATE),
+    lastGameState(INVALID_STATE)
 {
     this->mainWindow.setFramerateLimit(60u);
 }
@@ -31,15 +31,23 @@ void BaseGame::initializeInGameObjects()
     this->gameObjectManager.addEntity(new Enemy());
 }
 
+void BaseGame::destroyInGameObjects()
+{
+    std::cout << "Destroying ingame objects..." << std::endl;
+    this->gameObjectManager.clearEntities();
+}
+
 void BaseGame::drawGameStateCode()
 {
     switch (this->gameState)
     {
     case MAIN_MENU:
-        this->mainMenu.draw(this->mainWindow);
+        this->mainMenu->draw(this->mainWindow);
+        if (this->nextGameState != MAIN_MENU) { delete this->mainMenu; }
         break;
     case IN_GAME:
         this->gameObjectManager.drawObjects(this->mainWindow);
+        if (this->nextGameState != IN_GAME) { this->destroyInGameObjects(); }
         break;
     }
 }
@@ -48,15 +56,12 @@ void BaseGame::updateGameStateCode(float f_delta)
 {
     switch (this->gameState)
     {
-    case EXITING_GAME:
-        break;
     case MAIN_MENU:
-        this->mainMenu.update();
+        if (this->lastGameState != MAIN_MENU) { this->mainMenu = new MainMenu(); }
+        this->mainMenu->update();
         break;
     case IN_GAME:
-        if (this->lastGameState != IN_GAME) {
-            this->initializeInGameObjects();
-        }
+        if (this->lastGameState != IN_GAME) { this->initializeInGameObjects(); }
         this->gameObjectManager.updateObjects(f_delta);
         break;
     }
@@ -68,7 +73,7 @@ void BaseGame::beginGameLoop()
     sf::Clock time;
 
     while (this->mainWindow.isOpen() &&
-        this->gameState != GameState_t::EXITING_GAME)
+        this->nextGameState != GameState_t::EXITING_GAME)
     {
         // Set current time
         SkyFall::globals->currentTime = time.getElapsedTime().asSeconds();

@@ -5,8 +5,9 @@
 #include "../localplayer.hpp"
 #include "scene.hpp"
 
-enum GameState_t : uint8_t
+enum GameState_t : int8_t
 {
+    INVALID_STATE = -1,
     EXITING_GAME = 0,
     MAIN_MENU,
     IN_GAME,
@@ -18,6 +19,7 @@ enum GameState_t : uint8_t
 class BaseGame
 {
 private:
+    MainMenu* mainMenu =        nullptr;
     BaseScene* currentScene =   nullptr;
     LocalPlayer* localPlayer =  nullptr;
     // Next game state set by BaseGame::setGameState()
@@ -26,25 +28,18 @@ private:
     GameState_t gameState;
     // Last game state
     GameState_t lastGameState;
-    MainMenu mainMenu;
 public:
     GameObjectManager gameObjectManager;
     sf::RenderWindow mainWindow;
 public:
     BaseGame();
 private:
-    ////////////////////////
-    /// \brief Initializes ingame objects
-    ////////////////////////
     void initializeInGameObjects();
+    void destroyInGameObjects();
 private:
-    ////////////////////////
-    /// \brief Draws objects based on what the current gameState is
-    ////////////////////////
+    // Draws objects based on what the current gameState is
     void drawGameStateCode();
-    ////////////////////////
-    /// \brief Draws objects based on what the current gameState is
-    ////////////////////////
+    // Draws objects based on what the current gameState is
     void updateGameStateCode(float f_delta);
 public:
     LocalPlayer* getLocalPlayer() { return this->localPlayer; }

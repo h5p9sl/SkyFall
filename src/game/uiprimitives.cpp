@@ -3,31 +3,37 @@
 
 using namespace SkyFall;
 
-UIButton::UIButton(const sf::Texture& texture, const sf::IntRect& dimensions, const std::string& label) :
-    sprite(texture),
-    text(label, globals->fontPLACEHOLDER)
+UIButton::UIButton(const sf::Texture& texture, const sf::IntRect& dimensions, const std::string& label)
 {
-    this->sprite.setTextureRect({ 0, 0, 100, 40 });
+    this->sprite = new sf::Sprite(texture);
+    this->text = new sf::Text(label, globals->fontPLACEHOLDER);
 
-    this->sprite.setPosition(static_cast<float>(dimensions.left),
+    this->sprite->setTextureRect({ 0, 0, 100, 40 });
+
+    this->sprite->setPosition(static_cast<float>(dimensions.left),
         static_cast<float>(dimensions.top));
-    this->text.setString(label);
-    this->text.setOutlineColor(sf::Color::Black);
-    this->text.setOutlineThickness(2.f);
+    this->text->setString(label);
+    this->text->setOutlineColor(sf::Color::Black);
+    this->text->setOutlineThickness(2.f);
 
     sf::Vector2f newScale;
-    sf::FloatRect currentSize = this->sprite.getLocalBounds();
+    sf::FloatRect currentSize = this->sprite->getLocalBounds();
     newScale.x = dimensions.width / currentSize.width;
     newScale.y = dimensions.height / currentSize.height;
 
-    this->sprite.setScale(newScale);
+    this->sprite->setScale(newScale);
+}
+
+UIButton::~UIButton() {
+    delete text;
+    delete sprite;
 }
 
 bool __inline UIButton::isMouseOnButton()
 {
     sf::Window& mainWindow = globals->baseGame->mainWindow;
     sf::Vector2i mousePos = sf::Mouse::getPosition(mainWindow);
-    sf::FloatRect myRect = this->sprite.getGlobalBounds();
+    sf::FloatRect myRect = this->sprite->getGlobalBounds();
     return myRect.contains(static_cast<float>(mousePos.x),
         static_cast<float>(mousePos.y));
 }
@@ -54,28 +60,28 @@ void UIButton::highlightOnHover()
     mousedown =     sf::Mouse::isButtonPressed(sf::Mouse::Left);
 
     if (mousedown && currentState) {
-        this->sprite.setTextureRect({ 200, 0, 100, 40 });
+        this->sprite->setTextureRect({ 200, 0, 100, 40 });
     }
     else if (currentState) {
-        this->sprite.setTextureRect({ 100, 0, 100, 40 });
+        this->sprite->setTextureRect({ 100, 0, 100, 40 });
     }
     else {
-        this->sprite.setTextureRect({ 0, 0, 100, 40 });
+        this->sprite->setTextureRect({ 0, 0, 100, 40 });
     }
 }
 
 void UIButton::centerText()
 {
-    sf::FloatRect bounds = this->sprite.getGlobalBounds();
-    sf::FloatRect textRect = text.getLocalBounds();
-    text.setOrigin(textRect.left + textRect.width / 2.0f,
+    sf::FloatRect bounds = this->sprite->getGlobalBounds();
+    sf::FloatRect textRect = text->getLocalBounds();
+    text->setOrigin(textRect.left + textRect.width / 2.0f,
         textRect.top + textRect.height / 2.0f);
 
     sf::Vector2f pos;
     pos.x = bounds.left + bounds.width  / 2;
     pos.y = bounds.top  + bounds.height / 2;
 
-    this->text.setPosition(pos);
+    this->text->setPosition(pos);
 }
 
 bool UIButton::update()
@@ -87,6 +93,6 @@ bool UIButton::update()
 
 void UIButton::draw(sf::RenderTarget & renderTarget)
 {
-    renderTarget.draw(this->sprite);
-    renderTarget.draw(this->text);
+    renderTarget.draw(*this->sprite);
+    renderTarget.draw(*this->text);
 }

@@ -8,14 +8,15 @@
 class MainMenu
 {
 private:
-    sf::Text title;
-    UIButton newButton;
-    UIButton loadButton;
-    UIButton exitButton;
+    sf::Text* title;
+    UIButton* newButton;
+    UIButton* loadButton;
+    UIButton* exitButton;
 private:
     bool b_shouldDrawLoadGamePrompt = false;
 public:
     MainMenu();
+    ~MainMenu();
 public:
     void drawLoadGamePrompt(sf::RenderTarget& renderTarget);
 public:

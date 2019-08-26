@@ -22,4 +22,7 @@ public:
     void __inline addEntity(BaseObject* entity) {
         this->entityList.emplace_back(entity);
     }
+    void __inline clearEntities() {
+        this->entityList.clear();
+    }
 };
