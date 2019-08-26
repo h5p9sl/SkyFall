@@ -20,11 +20,16 @@ void changeDirectory(char const* binLocation)
 {
     std::string bin(binLocation);
 
+    // Remove binary file name from binLocation string
+    // ex. "C:/bin/foo.exe" becomes "C:/bin/"
     std::size_t lastSlash = bin.find_last_of('/');
     if (lastSlash == bin.npos) {
-        throw std::runtime_error("invalid executable path???");
+        lastSlash = bin.find_last_of('\\');
+        if (lastSlash == bin.npos) {
+            throw std::runtime_error("Invalid binary path passed to program (argv[0])");
+            exit(1);
+        }
     }
-
     bin.erase(++lastSlash, bin.length() - lastSlash);
 
 #ifdef _WIN32
@@ -33,8 +38,9 @@ void changeDirectory(char const* binLocation)
     int r = chdir(bin.c_str());
 #endif
     if (r == -1) {
-        std::cerr << "errno = " << errno << '\n';
+        perror("chdir");
         throw std::runtime_error("chdir returned -1.");
+        exit(1);
     }
 }
 
