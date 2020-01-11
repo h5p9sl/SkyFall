@@ -15,16 +15,19 @@ impl Window {
     {
         const VERSION: OpenGL = OpenGL::V3_2;
         Window {
-            glutin_window: GlutinWindow::new(&WindowSettings::new(name, size)
+            glutin_window: WindowSettings::new(name, size)
                 .resizable(resizable)
                 .graphics_api(VERSION)
-                ).expect("Failed to create window!"),
+                .build()
+                .expect("Failed to create window!"),
             gl: GlGraphics::new(VERSION),
         }
     }
 
-    pub fn clear(&mut self, color: [f32;4])
-    {
+    pub fn clear(&mut self, color: [f32;4]) {
         clear(color, &mut self.gl);
+    }
+
+    pub fn display(&mut self) {
     }
 }
