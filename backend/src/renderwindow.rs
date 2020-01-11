@@ -2,15 +2,18 @@ use piston::*;
 use piston_window::*;
 use graphics::clear;
 use opengl_graphics::GlGraphics;
-//
-pub struct RenderWindow {
+
+use crate::drawable::Drawable;
+use crate::rendering_arguments::RenderingArguments;
+
+pub struct RenderWindow<'a> {
     gl: GlGraphics,
     window: PistonWindow,
-    //objects: Vec<&mut dyn Drawable>
+    objects: Vec<&'a mut dyn Drawable>
 }
 
-impl RenderWindow {
-    pub fn new<N, S>(name: N, size: S, resizable: bool) -> RenderWindow 
+impl RenderWindow<'_> {
+    pub fn new<N, S>(name: N, size: S, resizable: bool) -> RenderWindow<'static> 
         where N: Into<String>,
               S: Into<Size>,
     {
@@ -22,6 +25,7 @@ impl RenderWindow {
                 .build()
                 .expect("Failed to create window!"),
             gl: GlGraphics::new(VERSION),
+            objects: Vec::new(),
         }
     }
 
@@ -30,14 +34,15 @@ impl RenderWindow {
     }
 
     pub fn clear(&mut self, color: [f32;4]) {
+        self.objects.clear();
         clear(color, &mut self.gl);
     }
 
     pub fn display(&mut self) {
-        /*
-        for obj in self.objects {
-            obj.draw(&mut self.gl);
+        let mut args = RenderingArguments {
+        };
+        for obj in &mut self.objects {
+            obj.draw(&mut args);
         }
-        */
     }
 }

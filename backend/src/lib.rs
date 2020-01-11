@@ -5,6 +5,8 @@
 
 pub use crate::renderwindow::RenderWindow;
 
+mod rendering_arguments;
+
 pub mod renderwindow;
 pub mod drawable;
 
