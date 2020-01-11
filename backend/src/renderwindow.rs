@@ -1,21 +1,22 @@
 use piston::*;
-use glutin_window::*;
-use graphics::{clear, types::Color};
+use piston_window::*;
+use graphics::clear;
 use opengl_graphics::GlGraphics;
-
-pub struct Window {
+//
+pub struct RenderWindow {
     gl: GlGraphics,
-    glutin_window: GlutinWindow,
+    window: PistonWindow,
+    //objects: Vec<&mut dyn Drawable>
 }
 
-impl Window {
-    pub fn new<N, S>(name: N, size: S, resizable: bool) -> Window 
+impl RenderWindow {
+    pub fn new<N, S>(name: N, size: S, resizable: bool) -> RenderWindow 
         where N: Into<String>,
               S: Into<Size>,
     {
         const VERSION: OpenGL = OpenGL::V3_2;
-        Window {
-            glutin_window: WindowSettings::new(name, size)
+        RenderWindow {
+            window: WindowSettings::new(name, size)
                 .resizable(resizable)
                 .graphics_api(VERSION)
                 .build()
@@ -24,10 +25,19 @@ impl Window {
         }
     }
 
+    pub fn poll_event(&mut self) -> Option<Event> {
+        self.window.next()
+    }
+
     pub fn clear(&mut self, color: [f32;4]) {
         clear(color, &mut self.gl);
     }
 
     pub fn display(&mut self) {
+        /*
+        for obj in self.objects {
+            obj.draw(&mut self.gl);
+        }
+        */
     }
 }

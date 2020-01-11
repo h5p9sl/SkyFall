@@ -3,5 +3,8 @@
 //! Contains everything SkyFall needs in order to run, including Window abstractions, User
 //! Interfaces, Assets, etc.
 
-pub mod window;
+pub use crate::renderwindow::RenderWindow;
+
+pub mod renderwindow;
+pub mod drawable;
 
