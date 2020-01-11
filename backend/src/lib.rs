@@ -4,9 +4,11 @@
 //! Interfaces, Assets, etc.
 
 pub use crate::renderwindow::RenderWindow;
+pub use crate::circleshape::CircleShape;
 
 mod rendering_arguments;
 
 pub mod renderwindow;
 pub mod drawable;
 
+pub mod circleshape;

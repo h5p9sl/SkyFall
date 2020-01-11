@@ -6,14 +6,14 @@ use opengl_graphics::GlGraphics;
 use crate::drawable::Drawable;
 use crate::rendering_arguments::RenderingArguments;
 
-pub struct RenderWindow<'a> {
+pub struct RenderWindow {
     gl: GlGraphics,
     window: PistonWindow,
-    objects: Vec<&'a mut dyn Drawable>
+    objects: Vec<*const dyn Drawable>
 }
 
-impl RenderWindow<'_> {
-    pub fn new<N, S>(name: N, size: S, resizable: bool) -> RenderWindow<'static> 
+impl RenderWindow {
+    pub fn new<N, S>(name: N, size: S, resizable: bool) -> RenderWindow 
         where N: Into<String>,
               S: Into<Size>,
     {
@@ -38,11 +38,21 @@ impl RenderWindow<'_> {
         clear(color, &mut self.gl);
     }
 
-    pub fn display(&mut self) {
+    pub fn draw(&mut self, obj: *const dyn Drawable) {
+        self.objects.push(obj);
+    }
+
+    pub fn display(&mut self, args: &RenderArgs) {
+        let mut context = self.gl.draw_begin(args.viewport());
         let mut args = RenderingArguments {
+            graphics_api: &mut self.gl,
+            context: &mut context,
         };
-        for obj in &mut self.objects {
-            obj.draw(&mut args);
+        for pobj in &self.objects {
+            unsafe {
+                (**pobj).draw(&mut args);
+            }
         }
+        self.gl.draw_end();
     }
 }
