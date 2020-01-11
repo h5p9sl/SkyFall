@@ -18,8 +18,8 @@ fn main() {
                 window.display(&args);
             }
             if let Some(args) = e.update_args() {
+                println!("Delta: {}", args.dt);
             }
-            println!("{:?}", e);
         }
     }
 }
