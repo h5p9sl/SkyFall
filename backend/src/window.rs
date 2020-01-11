@@ -1,7 +1,10 @@
 use piston::*;
 use glutin_window::*;
+use graphics::{clear, types::Color};
+use opengl_graphics::GlGraphics;
 
 pub struct Window {
+    gl: GlGraphics,
     glutin_window: GlutinWindow,
 }
 
@@ -10,10 +13,18 @@ impl Window {
         where N: Into<String>,
               S: Into<Size>,
     {
+        const VERSION: OpenGL = OpenGL::V3_2;
         Window {
             glutin_window: GlutinWindow::new(&WindowSettings::new(name, size)
                 .resizable(resizable)
-                ).expect("Failed to create window!")
+                .graphics_api(VERSION)
+                ).expect("Failed to create window!"),
+            gl: GlGraphics::new(VERSION),
         }
+    }
+
+    pub fn clear(&mut self, color: [f32;4])
+    {
+        clear(color, &mut self.gl);
     }
 }
