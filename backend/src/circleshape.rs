@@ -18,6 +18,11 @@ impl CircleShape {
             position: Point {x: 0., y: 0.},
         }
     }
+
+    pub fn set_color(&mut self, r: f32, g: f32, b: f32, a: f32)
+    {
+        self.color = [r,g,b,a];
+    }
 }
 
 impl Drawable for CircleShape {
