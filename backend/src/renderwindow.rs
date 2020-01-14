@@ -1,5 +1,5 @@
 use piston::*;
-use piston_window::*;
+use glutin_window::*;
 use graphics::clear;
 use opengl_graphics::GlGraphics;
 
@@ -8,7 +8,8 @@ use crate::rendering_arguments::RenderingArguments;
 
 pub struct RenderWindow {
     gl: GlGraphics,
-    window: PistonWindow,
+    window: GlutinWindow,
+    events: Events,
     objects: Vec<*const dyn Drawable>
 }
 
@@ -25,12 +26,17 @@ impl RenderWindow {
                 .build()
                 .expect("Failed to create window!"),
             gl: GlGraphics::new(VERSION),
+            events: Events::new(EventSettings::new()),
             objects: Vec::new(),
         }
     }
+    
+    pub fn should_close(&self) -> bool {
+        self.window.should_close()
+    }
 
     pub fn poll_event(&mut self) -> Option<Event> {
-        self.window.next()
+        self.events.next(&mut self.window)
     }
 
     pub fn clear(&mut self, color: [f32;4]) {
