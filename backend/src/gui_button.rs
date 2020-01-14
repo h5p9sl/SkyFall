@@ -82,13 +82,14 @@ impl GuiButton {
     }
 
     fn on_button(&mut self, args: &ButtonArgs) -> bool {
+        let last_state = self.is_pressed;
         self.is_pressed = false;
         if let Button::Mouse(button) = args.button {
             if button == MouseButton::Left && args.state == ButtonState::Press && self.is_touching_mouse {
                 self.is_pressed = true;
             }
         }
-        self.is_pressed
+        last_state && !self.is_pressed
     }
 
     fn on_move(&mut self, args: &Motion) {
