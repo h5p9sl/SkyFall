@@ -34,6 +34,16 @@ impl GuiButton {
         self.bounds.size = size.into();
     }
 
+    pub fn size<T: Into<shapes::Size>>(mut self, size: T) -> Self {
+        self.set_size(size);
+        self
+    }
+
+    pub fn position<T: Into<shapes::Point>>(mut self, pos: T) -> Self {
+        self.set_position(pos);
+        self
+    }
+
     fn on_button(&mut self, args: &ButtonArgs) -> bool {
         self.is_pressed = false;
         if let Button::Mouse(button) = args.button {

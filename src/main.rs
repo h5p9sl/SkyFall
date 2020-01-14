@@ -8,9 +8,9 @@ fn main() {
     let mut window = RenderWindow::new("SkyFall", [800, 600], false);
 
     let mut circle = CircleShape::new(256.);
-    let mut button = ::backend::GuiButton::new("Click me!");
-    button.set_position((500., 300.));
-    button.set_size((200., 100.));
+    let mut button = ::backend::GuiButton::new("Click me!")
+        .size((200., 100.))
+        .position((500., 300.));
 
     let mut t: f64 = 0.0;
     let mut clock: Instant = Instant::now();
