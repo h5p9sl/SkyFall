@@ -2,6 +2,7 @@ use crate::drawable::Drawable;
 use crate::rendering_arguments::RenderingArguments;
 use piston_window::*;
 
+
 pub struct GuiButton {
     // Colors that the button can be
     base_color:     [f32; 4],
@@ -37,12 +38,10 @@ impl GuiButton {
     fn get_color(&self) -> [f32; 4] {
         if !self.is_touching_mouse{
             self.base_color
+        } else if self.is_pressed {
+            self.pressed_color
         } else {
-            if self.is_pressed {
-                self.pressed_color
-            } else {
-                self.hovered_color
-            }
+            self.hovered_color
         }
     }
 
@@ -85,16 +84,11 @@ impl GuiButton {
     fn on_button(&mut self, args: &ButtonArgs) -> bool {
         self.is_pressed = false;
         if let Button::Mouse(button) = args.button {
-            match button {
-                MouseButton::Left => {
-                    if self.is_touching_mouse && args.state == ButtonState::Press {
-                        self.is_pressed = true;
-                    }
-                },
-                _ => {},
+            if button == MouseButton::Left && args.state == ButtonState::Press && self.is_touching_mouse {
+                self.is_pressed = true;
             }
         }
-        return self.is_pressed;
+        self.is_pressed
     }
 
     fn on_move(&mut self, args: &Motion) {
@@ -114,6 +108,6 @@ impl GuiButton {
             Input::Move(args) => self.on_move(&args),
             _ => {}
         }
-        return false;
+        false
     }
 }

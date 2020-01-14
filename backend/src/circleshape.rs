@@ -13,7 +13,7 @@ pub struct CircleShape {
 impl CircleShape {
     pub fn new(radius: f64) -> CircleShape {
         CircleShape {
-            radius: radius,
+            radius,
             color: [1., 1., 1., 1.,],
             position: Point {x: 0., y: 0.},
         }
