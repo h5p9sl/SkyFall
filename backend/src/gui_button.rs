@@ -3,10 +3,12 @@ use crate::rendering_arguments::RenderingArguments;
 use piston_window::*;
 
 pub struct GuiButton {
+    // Colors that the button can be
     base_color:     [f32; 4],
     hovered_color:  [f32; 4],
     pressed_color:  [f32; 4],
 
+    // Other fields
     is_touching_mouse: bool,
     is_pressed: bool,
     bounds: shapes::Rect,
@@ -105,6 +107,7 @@ impl GuiButton {
         }
     }
 
+    /// Called whenever there is an input event on the window
     pub fn on_input(&mut self, input_event: Input) -> bool {
         match input_event {
             Input::Button(args) => return self.on_button(&args),
