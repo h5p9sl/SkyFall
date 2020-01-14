@@ -1,17 +1,16 @@
 use crate::drawable::Drawable;
 use crate::rendering_arguments::RenderingArguments;
+use opengl_graphics::GlyphCache;
 
-use piston_window::Glyphs;
-
-pub struct GuiLabel {
+pub struct GuiLabel<'a> {
     color: [f32; 4],
     font_size: u32,
     text: String,
-    glyph: Glyphs,
+    glyph: GlyphCache<'a>,
 }
 
-impl GuiLabel {
-    pub fn new<S>(label: S, glyphs: Glyphs) -> GuiLabel
+impl GuiLabel<'_> {
+    pub fn new<S>(label: S, glyphs: GlyphCache<'static>) -> GuiLabel<'static>
     where
         S: Into<String>,
     {
@@ -24,8 +23,8 @@ impl GuiLabel {
     }
 }
 
-impl Drawable for GuiLabel {
-    fn draw(&self, args: &mut RenderingArguments) {
+impl Drawable for GuiLabel<'_> {
+    fn draw(&mut self, args: &mut RenderingArguments) {
         graphics::text(
             self.color,
             self.font_size,
@@ -33,6 +32,6 @@ impl Drawable for GuiLabel {
             &mut self.glyph,
             args.context.transform,
             args.graphics_api
-            );
+        ).expect("Failed to draw text!");
     }
 }

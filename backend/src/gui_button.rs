@@ -13,7 +13,7 @@ pub struct GuiButton {
 }
 
 impl Drawable for GuiButton {
-    fn draw(&self, args: &mut RenderingArguments) {
+    fn draw(&mut self, args: &mut RenderingArguments) {
         let color: [f32; 4] = self.get_color();
         graphics::rectangle(color, self.bounds, args.context.transform, args.graphics_api);
     }

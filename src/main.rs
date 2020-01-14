@@ -27,8 +27,8 @@ fn main() {
         }
         if let Some(args) = e.render_args() {
             window.clear([0., 0., 0., 1.]);
-            window.draw(&circle);
-            window.draw(&button);
+            window.draw(&mut circle);
+            window.draw(&mut button);
             window.display(&args);
         }
         if let Some(_args) = e.update_args() {

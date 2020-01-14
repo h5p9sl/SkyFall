@@ -10,7 +10,7 @@ pub struct RenderWindow {
     gl: GlGraphics,
     window: GlutinWindow,
     events: Events,
-    objects: Vec<*const dyn Drawable>
+    objects: Vec<*mut dyn Drawable>
 }
 
 impl RenderWindow {
@@ -44,7 +44,7 @@ impl RenderWindow {
         clear(color, &mut self.gl);
     }
 
-    pub fn draw(&mut self, obj: *const dyn Drawable) {
+    pub fn draw(&mut self, obj: *mut dyn Drawable) {
         self.objects.push(obj);
     }
 
@@ -54,7 +54,7 @@ impl RenderWindow {
             graphics_api: &mut self.gl,
             context: &mut context,
         };
-        for pobj in &self.objects {
+        for pobj in &mut self.objects {
             unsafe {
                 (**pobj).draw(&mut args);
             }

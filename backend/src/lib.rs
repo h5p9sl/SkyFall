@@ -17,4 +17,5 @@ pub mod renderwindow;
 pub mod drawable;
 pub mod circleshape;
 
+pub mod gui_label;
 pub mod gui_button;

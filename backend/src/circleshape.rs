@@ -26,7 +26,7 @@ impl CircleShape {
 }
 
 impl Drawable for CircleShape {
-    fn draw(&self, args: &mut RenderingArguments) {
+    fn draw(&mut self, args: &mut RenderingArguments) {
         let transform = args.context
             .transform;
         graphics::ellipse(self.color, [self.position.x, self.position.y, self.radius, self.radius], transform, args.graphics_api);
