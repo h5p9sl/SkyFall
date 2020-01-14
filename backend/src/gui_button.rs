@@ -62,6 +62,24 @@ impl GuiButton {
         self
     }
 
+    /// The color that the button will default to when NOT hovered or pressed by the user
+    pub fn base_color(mut self, color: [f32; 4]) -> Self {
+        self.base_color = color;
+        self
+    }
+
+    /// The color that the button will change to when hovered on by the user
+    pub fn hovered_color(mut self, color: [f32; 4]) -> Self {
+        self.hovered_color = color;
+        self
+    }
+
+    /// The color that the button will change to when pressed by the user
+    pub fn pressed_color(mut self, color: [f32; 4]) -> Self {
+        self.pressed_color = color;
+        self
+    }
+
     fn on_button(&mut self, args: &ButtonArgs) -> bool {
         self.is_pressed = false;
         if let Button::Mouse(button) = args.button {
