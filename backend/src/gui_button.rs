@@ -3,6 +3,10 @@ use crate::rendering_arguments::RenderingArguments;
 use piston_window::*;
 
 pub struct GuiButton {
+    base_color:     [f32; 4],
+    hovered_color:  [f32; 4],
+    pressed_color:  [f32; 4],
+
     is_touching_mouse: bool,
     is_pressed: bool,
     bounds: shapes::Rect,
@@ -10,10 +14,8 @@ pub struct GuiButton {
 
 impl Drawable for GuiButton {
     fn draw(&self, args: &mut RenderingArguments) {
-        let color: [f32; 4] = [1., 1., 1., 1.];
-        let rect = self.bounds;
-        let transform = args.context.transform;
-        graphics::rectangle(color, rect, transform, args.graphics_api);
+        let color: [f32; 4] = self.get_color();
+        graphics::rectangle(color, self.bounds, args.context.transform, args.graphics_api);
     }
 }
 
@@ -23,6 +25,22 @@ impl GuiButton {
             bounds: shapes::Rect::from([0., 0., 0., 0.,]),
             is_touching_mouse: false,
             is_pressed: false,
+            base_color:     [0.5, 0.5, 0.5, 1.],
+            hovered_color:  [0.8, 0.8, 0.8, 1.],
+            pressed_color:  [1.0, 0.6, 0.6, 1.],
+        }
+    }
+
+    /// Gets color based on whether or not the user is hovering or pressing the button
+    fn get_color(&self) -> [f32; 4] {
+        if !self.is_touching_mouse{
+            self.base_color
+        } else {
+            if self.is_pressed {
+                self.pressed_color
+            } else {
+                self.hovered_color
+            }
         }
     }
 
