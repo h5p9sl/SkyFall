@@ -7,6 +7,7 @@ fn main() {
     println!("Hello, world!");
     let mut window = RenderWindow::new("SkyFall", [800, 600], false);
 
+    let mut should_rainbow = true;
     let mut circle = CircleShape::new(256.);
     let mut button = ::backend::GuiButton::new("Click me!")
         .size((200., 100.))
@@ -22,7 +23,8 @@ fn main() {
         if input.is_some() {
             let input = input.unwrap();
             if button.on_input(input) {
-                println!("Button pressed.");
+                println!("Toggled rainbow");
+                should_rainbow = !should_rainbow;
             }
         }
         if let Some(args) = e.render_args() {
@@ -38,9 +40,16 @@ fn main() {
             //println!("Delta: {}", delta);
             t += delta;
 
-            let r = f32::sin(t as f32 * 2.5 + 2.0) * 0.5 + 0.5;
-            let g = f32::sin(t as f32 * 2.5 + 0.0) * 0.5 + 0.5;
-            let b = f32::sin(t as f32 * 2.5 + 4.0) * 0.5 + 0.5;
+            let (r, g, b);
+            if should_rainbow {
+                r = f32::sin(t as f32 * 2.5 + 2.0) * 0.5 + 0.5;
+                g = f32::sin(t as f32 * 2.5 + 0.0) * 0.5 + 0.5;
+                b = f32::sin(t as f32 * 2.5 + 4.0) * 0.5 + 0.5;
+            } else {
+                r = 0.5;
+                g = 0.5;
+                b = 0.5;
+            }
 
             circle.set_color(r, g, b, 1.0);
         }
