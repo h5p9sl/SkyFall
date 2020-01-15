@@ -2,8 +2,7 @@ use crate::drawable::Drawable;
 use crate::rendering_arguments::RenderingArguments;
 use crate::gui_label::GuiLabel;
 
-use piston_window::*;
-use opengl_graphics::GlyphCache;
+use piston::*;
 
 pub struct GuiButton<'a> {
     // Colors that the button can be
