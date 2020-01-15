@@ -21,20 +21,34 @@ impl Drawable for GuiButton<'_> {
     fn draw(&mut self, args: &mut RenderingArguments) {
         let color: [f32; 4] = self.get_color();
         graphics::rectangle(color, self.bounds, args.context.transform, args.graphics_api);
+        self.label.draw(args);
     }
 }
 
 impl GuiButton<'_> {
     pub fn new(lbl: &str) -> GuiButton<'static> {
-        GuiButton {
-            label: GuiLabel::new(lbl.to_string()),
+        let mut button = GuiButton {
+            label: GuiLabel::new(lbl.to_string()).font_size(24),
             bounds: shapes::Rect::from([0., 0., 0., 0.,]),
             is_touching_mouse: false,
             is_pressed: false,
             base_color:     [0.5, 0.5, 0.5, 1.],
             hovered_color:  [0.8, 0.8, 0.8, 1.],
             pressed_color:  [1.0, 0.6, 0.6, 1.],
-        }
+        };
+        button.set_label_pos();
+        button
+    }
+
+    /// Sets the text label's position to the center of the button
+    fn set_label_pos(&mut self) {
+        let size = self.bounds.size;
+        let mut pos = self.bounds.pos;
+        pos.x += size.w / 2.0;
+        pos.y += size.h / 2.0;
+
+        self.label.set_origin([0.5, 0.5]);
+        self.label.set_position(pos);
     }
 
     /// Gets color based on whether or not the user is hovering or pressing the button
@@ -49,7 +63,9 @@ impl GuiButton<'_> {
     }
 
     pub fn set_position<T: Into<shapes::Point>>(&mut self, pos: T) {
-        self.bounds.pos = pos.into();
+        let pos: shapes::Point = pos.into();
+        self.bounds.pos = pos;
+        self.set_label_pos();
     }
 
     pub fn set_size<T: Into<shapes::Size>>(&mut self, size: T) {

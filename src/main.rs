@@ -15,7 +15,7 @@ fn main() {
         .position((500., 300.));
     let mut label = ::backend::GuiLabel::new("Hello World!")
         .font_size(24)
-        .origin([-24.0 * 4., -12.0])
+        .origin([0.5, 0.5])
         .color([1., 1., 1., 1.]);
 
     let mut t: f64 = 0.0;

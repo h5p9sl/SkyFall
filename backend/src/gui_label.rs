@@ -57,12 +57,30 @@ impl GuiLabel<'_> {
         self.set_position(new_pos);
         self
     }
+
+    fn get_origin_with_bounds(&mut self) -> Point {
+        let bounds = self.get_local_bounds().size;
+        Point::from([bounds.w * self.origin.x, bounds.h * self.origin.y])
+    }
+    pub fn get_local_bounds(&mut self) -> Rect {
+        use graphics::character::CharacterCache;
+        let w = self.glyphs.width(self.font_size, self.text.as_str()).expect("Error calculating glyph width!");
+        let h = self.font_size as f64;
+        Rect::from([0.0, 0.0, w, h])
+    }
+    pub fn get_global_bounds(&mut self) -> Rect {
+        let mut bounds = self.get_local_bounds();
+        bounds.pos = self.pos;
+        bounds
+    }
 }
 
 impl Drawable for GuiLabel<'_> {
     fn draw(&mut self, args: &mut RenderingArguments) {
+        let origin = self.get_origin_with_bounds();
+
         let transform = args.context.transform
-            .trans(self.origin.x, self.origin.y)
+            .trans(-origin.x, -origin.y)
             .trans(0.0, self.font_size as f64)
             .trans(self.pos.x, self.pos.y);
 
