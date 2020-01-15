@@ -1,9 +1,11 @@
 use crate::drawable::Drawable;
 use crate::rendering_arguments::RenderingArguments;
+use crate::gui_label::GuiLabel;
+
 use piston_window::*;
+use opengl_graphics::GlyphCache;
 
-
-pub struct GuiButton {
+pub struct GuiButton<'a> {
     // Colors that the button can be
     base_color:     [f32; 4],
     hovered_color:  [f32; 4],
@@ -13,18 +15,20 @@ pub struct GuiButton {
     is_touching_mouse: bool,
     is_pressed: bool,
     bounds: shapes::Rect,
+    label: GuiLabel<'a>,
 }
 
-impl Drawable for GuiButton {
+impl Drawable for GuiButton<'_> {
     fn draw(&mut self, args: &mut RenderingArguments) {
         let color: [f32; 4] = self.get_color();
         graphics::rectangle(color, self.bounds, args.context.transform, args.graphics_api);
     }
 }
 
-impl GuiButton {
-    pub fn new(_lbl: &str) -> GuiButton {
+impl GuiButton<'_> {
+    pub fn new(lbl: &str) -> GuiButton<'static> {
         GuiButton {
+            label: GuiLabel::new(lbl.to_string()),
             bounds: shapes::Rect::from([0., 0., 0., 0.,]),
             is_touching_mouse: false,
             is_pressed: false,
@@ -106,7 +110,7 @@ impl GuiButton {
     }
 
     /// Called whenever there is an input event on the window
-    pub fn on_input(&mut self, input_event: Input) -> bool {
+    pub fn on_input(&mut self, input_event: &Input) -> bool {
         match input_event {
             Input::Button(args) => return self.on_button(&args),
             Input::Move(args) => self.on_move(&args),

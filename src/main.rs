@@ -1,7 +1,7 @@
-use piston_window::*;
 use std::time::Instant;
 
 use ::backend::*;
+use piston::*;
 
 fn main() {
     println!("Hello, world!");
@@ -9,9 +9,14 @@ fn main() {
 
     let mut should_rainbow = true;
     let mut circle = CircleShape::new(256.);
+
     let mut button = ::backend::GuiButton::new("Click me!")
         .size((200., 100.))
         .position((500., 300.));
+    let mut label = ::backend::GuiLabel::new("Hello World!")
+        .font_size(24)
+        .origin([-24.0 * 4., -12.0])
+        .color([1., 1., 1., 1.]);
 
     let mut t: f64 = 0.0;
     let mut clock: Instant = Instant::now();
@@ -22,15 +27,27 @@ fn main() {
         }
         if input.is_some() {
             let input = input.unwrap();
-            if button.on_input(input) {
+            if button.on_input(&input) {
                 println!("Toggled rainbow");
                 should_rainbow = !should_rainbow;
+            }
+            match input {
+                Input::Move(motion) => match motion {
+                    Motion::MouseCursor(pos) => {
+                        label.set_position(pos);
+                    }
+                    _ => {}
+                },
+                _ => {}
             }
         }
         if let Some(args) = e.render_args() {
             window.clear([0., 0., 0., 1.]);
             window.draw(&mut circle);
             window.draw(&mut button);
+            if should_rainbow {
+                window.draw(&mut label);
+            }
             window.display(&args);
         }
         if let Some(_args) = e.update_args() {

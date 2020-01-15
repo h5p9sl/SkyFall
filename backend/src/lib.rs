@@ -10,6 +10,7 @@ pub use crate::rendering_arguments::RenderingArguments;
 
 // GUI
 pub use crate::gui_button::GuiButton;
+pub use crate::gui_label::GuiLabel;
 
 mod rendering_arguments;
 
