@@ -2,6 +2,8 @@
 //!
 //! Contains everything SkyFall needs in order to run, including Window abstractions, User
 //! Interfaces, Assets, etc.
+//!
+//! To see SkyFall's documentation, see [SkyFall](../skyfall_rs/index.html)
 
 // General structs
 pub use crate::renderwindow::RenderWindow;
