@@ -31,7 +31,7 @@ impl SkyFall {
     fn ensure_valid_state(&self) -> bool {
         self.last_state != GameState::Invalid
     }
-    
+
     /// Called whenever there is an input event in the main window
     ///
     /// This function passes the input event down to the entities
@@ -42,7 +42,7 @@ impl SkyFall {
                 GameState::MainMenu => {
                     let main_menu = self.main_menu.first_mut().expect("MainMenu not found?");
                     main_menu.on_input(input);
-                },
+                }
                 _ => panic!("Invalid GameState in SkyFall::on_input"),
             }
         }

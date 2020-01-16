@@ -1,5 +1,6 @@
 use crate::drawable::Drawable;
 use crate::rendering_arguments::RenderingArguments;
+use crate::asset::Asset;
 use opengl_graphics::{GlyphCache, TextureSettings};
 use graphics::*;
 use shapes::*;
@@ -24,7 +25,7 @@ impl GuiLabel<'_> {
             color: [0., 0., 0., 1.],
             font_size: 12,
             text: label.into(),
-            glyphs: GlyphCache::new("res/LiberationMono-Regular.ttf", (), TextureSettings::new()).expect("GlyphCache creation failed!")
+            glyphs: GlyphCache::new(Asset::font("LiberationMono-Regular.ttf").unwrap(), (), TextureSettings::new()).expect("GlyphCache creation failed!")
         }
     }
     pub fn set_color(&mut self, new_color: [f32; 4]) {
