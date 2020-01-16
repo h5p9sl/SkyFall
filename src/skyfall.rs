@@ -51,9 +51,7 @@ impl SkyFall {
     pub fn on_input(&mut self, input: &Input) {
         if self.ensure_valid_state() {
             match self.state {
-                GameState::MainMenu => {
-                    self.next_state = self.main_menu.on_input(input);
-                }
+                GameState::MainMenu => self.next_state = self.main_menu.on_input(input),
                 GameState::InGame => {}
                 _ => panic!("Invalid GameState in SkyFall::on_input"),
             }
@@ -66,13 +64,9 @@ impl SkyFall {
     pub fn resize(&mut self, args: &piston::ResizeArgs) {
         // Ensure that our state is initialized
         if self.ensure_valid_state() {
+            let size = shapes::Size::from([args.draw_size[0] as f64, args.draw_size[1] as f64]);
             match self.state {
-                GameState::MainMenu => {
-                    let size =
-                        shapes::Size::from([args.draw_size[0] as f64, args.draw_size[1] as f64]);
-
-                    self.main_menu.resize(size);
-                }
+                GameState::MainMenu => self.main_menu.resize(size),
                 GameState::InGame => {}
                 _ => panic!("Invalid GameState in SkyFall::draw"),
             }
@@ -84,9 +78,7 @@ impl SkyFall {
     /// For example, if the current game-state is MainMenu, the main menu will be **updated**.
     pub fn update(&mut self, delta: f64) {
         match self.state {
-            GameState::MainMenu => {
-                self.main_menu.update(delta);
-            }
+            GameState::MainMenu => self.main_menu.update(delta),
             GameState::InGame => {}
             _ => panic!("Invalid GameState in SkyFall::update"),
         }
@@ -100,9 +92,7 @@ impl SkyFall {
         // Ensure that our state is initialized
         if self.ensure_valid_state() {
             match self.state {
-                GameState::MainMenu => {
-                    self.main_menu.draw(window);
-                }
+                GameState::MainMenu => self.main_menu.draw(window),
                 GameState::InGame => {}
                 _ => panic!("Invalid GameState in SkyFall::draw"),
             }
