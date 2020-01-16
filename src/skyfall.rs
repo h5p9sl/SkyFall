@@ -6,36 +6,21 @@ use piston::Input;
 use ::backend::shapes;
 
 pub struct SkyFall {
-    window: *mut RenderWindow,
     next_state: GameState,
     last_state: GameState,
     state: GameState,
-    // Use std::vec here so we can dynamically allocate and free the main menu
-    main_menu: Vec<MainMenu>,
+    main_menu: MainMenu,
 }
 
 impl SkyFall {
-    pub fn new(window: *mut RenderWindow) -> SkyFall {
+    pub fn new(window: &mut RenderWindow) -> SkyFall {
+        let size = window.size();
         SkyFall {
-            window,
             last_state: GameState::Invalid,
             next_state: GameState::MainMenu,
             state: GameState::MainMenu,
-            main_menu: Vec::new(),
+            main_menu: MainMenu::new(size),
         }
-    }
-
-    fn initialize_main_menu(&mut self) {
-        unsafe {
-            let size = (*self.window).size();
-            self.main_menu.push(MainMenu::new(size));
-        }
-    }
-
-    fn initialize_game(&mut self) {}
-
-    fn get_main_menu_mut(&mut self) -> &mut MainMenu {
-        self.main_menu.first_mut().expect("MainMenu not found?")
     }
 
     /// Ensures that the current game state is not initialized:
@@ -59,16 +44,6 @@ impl SkyFall {
         self.state = self.next_state;
     }
 
-    fn initialize_state_if_needed(&mut self) {
-        if !self.ensure_valid_state() {
-            match self.state {
-                GameState::MainMenu => self.initialize_main_menu(),
-                GameState::InGame => self.initialize_game(),
-                _ => {}
-            }
-        }
-    }
-
     /// Called whenever there is an input event in the main window
     ///
     /// This function passes the input event down to the entities
@@ -77,7 +52,7 @@ impl SkyFall {
         if self.ensure_valid_state() {
             match self.state {
                 GameState::MainMenu => {
-                    self.next_state = self.get_main_menu_mut().on_input(input);
+                    self.next_state = self.main_menu.on_input(input);
                 }
                 GameState::InGame => {}
                 _ => panic!("Invalid GameState in SkyFall::on_input"),
@@ -96,7 +71,7 @@ impl SkyFall {
                     let size =
                         shapes::Size::from([args.draw_size[0] as f64, args.draw_size[1] as f64]);
 
-                    self.get_main_menu_mut().resize(size);
+                    self.main_menu.resize(size);
                 }
                 GameState::InGame => {}
                 _ => panic!("Invalid GameState in SkyFall::draw"),
@@ -110,12 +85,9 @@ impl SkyFall {
     pub fn update(&mut self, delta: f64) {
         match self.state {
             GameState::MainMenu => {
-                self.initialize_state_if_needed();
-                self.get_main_menu_mut().update(delta);
+                self.main_menu.update(delta);
             }
-            GameState::InGame => {
-                self.initialize_state_if_needed();
-            }
+            GameState::InGame => {}
             _ => panic!("Invalid GameState in SkyFall::update"),
         }
         self.update_state();
@@ -129,7 +101,7 @@ impl SkyFall {
         if self.ensure_valid_state() {
             match self.state {
                 GameState::MainMenu => {
-                    self.get_main_menu_mut().draw(window);
+                    self.main_menu.draw(window);
                 }
                 GameState::InGame => {}
                 _ => panic!("Invalid GameState in SkyFall::draw"),
