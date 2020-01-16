@@ -7,6 +7,12 @@ use std::time::Instant;
 use ::backend::*;
 use piston::*;
 
+pub mod gamestate;
+pub mod main_menu;
+pub mod skyfall;
+
+pub use skyfall::SkyFall;
+
 const SKYFALL_VERSION: &str = "0.1.0";
 
 fn get_delta_time(clock: &mut Instant) -> f64 {
@@ -17,6 +23,8 @@ fn get_delta_time(clock: &mut Instant) -> f64 {
 
 pub fn start_game() {
     let mut window = RenderWindow::new("SkyFall", [800, 600], false);
+    let mut game = SkyFall::new();
+
     let mut clock: Instant = Instant::now();
     while let Some(e) = window.poll_event() {
         // Get delta time
@@ -25,12 +33,16 @@ pub fn start_game() {
         // Check event type and run code accordingly
         let input: Option<Input> = e.clone().into();
         if input.is_some() {
+            let input = input.unwrap();
+            game.on_input(&input);
         }
         if let Some(args) = e.render_args() {
             window.clear([0., 0., 0., 1.]);
+            game.draw(&mut window);
             window.display(&args);
         }
         if let Some(_args) = e.update_args() {
+            game.update(delta);
         }
     }
 }
