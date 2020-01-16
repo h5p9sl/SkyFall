@@ -1,6 +1,7 @@
 use ::backend::{Asset, GuiButton, GuiLabel, RenderWindow};
 use piston::Input;
 
+use crate::gamestate::GameState;
 use crate::shapes::Size;
 use ears::*;
 
@@ -50,9 +51,12 @@ impl MainMenu {
 
     /// Called whenever the main window recieves input from the user. This input is then passed
     /// down to the buttons in the main menu
-    pub fn on_input(&mut self, input: &Input) {
+    ///
+    /// Returns the next GameState
+    pub fn on_input(&mut self, input: &Input) -> GameState {
         if self.start_button.on_input(input) {
             self.music.stop();
+            return GameState::InGame;
         }
         if self.options_button.on_input(input) {
             if self.music.get_state() != State::Playing {
@@ -63,6 +67,7 @@ impl MainMenu {
             // Lazy exit
             std::process::exit(0);
         }
+        GameState::MainMenu
     }
 
     pub fn update(&mut self, delta: f64) {}

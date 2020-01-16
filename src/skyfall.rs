@@ -7,6 +7,7 @@ use ::backend::shapes;
 
 pub struct SkyFall {
     window: *mut RenderWindow,
+    next_state: GameState,
     last_state: GameState,
     state: GameState,
     // Use std::vec here so we can dynamically allocate and free the main menu
@@ -18,6 +19,7 @@ impl SkyFall {
         SkyFall {
             window,
             last_state: GameState::Invalid,
+            next_state: GameState::MainMenu,
             state: GameState::MainMenu,
             main_menu: Vec::new(),
         }
@@ -30,6 +32,9 @@ impl SkyFall {
         }
     }
 
+    fn initialize_game(&mut self) {
+    }
+
     /// Ensures that the current game state is not initialized:
     ///
     /// An "uninitialized game state" in the context of MainMenu would mean that the
@@ -37,6 +42,28 @@ impl SkyFall {
     /// to the main menu while it is uninitialized.
     fn ensure_valid_state(&self) -> bool {
         self.last_state != GameState::Invalid
+    }
+
+    /// Called once per frame, updates game-state
+    ///
+    /// In summary, this function sets `self.last_state` = `self.state`
+    fn update_state(&mut self) {
+        if self.next_state != self.state {
+            self.last_state = GameState::Invalid;
+        } else {
+            self.last_state = self.state;
+        }
+        self.state = self.next_state;
+    }
+
+    fn initialize_state_if_needed(&mut self) {
+        if !self.ensure_valid_state() {
+            match self.state {
+                GameState::MainMenu => self.initialize_main_menu(),
+                GameState::InGame => self.initialize_game(),
+                _ => {},
+            }
+        }
     }
 
     /// Called whenever there is an input event in the main window
@@ -48,18 +75,12 @@ impl SkyFall {
             match self.state {
                 GameState::MainMenu => {
                     let main_menu = self.main_menu.first_mut().expect("MainMenu not found?");
-                    main_menu.on_input(input);
+                    self.next_state = main_menu.on_input(input);
                 }
+                GameState::InGame => {}
                 _ => panic!("Invalid GameState in SkyFall::on_input"),
             }
         }
-    }
-
-    /// Called once per frame, updates game-state
-    ///
-    /// In summary, this function sets `self.last_state` = `self.state`
-    fn update_state(&mut self) {
-        self.last_state = self.state;
     }
 
     /// Called whenever the main window is resized
@@ -79,6 +100,7 @@ impl SkyFall {
 
                     main_menu.resize(size);
                 }
+                GameState::InGame => {}
                 _ => panic!("Invalid GameState in SkyFall::draw"),
             }
         }
@@ -90,11 +112,12 @@ impl SkyFall {
     pub fn update(&mut self, delta: f64) {
         match self.state {
             GameState::MainMenu => {
-                if self.last_state != GameState::MainMenu {
-                    self.initialize_main_menu();
-                }
+                self.initialize_state_if_needed();
                 let main_menu = self.main_menu.first_mut().expect("MainMenu not found?");
                 main_menu.update(delta);
+            }
+            GameState::InGame => {
+                self.initialize_state_if_needed();
             }
             _ => panic!("Invalid GameState in SkyFall::update"),
         }
@@ -112,6 +135,7 @@ impl SkyFall {
                     let main_menu = self.main_menu.first_mut().expect("MainMenu not found?");
                     main_menu.draw(window);
                 }
+                GameState::InGame => {}
                 _ => panic!("Invalid GameState in SkyFall::draw"),
             }
         }
