@@ -22,10 +22,11 @@ impl Asset {
             .to_string()
     }
 
-    pub fn font<S>(name: S) -> String
-    where
-        S: Into<String>,
-    {
+    pub fn font<S: Into<String>>(name: S) -> String {
         Asset::app_asset_dir("fonts".into(), name.into())
+    }
+
+    pub fn music<S: Into<String>>(name: S) -> String {
+        Asset::app_asset_dir("music".into(), name.into())
     }
 }

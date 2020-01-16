@@ -1,13 +1,15 @@
-use ::backend::{GuiButton, GuiLabel, RenderWindow};
+use ::backend::{Asset, GuiButton, GuiLabel, RenderWindow};
 use piston::Input;
 
 use crate::shapes::Size;
+use ears::*;
 
 pub struct MainMenu {
     title: GuiLabel<'static>,
     start_button: GuiButton<'static>,
     options_button: GuiButton<'static>,
     exit_button: GuiButton<'static>,
+    music: Music,
 }
 
 impl MainMenu {
@@ -27,7 +29,9 @@ impl MainMenu {
             exit_button: GuiButton::new("Exit game")
                 .size((300., 50.))
                 .origin((0.5, 0.5)),
+            music: Music::new(Asset::music("skullcrusher.ogg").as_str()).unwrap(),
         };
+        menu.music.play();
         menu.resize(window_size);
         menu
     }
@@ -47,8 +51,14 @@ impl MainMenu {
     /// Called whenever the main window recieves input from the user. This input is then passed
     /// down to the buttons in the main menu
     pub fn on_input(&mut self, input: &Input) {
-        self.start_button.on_input(input);
-        self.options_button.on_input(input);
+        if self.start_button.on_input(input) {
+            self.music.stop();
+        }
+        if self.options_button.on_input(input) {
+            if self.music.get_state() != State::Playing {
+                self.music.play();
+            }
+        }
         if self.exit_button.on_input(input) {
             // Lazy exit
             std::process::exit(0);

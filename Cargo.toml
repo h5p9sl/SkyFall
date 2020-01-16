@@ -9,3 +9,4 @@ edition = "2018"
 [dependencies]
 backend = { path = "backend" }
 piston = "0.49.0"
+ears = "0.7.0"
