@@ -25,7 +25,7 @@ impl GuiLabel<'_> {
             color: [0., 0., 0., 1.],
             font_size: 12,
             text: label.into(),
-            glyphs: GlyphCache::new(Asset::font("LiberationMono-Regular.ttf").unwrap(), (), TextureSettings::new()).expect("GlyphCache creation failed!")
+            glyphs: GlyphCache::new(Asset::font("LiberationMono-Regular.ttf"), (), TextureSettings::new()).expect("GlyphCache creation failed!")
         }
     }
     pub fn set_color(&mut self, new_color: [f32; 4]) {

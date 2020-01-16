@@ -13,16 +13,19 @@ impl Asset {
         }
     }
 
-    pub fn font<S>(name: S) -> Option<String>
+    fn app_asset_dir(category: String, name: String) -> String {
+        let mut assets = Asset::find_asset_dir();
+        assets.push(category);
+        assets.push(name);
+        assets.to_str()
+            .unwrap()
+            .to_string()
+    }
+
+    pub fn font<S>(name: S) -> String
     where
         S: Into<String>,
     {
-        let mut assets = Asset::find_asset_dir();
-        assets.push("fonts");
-        assets.push(name.into());
-        Some(assets.to_str()
-             .unwrap()
-             .to_string()
-            )
+        Asset::app_asset_dir("fonts".into(), name.into())
     }
 }
