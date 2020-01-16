@@ -45,8 +45,10 @@ impl MainMenu {
         self.title.set_position((cntr.w, cntr.h));
         // Reposition buttons
         self.start_button.set_position((cntr.w, cntr.h + 20. + 60.));
-        self.options_button.set_position((cntr.w, cntr.h + 20. + 60. * 2.));
-        self.exit_button.set_position((cntr.w, cntr.h + 20. + 60. * 3.));
+        self.options_button
+            .set_position((cntr.w, cntr.h + 20. + 60. * 2.));
+        self.exit_button
+            .set_position((cntr.w, cntr.h + 20. + 60. * 3.));
     }
 
     /// Called whenever the main window recieves input from the user. This input is then passed

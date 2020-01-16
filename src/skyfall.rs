@@ -32,7 +32,10 @@ impl SkyFall {
         }
     }
 
-    fn initialize_game(&mut self) {
+    fn initialize_game(&mut self) {}
+
+    fn get_main_menu_mut(&mut self) -> &mut MainMenu {
+        self.main_menu.first_mut().expect("MainMenu not found?")
     }
 
     /// Ensures that the current game state is not initialized:
@@ -61,7 +64,7 @@ impl SkyFall {
             match self.state {
                 GameState::MainMenu => self.initialize_main_menu(),
                 GameState::InGame => self.initialize_game(),
-                _ => {},
+                _ => {}
             }
         }
     }
@@ -74,8 +77,7 @@ impl SkyFall {
         if self.ensure_valid_state() {
             match self.state {
                 GameState::MainMenu => {
-                    let main_menu = self.main_menu.first_mut().expect("MainMenu not found?");
-                    self.next_state = main_menu.on_input(input);
+                    self.next_state = self.get_main_menu_mut().on_input(input);
                 }
                 GameState::InGame => {}
                 _ => panic!("Invalid GameState in SkyFall::on_input"),
@@ -91,14 +93,10 @@ impl SkyFall {
         if self.ensure_valid_state() {
             match self.state {
                 GameState::MainMenu => {
-                    let main_menu = self.main_menu.first_mut().expect("MainMenu not found?");
-                    let size = shapes::Size::from(
-                        [
-                        args.draw_size[0] as f64,
-                        args.draw_size[1] as f64,
-                        ]);
+                    let size =
+                        shapes::Size::from([args.draw_size[0] as f64, args.draw_size[1] as f64]);
 
-                    main_menu.resize(size);
+                    self.get_main_menu_mut().resize(size);
                 }
                 GameState::InGame => {}
                 _ => panic!("Invalid GameState in SkyFall::draw"),
@@ -113,8 +111,7 @@ impl SkyFall {
         match self.state {
             GameState::MainMenu => {
                 self.initialize_state_if_needed();
-                let main_menu = self.main_menu.first_mut().expect("MainMenu not found?");
-                main_menu.update(delta);
+                self.get_main_menu_mut().update(delta);
             }
             GameState::InGame => {
                 self.initialize_state_if_needed();
@@ -132,8 +129,7 @@ impl SkyFall {
         if self.ensure_valid_state() {
             match self.state {
                 GameState::MainMenu => {
-                    let main_menu = self.main_menu.first_mut().expect("MainMenu not found?");
-                    main_menu.draw(window);
+                    self.get_main_menu_mut().draw(window);
                 }
                 GameState::InGame => {}
                 _ => panic!("Invalid GameState in SkyFall::draw"),
