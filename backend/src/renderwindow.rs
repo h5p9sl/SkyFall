@@ -30,6 +30,11 @@ impl RenderWindow {
             objects: Vec::new(),
         }
     }
+
+    pub fn size(&self) -> shapes::Size {
+        let size = self.window.size();
+        shapes::Size::from([size.width, size.height])
+    }
     
     pub fn should_close(&self) -> bool {
         self.window.should_close()

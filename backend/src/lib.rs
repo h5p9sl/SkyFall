@@ -5,6 +5,9 @@
 //!
 //! To see SkyFall's documentation, see [SkyFall](../skyfall_rs/index.html)
 
+// External exports
+pub use shapes;
+
 // General structs
 pub use crate::asset::Asset;
 pub use crate::renderwindow::RenderWindow;

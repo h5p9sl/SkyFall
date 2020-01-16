@@ -3,7 +3,10 @@ use crate::main_menu::MainMenu;
 use ::backend::RenderWindow;
 use piston::Input;
 
+use ::backend::shapes;
+
 pub struct SkyFall {
+    window: *mut RenderWindow,
     last_state: GameState,
     state: GameState,
     // Use std::vec here so we can dynamically allocate and free the main menu
@@ -11,8 +14,9 @@ pub struct SkyFall {
 }
 
 impl SkyFall {
-    pub fn new() -> SkyFall {
+    pub fn new(window: *mut RenderWindow) -> SkyFall {
         SkyFall {
+            window,
             last_state: GameState::Invalid,
             state: GameState::MainMenu,
             main_menu: Vec::new(),
@@ -20,7 +24,10 @@ impl SkyFall {
     }
 
     fn initialize_main_menu(&mut self) {
-        self.main_menu.push(MainMenu::new());
+        unsafe {
+            let size = (*self.window).size();
+            self.main_menu.push(MainMenu::new(size));
+        }
     }
 
     /// Ensures that the current game state is not initialized:
@@ -53,6 +60,28 @@ impl SkyFall {
     /// In summary, this function sets `self.last_state` = `self.state`
     fn update_state(&mut self) {
         self.last_state = self.state;
+    }
+
+    /// Called whenever the main window is resized
+    ///
+    /// This function will reset all elements to the correct position
+    pub fn resize(&mut self, args: &piston::ResizeArgs) {
+        // Ensure that our state is initialized
+        if self.ensure_valid_state() {
+            match self.state {
+                GameState::MainMenu => {
+                    let main_menu = self.main_menu.first_mut().expect("MainMenu not found?");
+                    let size = shapes::Size::from(
+                        [
+                        args.draw_size[0] as f64,
+                        args.draw_size[1] as f64,
+                        ]);
+
+                    main_menu.resize(size);
+                }
+                _ => panic!("Invalid GameState in SkyFall::draw"),
+            }
+        }
     }
 
     /// Called once per frame, updates game based on current GameState.

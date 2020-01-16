@@ -13,6 +13,7 @@ pub struct GuiButton<'a> {
     // Other fields
     is_touching_mouse: bool,
     is_pressed: bool,
+    origin: shapes::Point,
     bounds: shapes::Rect,
     label: GuiLabel<'a>,
 }
@@ -29,6 +30,7 @@ impl GuiButton<'_> {
     pub fn new(lbl: &str) -> GuiButton<'static> {
         let mut button = GuiButton {
             label: GuiLabel::new(lbl.to_string()).font_size(24),
+            origin: shapes::Point::from([0., 0.]),
             bounds: shapes::Rect::from([0., 0., 0., 0.,]),
             is_touching_mouse: false,
             is_pressed: false,
@@ -63,9 +65,25 @@ impl GuiButton<'_> {
     }
 
     pub fn set_position<T: Into<shapes::Point>>(&mut self, pos: T) {
-        let pos: shapes::Point = pos.into();
+        let mut pos: shapes::Point = pos.into();
+        pos.x -= self.bounds.size.w * self.origin.x;
+        pos.y -= self.bounds.size.h * self.origin.y;
         self.bounds.pos = pos;
         self.set_label_pos();
+    }
+
+    pub fn position<T: Into<shapes::Point>>(mut self, pos: T) -> Self {
+        self.set_position(pos);
+        self
+    }
+
+    pub fn set_origin<T: Into<shapes::Point>>(&mut self, pos: T) {
+        self.origin = pos.into();
+    }
+
+    pub fn origin<T: Into<shapes::Point>>(mut self, pos: T) -> Self {
+        self.set_origin(pos);
+        self
     }
 
     pub fn set_size<T: Into<shapes::Size>>(&mut self, size: T) {
@@ -74,11 +92,6 @@ impl GuiButton<'_> {
 
     pub fn size<T: Into<shapes::Size>>(mut self, size: T) -> Self {
         self.set_size(size);
-        self
-    }
-
-    pub fn position<T: Into<shapes::Point>>(mut self, pos: T) -> Self {
-        self.set_position(pos);
         self
     }
 

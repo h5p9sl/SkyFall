@@ -23,7 +23,7 @@ fn get_delta_time(clock: &mut Instant) -> f64 {
 
 pub fn start_game() {
     let mut window = RenderWindow::new("SkyFall", [800, 600], false);
-    let mut game = SkyFall::new();
+    let mut game = SkyFall::new(&mut window);
 
     let mut clock: Instant = Instant::now();
     while let Some(e) = window.poll_event() {
@@ -35,6 +35,9 @@ pub fn start_game() {
         if input.is_some() {
             let input = input.unwrap();
             game.on_input(&input);
+        }
+        if let Some(args) = e.resize_args() {
+            game.resize(&args);
         }
         if let Some(args) = e.render_args() {
             window.clear([0., 0., 0., 1.]);
