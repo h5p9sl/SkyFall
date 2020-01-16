@@ -1,7 +1,7 @@
-use piston::*;
 use glutin_window::*;
 use graphics::clear;
 use opengl_graphics::GlGraphics;
+use piston::*;
 
 use crate::drawable::Drawable;
 use crate::rendering_arguments::RenderingArguments;
@@ -10,13 +10,14 @@ pub struct RenderWindow {
     gl: GlGraphics,
     window: GlutinWindow,
     events: Events,
-    objects: Vec<*mut dyn Drawable>
+    objects: Vec<*mut dyn Drawable>,
 }
 
 impl RenderWindow {
-    pub fn new<N, S>(name: N, size: S, resizable: bool) -> RenderWindow 
-        where N: Into<String>,
-              S: Into<Size>,
+    pub fn new<N, S>(name: N, size: S, resizable: bool) -> RenderWindow
+    where
+        N: Into<String>,
+        S: Into<Size>,
     {
         const VERSION: OpenGL = OpenGL::V3_2;
         RenderWindow {
@@ -35,7 +36,7 @@ impl RenderWindow {
         let size = self.window.size();
         shapes::Size::from([size.width, size.height])
     }
-    
+
     pub fn should_close(&self) -> bool {
         self.window.should_close()
     }
@@ -44,7 +45,7 @@ impl RenderWindow {
         self.events.next(&mut self.window)
     }
 
-    pub fn clear(&mut self, color: [f32;4]) {
+    pub fn clear(&mut self, color: [f32; 4]) {
         self.objects.clear();
         clear(color, &mut self.gl);
     }

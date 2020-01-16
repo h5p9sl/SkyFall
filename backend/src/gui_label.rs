@@ -1,8 +1,8 @@
+use crate::asset::Asset;
 use crate::drawable::Drawable;
 use crate::rendering_arguments::RenderingArguments;
-use crate::asset::Asset;
-use opengl_graphics::{GlyphCache, TextureSettings};
 use graphics::*;
+use opengl_graphics::{GlyphCache, TextureSettings};
 use shapes::*;
 
 pub struct GuiLabel<'a> {
@@ -25,7 +25,12 @@ impl GuiLabel<'_> {
             color: [0., 0., 0., 1.],
             font_size: 12,
             text: label.into(),
-            glyphs: GlyphCache::new(Asset::font("LiberationMono-Regular.ttf"), (), TextureSettings::new()).expect("GlyphCache creation failed!")
+            glyphs: GlyphCache::new(
+                Asset::font("LiberationMono-Regular.ttf"),
+                (),
+                TextureSettings::new(),
+            )
+            .expect("GlyphCache creation failed!"),
         }
     }
     pub fn set_color(&mut self, new_color: [f32; 4]) {
@@ -49,12 +54,10 @@ impl GuiLabel<'_> {
         self.set_origin(new_origin);
         self
     }
-    pub fn set_position<P: Into<Point>>(&mut self, new_pos: P)
-    {
+    pub fn set_position<P: Into<Point>>(&mut self, new_pos: P) {
         self.pos = new_pos.into();
     }
-    pub fn position<P: Into<Point>>(mut self, new_pos: P) -> Self
-    {
+    pub fn position<P: Into<Point>>(mut self, new_pos: P) -> Self {
         self.set_position(new_pos);
         self
     }
@@ -65,7 +68,10 @@ impl GuiLabel<'_> {
     }
     pub fn get_local_bounds(&mut self) -> Rect {
         use graphics::character::CharacterCache;
-        let w = self.glyphs.width(self.font_size, self.text.as_str()).expect("Error calculating glyph width!");
+        let w = self
+            .glyphs
+            .width(self.font_size, self.text.as_str())
+            .expect("Error calculating glyph width!");
         let h = self.font_size as f64;
         Rect::from([0.0, 0.0, w, h])
     }
@@ -80,7 +86,9 @@ impl Drawable for GuiLabel<'_> {
     fn draw(&mut self, args: &mut RenderingArguments) {
         let origin = self.get_origin_with_bounds();
 
-        let transform = args.context.transform
+        let transform = args
+            .context
+            .transform
             .trans(-origin.x, -origin.y)
             .trans(0.0, self.font_size as f64)
             .trans(self.pos.x, self.pos.y);
@@ -91,7 +99,8 @@ impl Drawable for GuiLabel<'_> {
             self.text.as_str(),
             &mut self.glyphs,
             transform,
-            args.graphics_api
-        ).expect("Failed to draw text!");
+            args.graphics_api,
+        )
+        .expect("Failed to draw text!");
     }
 }

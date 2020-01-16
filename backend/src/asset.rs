@@ -4,8 +4,7 @@ pub struct Asset {}
 
 impl Asset {
     fn find_asset_dir() -> PathBuf {
-        let result = find_folder::Search::ParentsThenKids(3, 3)
-            .for_folder("res");
+        let result = find_folder::Search::ParentsThenKids(3, 3).for_folder("res");
         if let Ok(assets) = result {
             assets
         } else {
@@ -17,9 +16,7 @@ impl Asset {
         let mut assets = Asset::find_asset_dir();
         assets.push(category);
         assets.push(name);
-        assets.to_str()
-            .unwrap()
-            .to_string()
+        assets.to_str().unwrap().to_string()
     }
 
     pub fn font<S: Into<String>>(name: S) -> String {
