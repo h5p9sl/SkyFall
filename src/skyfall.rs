@@ -1,15 +1,19 @@
 use crate::gamestate::GameState;
 use crate::main_menu::MainMenu;
+use crate::scenemanager::SceneManager;
 use ::backend::RenderWindow;
 use piston::Input;
 
 use ::backend::shapes;
+
+pub const GRAVITY_RATE: f64 = 15.0;
 
 pub struct SkyFall {
     next_state: GameState,
     last_state: GameState,
     state: GameState,
     main_menu: MainMenu,
+    game: SceneManager,
 }
 
 impl SkyFall {
@@ -20,6 +24,7 @@ impl SkyFall {
             next_state: GameState::MainMenu,
             state: GameState::MainMenu,
             main_menu: MainMenu::new(size),
+            game: SceneManager::new(),
         }
     }
 
@@ -52,7 +57,7 @@ impl SkyFall {
         if self.ensure_valid_state() {
             match self.state {
                 GameState::MainMenu => self.next_state = self.main_menu.on_input(input),
-                GameState::InGame => {}
+                GameState::InGame => self.next_state = self.game.on_input(input),
                 _ => panic!("Invalid GameState in SkyFall::on_input"),
             }
         }
@@ -67,7 +72,7 @@ impl SkyFall {
             let size = shapes::Size::from([args.draw_size[0] as f64, args.draw_size[1] as f64]);
             match self.state {
                 GameState::MainMenu => self.main_menu.resize(size),
-                GameState::InGame => {}
+                GameState::InGame => self.game.resize(size),
                 _ => panic!("Invalid GameState in SkyFall::draw"),
             }
         }
@@ -79,7 +84,7 @@ impl SkyFall {
     pub fn update(&mut self, delta: f64) {
         match self.state {
             GameState::MainMenu => self.main_menu.update(delta),
-            GameState::InGame => {}
+            GameState::InGame => self.game.update(delta),
             _ => panic!("Invalid GameState in SkyFall::update"),
         }
         self.update_state();
@@ -93,7 +98,7 @@ impl SkyFall {
         if self.ensure_valid_state() {
             match self.state {
                 GameState::MainMenu => self.main_menu.draw(window),
-                GameState::InGame => {}
+                GameState::InGame => self.game.draw(window),
                 _ => panic!("Invalid GameState in SkyFall::draw"),
             }
         }

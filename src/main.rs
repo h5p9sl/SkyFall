@@ -10,6 +10,9 @@ use piston::*;
 pub mod gamestate;
 pub mod main_menu;
 pub mod skyfall;
+pub mod scenemanager;
+
+mod local_player;
 
 pub use skyfall::SkyFall;
 
@@ -28,7 +31,7 @@ pub fn start_game() {
     let mut clock: Instant = Instant::now();
     while let Some(e) = window.poll_event() {
         // Get delta time
-        let delta = get_delta_time(&mut clock);
+        let mut delta = get_delta_time(&mut clock).max(0.01);
 
         // Check event type and run code accordingly
         let input: Option<Input> = e.clone().into();
