@@ -23,13 +23,22 @@ impl LocalPlayer {
     }
 
     fn on_key(&mut self, key: &Key, state: ButtonState) {
-        let press: f64 = (state == ButtonState::Press) as i64 as f64;
+        let mut press: f64 = 1.0;
+        if state != ButtonState::Press {
+            press = -1.0;
+        }
         match key {
-            Key::W => self.movement.y = -1.0 * press,
-            Key::A => self.movement.x = -1.0 * press,
-            Key::D => self.movement.x = 1.0 * press,
+            // Movement.y becomes -1.0 on key press and 0.0 on key release
+            Key::W => self.movement.y -= press,
+            // movement.x becomes -1.0 on key press and 0.0 on key release
+            Key::A => self.movement.x -= press,
+            // movement.x becomes 1.0 on key press and 0.0 on key release
+            Key::D => self.movement.x += press,
             _ => {}
         }
+        // Clamp movement values
+        self.movement.x = self.movement.x.min(1.0).max(-1.0);
+        self.movement.y = self.movement.y.min(1.0).max(-1.0);
     }
 
     fn on_button(&mut self, args: &ButtonArgs) {
