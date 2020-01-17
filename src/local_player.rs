@@ -2,7 +2,7 @@ use piston::{Input, Button, ButtonArgs, ButtonState, keyboard::Key};
 
 use crate::skyfall;
 
-use ::backend::{RenderWindow, RectangleShape};
+use ::backend::{RenderWindow, RectangleShape, Asset};
 use ::backend::shapes::Point;
 
 pub struct LocalPlayer {
@@ -15,7 +15,7 @@ pub struct LocalPlayer {
 impl LocalPlayer {
     pub fn new() -> LocalPlayer {
         LocalPlayer {
-            rect: RectangleShape::new().size([80., 120.,]),
+            rect: RectangleShape::new().size([80., 120.,]).texture(Asset::graphic("player/original_light.png")).texture_rect([0., 0., 20., 32.]),
             vel: Point::from([0., 0.]),
             movement: Point::from([0., 0.]),
             on_ground: false,

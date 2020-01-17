@@ -1,5 +1,8 @@
-use graphics::types::Color;
+use opengl_graphics::{Texture, TextureSettings, Filter};
+use graphics::*;
 use shapes::*;
+
+use graphics::types::Color;
 
 use crate::drawable::Drawable;
 use crate::rendering_arguments::RenderingArguments;
@@ -7,14 +10,38 @@ use crate::rendering_arguments::RenderingArguments;
 pub struct RectangleShape {
     color: Color,
     bounds: Rect,
+    image: Image,
+    texture: Texture,
+    texture_loaded: bool,
 }
 
 impl RectangleShape {
     pub fn new() -> RectangleShape {
+        let texture_settings = RectangleShape::get_texture_settings();
         RectangleShape {
             color: [1., 1., 1., 1.],
             bounds: Rect::from([0., 0., 0., 0.,]),
+            image: Image::new(),
+            texture: Texture::empty(&texture_settings).unwrap(),
+            texture_loaded: false,
         }
+    }
+
+    fn get_texture_settings() -> TextureSettings {
+        TextureSettings::new().mag(Filter::Nearest)
+    }
+
+    pub fn set_texture<S: Into<String>>(&mut self, path: S) {
+        // Disables rectangle drawing and draws image instead
+        self.texture_loaded = true;
+
+        let settings = RectangleShape::get_texture_settings();
+        self.texture = Texture::from_path(path.into(), &settings).unwrap();
+    }
+
+    pub fn texture<S: Into<String>>(mut self, path: S) -> Self {
+        self.set_texture(path);
+        self
     }
 
     pub fn set_size<S: Into<Size>>(&mut self, size: S) {
@@ -46,11 +73,30 @@ impl RectangleShape {
     pub fn set_color(&mut self, r: f32, g: f32, b: f32, a: f32) {
         self.color = [r, g, b, a];
     }
+
+    pub fn set_texture_rect<R: Into<Rect>>(&mut self, rect: R) {
+        self.image = self.image.src_rect(rect.into().into());
+    }
+
+    pub fn texture_rect<R: Into<Rect>>(mut self, rect: R) -> Self {
+        self.set_texture_rect(rect);
+        self
+    }
+
+    fn update_image(&mut self) {
+        self.image = self.image.rect(self.bounds);
+    }
 }
 
 impl Drawable for RectangleShape {
     fn draw(&mut self, args: &mut RenderingArguments) {
         let transform = args.context.transform;
-        graphics::rectangle(self.color, self.bounds, transform, args.graphics_api);
+
+        if self.texture_loaded {
+            self.update_image();
+            self.image.draw(&self.texture, &DrawState::default(), transform, args.graphics_api);
+        } else {
+            graphics::rectangle(self.color, self.bounds, transform, args.graphics_api);
+        }
     }
 }

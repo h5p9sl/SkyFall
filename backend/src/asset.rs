@@ -26,4 +26,8 @@ impl Asset {
     pub fn music<S: Into<String>>(name: S) -> String {
         Asset::app_asset_dir("music".into(), name.into())
     }
+
+    pub fn graphic<S: Into<String>>(name: S) -> String {
+        Asset::app_asset_dir("gfx".into(), name.into())
+    }
 }
