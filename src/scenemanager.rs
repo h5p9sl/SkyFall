@@ -1,11 +1,11 @@
-use ::backend::{RenderWindow, shapes};
 use crate::gamestate::GameState;
-use piston::{Input, Button, keyboard::Key};
+use ::backend::{shapes, RenderWindow};
+use piston::{keyboard::Key, Button, Input};
 
 use crate::local_player::LocalPlayer;
 
 pub struct SceneManager {
-    bg_color: [f32;4],
+    bg_color: [f32; 4],
     local_player: LocalPlayer,
 }
 
@@ -17,8 +17,7 @@ impl SceneManager {
         }
     }
 
-    pub fn resize(&mut self, size: shapes::Size) {
-    }
+    pub fn resize(&mut self, size: shapes::Size) {}
 
     pub fn on_input(&mut self, input: &Input) -> GameState {
         self.local_player.on_input(input);

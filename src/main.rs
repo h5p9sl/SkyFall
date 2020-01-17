@@ -9,8 +9,8 @@ use piston::*;
 
 pub mod gamestate;
 pub mod main_menu;
-pub mod skyfall;
 pub mod scenemanager;
+pub mod skyfall;
 
 mod local_player;
 
