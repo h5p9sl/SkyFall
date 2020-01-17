@@ -1,11 +1,12 @@
-use piston::{Input, Button, ButtonArgs, ButtonState, keyboard::Key};
+use piston::{keyboard::Key, Button, ButtonArgs, ButtonState, Input};
 
 use crate::skyfall;
 
-use ::backend::{RenderWindow, RectangleShape, Asset};
 use ::backend::shapes::Point;
+use ::backend::{Asset, RectangleShape, RenderWindow, SpriteSheet};
 
 pub struct LocalPlayer {
+    sprite: SpriteSheet,
     rect: RectangleShape,
     vel: Point,
     movement: Point,
@@ -14,8 +15,13 @@ pub struct LocalPlayer {
 
 impl LocalPlayer {
     pub fn new() -> LocalPlayer {
+        let sprite = SpriteSheet::new(Asset::graphic("player/original_light.png"))
+            .rows(3)
+            .columns(7)
+            .size([20., 32.]);
         LocalPlayer {
-            rect: RectangleShape::new().size([80., 120.,]).texture(Asset::graphic("player/original_light.png")).texture_rect([0., 0., 20., 32.]),
+            sprite: sprite.clone(),
+            rect: RectangleShape::new().size([80., 120.]).sprite(&sprite),
             vel: Point::from([0., 0.]),
             movement: Point::from([0., 0.]),
             on_ground: false,
@@ -59,6 +65,8 @@ impl LocalPlayer {
         };
     }
 
+    fn update_animation(&mut self, delta: f64) {}
+
     pub fn update(&mut self, delta: f64) {
         let mut pos = self.rect.get_position();
 
@@ -89,4 +97,3 @@ impl LocalPlayer {
         window.draw(&mut self.rect);
     }
 }
-

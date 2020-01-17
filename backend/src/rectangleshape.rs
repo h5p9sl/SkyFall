@@ -6,6 +6,7 @@ use graphics::types::Color;
 
 use crate::drawable::Drawable;
 use crate::rendering_arguments::RenderingArguments;
+use crate::sprite_sheet::SpriteSheet;
 
 pub struct RectangleShape {
     color: Color,
@@ -85,6 +86,12 @@ impl RectangleShape {
 
     fn update_image(&mut self) {
         self.image = self.image.rect(self.bounds);
+    }
+
+    pub fn sprite(mut self, sprite_sheet: &SpriteSheet) -> Self {
+        self.set_texture(sprite_sheet.get_sprite_path());
+        self.set_texture_rect(sprite_sheet.get_sprite_at([0, 0]));
+        self
     }
 }
 

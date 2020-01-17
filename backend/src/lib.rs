@@ -9,6 +9,8 @@
 pub use shapes;
 
 // General structs
+pub use crate::sprite_sheet::SpriteSheet;
+
 pub use crate::asset::Asset;
 pub use crate::drawable::Drawable;
 pub use crate::circleshape::CircleShape;
@@ -21,6 +23,7 @@ pub use crate::gui_button::GuiButton;
 pub use crate::gui_label::GuiLabel;
 
 pub mod asset;
+pub mod sprite_sheet;
 
 mod rendering_arguments;
 pub mod drawable;
