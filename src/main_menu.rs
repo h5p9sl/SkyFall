@@ -11,6 +11,7 @@ pub struct MainMenu {
     options_button: GuiButton<'static>,
     exit_button: GuiButton<'static>,
     music: Music,
+    bg_color: [f32; 4],
 }
 
 impl MainMenu {
@@ -31,6 +32,7 @@ impl MainMenu {
                 .size((300., 50.))
                 .origin((0.5, 0.5)),
             music: Music::new(Asset::music("skullcrusher.ogg").as_str()).unwrap(),
+            bg_color: [0.14, 0.58, 0.68, 1.0],
         };
         menu.music.play();
         menu.resize(window_size);
@@ -75,6 +77,7 @@ impl MainMenu {
     pub fn update(&mut self, delta: f64) {}
 
     pub fn draw(&mut self, window: &mut RenderWindow) {
+        window.clear(self.bg_color);
         window.draw(&mut self.start_button);
         window.draw(&mut self.options_button);
         window.draw(&mut self.exit_button);

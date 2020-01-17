@@ -1,8 +1,9 @@
-use piston::{keyboard::Key, Button, ButtonArgs, ButtonState, Input};
+use piston::{Input, Button, ButtonArgs, ButtonState, keyboard::Key};
 
 use crate::skyfall;
 
-use ::backend::{shapes::Point, RectangleShape, RenderWindow};
+use ::backend::{RenderWindow, RectangleShape};
+use ::backend::shapes::Point;
 
 pub struct LocalPlayer {
     rect: RectangleShape,
@@ -14,7 +15,7 @@ pub struct LocalPlayer {
 impl LocalPlayer {
     pub fn new() -> LocalPlayer {
         LocalPlayer {
-            rect: RectangleShape::new().size([80., 120.]),
+            rect: RectangleShape::new().size([80., 120.,]),
             vel: Point::from([0., 0.]),
             movement: Point::from([0., 0.]),
             on_ground: false,
@@ -53,18 +54,18 @@ impl LocalPlayer {
         let mut pos = self.rect.get_position();
 
         // Update velocity
-        self.vel.y += skyfall::GRAVITY_RATE * delta;
+        self.vel.y += skyfall::GRAVITY_RATE;
         if self.on_ground {
-            self.vel.y += self.movement.y * 5.0;
+            self.vel.y += self.movement.y * 550.0;
         }
-        self.vel.x += self.movement.x * 30.0 * delta;
+        self.vel.x += self.movement.x * 30.0;
 
         // Decay velocity
         self.vel.x *= 0.9;
 
         // Update position
-        pos.y += self.vel.y;
-        pos.x += self.vel.x;
+        pos.y += self.vel.y * delta;
+        pos.x += self.vel.x * delta;
         if pos.y >= 600.0 - 120.0 {
             pos.y = 600.0 - 120.0;
             self.vel.y = 0.0;
@@ -79,3 +80,4 @@ impl LocalPlayer {
         window.draw(&mut self.rect);
     }
 }
+
