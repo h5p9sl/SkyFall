@@ -31,7 +31,7 @@ pub fn start_game() {
     let mut clock: Instant = Instant::now();
     while let Some(e) = window.poll_event() {
         // Get delta time
-        let mut delta = get_delta_time(&mut clock).max(0.01);
+        let delta = get_delta_time(&mut clock).max(0.01);
 
         // Check event type and run code accordingly
         let input: Option<Input> = e.clone().into();

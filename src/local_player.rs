@@ -54,18 +54,18 @@ impl LocalPlayer {
         let mut pos = self.rect.get_position();
 
         // Update velocity
-        self.vel.y += skyfall::GRAVITY_RATE;
+        self.vel.y += skyfall::GRAVITY_RATE * delta;
         if self.on_ground {
-            self.vel.y += self.movement.y * 550.0;
+            self.vel.y += self.movement.y * 5.0;
         }
-        self.vel.x += self.movement.x * 30.0;
+        self.vel.x += self.movement.x * 30.0 * delta;
 
         // Decay velocity
         self.vel.x *= 0.9;
 
         // Update position
-        pos.y += self.vel.y * delta;
-        pos.x += self.vel.x * delta;
+        pos.y += self.vel.y;
+        pos.x += self.vel.x;
         if pos.y >= 600.0 - 120.0 {
             pos.y = 600.0 - 120.0;
             self.vel.y = 0.0;
