@@ -11,6 +11,9 @@ pub struct LocalPlayer {
     vel: Point,
     movement: Point,
     on_ground: bool,
+
+    counter: f32,
+    current_frame: [u32; 2],
 }
 
 impl LocalPlayer {
@@ -25,6 +28,9 @@ impl LocalPlayer {
             vel: Point::from([0., 0.]),
             movement: Point::from([0., 0.]),
             on_ground: false,
+
+            counter: 999.0,
+            current_frame: [0, 0],
         }
     }
 
@@ -65,7 +71,47 @@ impl LocalPlayer {
         };
     }
 
-    fn update_animation(&mut self, delta: f64) {}
+    fn set_sprite(&mut self) {
+        self.rect
+            .set_texture_rect(self.sprite.get_sprite_at(self.current_frame));
+    }
+
+    fn next_frame(&mut self) {
+        // If player is moving backwards
+        if self.movement.x < 0.0 {
+            // Prevent overflow panic
+            if self.current_frame[0] == 0 {
+                self.current_frame[0] = 2;
+            } else {
+                self.current_frame[0] -= 1;
+            }
+        }
+        // If player is moving forwards
+        else {
+            self.current_frame[0] += 1;
+        }
+
+        // Clamp sprite animation
+        if self.current_frame[0] >= self.sprite.get_columns() {
+            self.current_frame[0] = 1;
+        } else if self.current_frame[0] <= 0 {
+            self.current_frame[0] = self.sprite.get_columns() - 1;
+        }
+        self.set_sprite();
+    }
+
+    fn update_animation(&mut self, delta: f64) {
+        self.counter += delta as f32;
+        if self.movement.x != 0.0 {
+            if self.counter > 0.2 {
+                self.next_frame();
+                self.counter = 0.0;
+            }
+        } else {
+            self.current_frame[0] = 0;
+            self.set_sprite();
+        }
+    }
 
     pub fn update(&mut self, delta: f64) {
         let mut pos = self.rect.get_position();
@@ -90,6 +136,8 @@ impl LocalPlayer {
         } else {
             self.on_ground = false;
         }
+
+        self.update_animation(delta);
         self.rect.set_position(pos);
     }
 

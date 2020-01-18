@@ -20,6 +20,13 @@ impl SpriteSheet {
         }
     }
 
+    pub fn get_rows(&self) -> u32 {
+        self.rows
+    }
+    pub fn get_columns(&self) -> u32 {
+        self.columns
+    }
+
     /// Temporary function until TOML parsing is implemented
     pub fn rows(mut self, rows: u32) -> Self {
         self.rows = rows;
