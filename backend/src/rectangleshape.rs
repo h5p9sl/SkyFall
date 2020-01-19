@@ -28,6 +28,18 @@ impl RectangleShape {
         }
     }
 
+    // ****************************************
+    // ****************************************
+    //
+    //          Get/Set functions
+    //
+    //      These functions are mostly
+    //      self explanatory, needing
+    //      no documentation.
+    //
+    // ****************************************
+    // ****************************************
+
     fn get_texture_settings() -> TextureSettings {
         TextureSettings::new().mag(Filter::Nearest)
     }

@@ -34,6 +34,10 @@ impl LocalPlayer {
         }
     }
 
+    /// Called whenever the player presses a key
+    ///
+    /// This function will update the `movement` member, which indicates which direction(s) the
+    /// player is trying to move
     fn on_key(&mut self, key: &Key, state: ButtonState) {
         let mut press: f64 = 1.0;
         if state != ButtonState::Press {
@@ -53,6 +57,10 @@ impl LocalPlayer {
         self.movement.y = self.movement.y.min(1.0).max(-1.0);
     }
 
+    /// Called whenever the player presses a button
+    ///
+    /// This function mostly serves as a wrapper function around a `match` statement, passing the
+    /// input into other functions like `on_key`
     fn on_button(&mut self, args: &ButtonArgs) {
         match args.button {
             Button::Keyboard(key) => {
@@ -62,6 +70,10 @@ impl LocalPlayer {
         }
     }
 
+    /// Called whenever the main window recieves input
+    ///
+    /// This function mostly serves as a wrapper function around a `match` statement, passing the
+    /// input into other functions like `on_button`
     pub fn on_input(&mut self, input: &Input) {
         match input {
             Input::Button(args) => {
@@ -76,6 +88,7 @@ impl LocalPlayer {
             .set_texture_rect(self.sprite.get_sprite_at(self.current_frame));
     }
 
+    /// Sets the current sprite animation to the next frame
     fn next_frame(&mut self) {
         // If player is moving backwards
         if self.movement.x < 0.0 {
@@ -100,6 +113,7 @@ impl LocalPlayer {
         self.set_sprite();
     }
 
+    /// Called once per update, updates the player sprite
     fn update_animation(&mut self, delta: f64) {
         self.counter += delta as f32;
         if self.movement.x != 0.0 {
@@ -113,6 +127,7 @@ impl LocalPlayer {
         }
     }
 
+    /// Called once per frame, updates velocity, position, animation, etc.
     pub fn update(&mut self, delta: f64) {
         let mut pos = self.rect.get_position();
 
