@@ -1,4 +1,4 @@
-use piston::{keyboard::Key, Button, ButtonArgs, ButtonState, Input};
+use piston::{keyboard::Key, Button, ButtonArgs, ButtonState, Input, Motion};
 
 use crate::skyfall;
 
@@ -24,7 +24,9 @@ impl LocalPlayer {
             .size([20., 32.]);
         LocalPlayer {
             sprite: sprite.clone(),
-            rect: RectangleShape::new().size([80., 120.]).sprite(&sprite),
+            rect: RectangleShape::new().size([80., 120.])
+                .sprite(&sprite)
+                .origin([0.5, 0.0]),
             vel: Point::from([0., 0.]),
             movement: Point::from([0., 0.]),
             on_ground: false,
@@ -76,6 +78,15 @@ impl LocalPlayer {
     /// input into other functions like `on_button`
     pub fn on_input(&mut self, input: &Input) {
         match input {
+            Input::Move(args) => {
+                match args {
+                    Motion::MouseCursor(args) => {
+                        let should_flip = args[0] < self.rect.get_position().x;
+                        self.rect.set_flip_h(should_flip);
+                    }
+                    _ => {}
+                }
+            }
             Input::Button(args) => {
                 self.on_button(&args);
             }

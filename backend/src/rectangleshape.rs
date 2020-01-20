@@ -11,10 +11,12 @@ use crate::sprite_sheet::SpriteSheet;
 pub struct RectangleShape {
     color: Color,
     bounds: Rect,
+    pos: Point,
+    origin: Point,
     image: Image,
     texture: Texture,
     texture_loaded: bool,
-    flip_v: bool,
+    flip_h: bool,
 }
 
 impl RectangleShape {
@@ -23,10 +25,12 @@ impl RectangleShape {
         RectangleShape {
             color: [1., 1., 1., 1.],
             bounds: Rect::from([0., 0., 0., 0.,]),
+            pos: Point::from([0., 0.,]),
+            origin: Point::from([0., 0.,]),
             image: Image::new(),
             texture: Texture::empty(&texture_settings).unwrap(),
             texture_loaded: false,
-            flip_v: false,
+            flip_h: false,
         }
     }
 
@@ -42,12 +46,12 @@ impl RectangleShape {
     // ****************************************
     // ****************************************
 
-    pub fn set_flip_v(&mut self, should: bool) {
-        self.flip_v = should;
+    pub fn set_flip_h(&mut self, should: bool) {
+        self.flip_h = should;
     }
 
-    pub fn flip_v(mut self, should: bool) -> Self {
-        self.set_flip_v(should);
+    pub fn flip_h(mut self, should: bool) -> Self {
+        self.set_flip_h(should);
         self
     }
 
@@ -81,8 +85,17 @@ impl RectangleShape {
         self.bounds.size
     }
 
+    pub fn set_origin<P: Into<Point>>(&mut self, pos: P) {
+        self.origin = pos.into();
+    }
+
+    pub fn origin<P: Into<Point>>(mut self, pos: P) -> Self {
+        self.set_origin(pos);
+        self
+    }
+
     pub fn set_position<P: Into<Point>>(&mut self, pos: P) {
-        self.bounds.pos = pos.into();
+        self.pos = pos.into();
     }
 
     pub fn position<P: Into<Point>>(mut self, pos: P) -> Self {
@@ -91,7 +104,7 @@ impl RectangleShape {
     }
 
     pub fn get_position(&self) -> Point {
-        self.bounds.pos
+        self.pos
     }
 
     pub fn set_color(&mut self, r: f32, g: f32, b: f32, a: f32) {
@@ -99,7 +112,8 @@ impl RectangleShape {
     }
 
     pub fn set_texture_rect<R: Into<Rect>>(&mut self, rect: R) {
-        self.image = self.image.src_rect(rect.into().into());
+        let mut rect = rect.into();
+        self.image = self.image.src_rect(rect.into());
     }
 
     pub fn texture_rect<R: Into<Rect>>(mut self, rect: R) -> Self {
@@ -116,21 +130,37 @@ impl RectangleShape {
         self.set_texture_rect(sprite_sheet.get_sprite_at([0, 0]));
         self
     }
+
+    fn get_origin_offset(&self) -> Point {
+        let size = self.bounds.size;
+        let mut origin = self.origin;
+        origin.x *= -size.w;
+        origin.y *= -size.h;
+        origin
+    }
 }
 
 impl Drawable for RectangleShape {
     fn draw(&mut self, args: &mut RenderingArguments) {
-        let mut transform = args.context.transform;
+        let pos = self.pos;
+        let size = self.bounds.size;
+        let origin = self.get_origin_offset();
+        let mut transform = args.context.transform
+            .trans(pos.x, pos.y)
+            .trans(origin.x, origin.y);
 
-        if self.flip_v {
-            transform = transform.flip_v();
+        if self.flip_h {
+            transform = transform.flip_h()
+                .trans(-size.w, 0.)
         }
+        dbg!(transform);
 
         if self.texture_loaded {
             self.update_image();
             self.image.draw(&self.texture, &DrawState::default(), transform, args.graphics_api);
         } else {
-            graphics::rectangle(self.color, self.bounds, transform, args.graphics_api);
+            let bounds: Rect = Rect::from([pos.x, pos.y, size.w, size.h]);
+            graphics::rectangle(self.color, bounds, transform, args.graphics_api);
         }
     }
 }
