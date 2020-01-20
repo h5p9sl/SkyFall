@@ -14,6 +14,7 @@ pub struct RectangleShape {
     image: Image,
     texture: Texture,
     texture_loaded: bool,
+    flip_v: bool,
 }
 
 impl RectangleShape {
@@ -25,6 +26,7 @@ impl RectangleShape {
             image: Image::new(),
             texture: Texture::empty(&texture_settings).unwrap(),
             texture_loaded: false,
+            flip_v: false,
         }
     }
 
@@ -39,6 +41,15 @@ impl RectangleShape {
     //
     // ****************************************
     // ****************************************
+
+    pub fn set_flip_v(&mut self, should: bool) {
+        self.flip_v = should;
+    }
+
+    pub fn flip_v(mut self, should: bool) -> Self {
+        self.set_flip_v(should);
+        self
+    }
 
     fn get_texture_settings() -> TextureSettings {
         TextureSettings::new().mag(Filter::Nearest)
@@ -109,7 +120,11 @@ impl RectangleShape {
 
 impl Drawable for RectangleShape {
     fn draw(&mut self, args: &mut RenderingArguments) {
-        let transform = args.context.transform;
+        let mut transform = args.context.transform;
+
+        if self.flip_v {
+            transform = transform.flip_v();
+        }
 
         if self.texture_loaded {
             self.update_image();
