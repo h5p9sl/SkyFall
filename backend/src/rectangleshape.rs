@@ -153,7 +153,6 @@ impl Drawable for RectangleShape {
             transform = transform.flip_h()
                 .trans(-size.w, 0.)
         }
-        dbg!(transform);
 
         if self.texture_loaded {
             self.update_image();
