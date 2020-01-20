@@ -112,7 +112,7 @@ impl RectangleShape {
     }
 
     pub fn set_texture_rect<R: Into<Rect>>(&mut self, rect: R) {
-        let mut rect = rect.into();
+        let rect = rect.into();
         self.image = self.image.src_rect(rect.into());
     }
 
