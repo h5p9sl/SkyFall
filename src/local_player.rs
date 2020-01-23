@@ -13,8 +13,11 @@ pub struct LocalPlayer {
     movement: Point,
     on_ground: bool,
 
+    // Whether or not the sprite is flipped
+    flipped: bool,
+
     counter: f32,
-    current_frame: [u16; 2],
+    current_frame: [i16; 2],
 }
 
 impl LocalPlayer {
@@ -30,6 +33,8 @@ impl LocalPlayer {
             movement: Point::from([0., 0.]),
             on_ground: false,
 
+            flipped: false,
+
             counter: 999.0,
             current_frame: [0, 0],
         }
@@ -37,8 +42,7 @@ impl LocalPlayer {
 
     fn update_movement(&mut self, input: &InputManager) {
         // Update flip state
-        let should_flip = input.get_cursor_pos()[0] < self.rect.get_position().x;
-        self.rect.set_flip_h(should_flip);
+        self.flipped = input.get_cursor_pos()[0] < self.rect.get_position().x;
 
         // Get key states
         let move_x = (input.is_key_down(Key::A), input.is_key_down(Key::D));
@@ -59,31 +63,33 @@ impl LocalPlayer {
     }
 
     fn set_sprite(&mut self) {
+        let frame = [self.current_frame[0] as u16, self.current_frame[1] as u16];
         self.rect
-            .set_texture_rect(self.sprite.get_sprite_at(self.current_frame));
+            .set_texture_rect(self.sprite.get_sprite_at(frame));
     }
 
     /// Sets the current sprite animation to the next frame
     fn next_frame(&mut self) {
-        // If player is moving backwards
-        if self.movement.x < 0.0 {
-            // Prevent overflow panic
-            if self.current_frame[0] == 0 {
-                self.current_frame[0] = 2;
-            } else {
-                self.current_frame[0] -= 1;
-            }
+        // Reverse animation if we're flipped
+        let mut frame_change = 1;
+        if self.flipped {
+            frame_change = -frame_change;
         }
-        // If player is moving forwards
+
+        // Animate sprite "forwards" if we're moving forwards
+        if self.movement.x < 0.0 {
+            self.current_frame[0] -= frame_change;
+        }
+        // Vise versa
         else {
-            self.current_frame[0] += 1;
+            self.current_frame[0] += frame_change;
         }
 
         // Clamp sprite animation
-        if self.current_frame[0] >= self.sprite.get_columns() {
+        if self.current_frame[0] >= self.sprite.get_columns() as i16 {
             self.current_frame[0] = 1;
         } else if self.current_frame[0] <= 0 {
-            self.current_frame[0] = self.sprite.get_columns() - 1;
+            self.current_frame[0] = self.sprite.get_columns() as i16 - 1;
         }
         self.set_sprite();
     }
@@ -100,6 +106,7 @@ impl LocalPlayer {
             self.current_frame[0] = 0;
             self.set_sprite();
         }
+        self.rect.set_flip_h(self.flipped);
     }
 
     /// Called once per frame, updates velocity, position, animation, etc.
