@@ -1,7 +1,8 @@
-use piston::{keyboard::Key, Button, ButtonArgs, ButtonState, Input, Motion};
+use piston::keyboard::Key;
 
 use crate::skyfall;
 
+use ::input::InputManager;
 use ::backend::shapes::Point;
 use ::backend::{Asset, RectangleShape, RenderWindow, SpriteSheet};
 
@@ -34,60 +35,27 @@ impl LocalPlayer {
         }
     }
 
-    /// Called whenever the player presses a key
-    ///
-    /// This function will update the `movement` member, which indicates which direction(s) the
-    /// player is trying to move
-    fn on_key(&mut self, key: &Key, state: ButtonState) {
-        let mut press: f64 = 1.0;
-        if state != ButtonState::Press {
-            press = -1.0;
-        }
-        match key {
-            // Movement.y becomes -1.0 on key press and 0.0 on key release
-            Key::W => self.movement.y -= press,
-            // movement.x becomes -1.0 on key press and 0.0 on key release
-            Key::A => self.movement.x -= press,
-            // movement.x becomes 1.0 on key press and 0.0 on key release
-            Key::D => self.movement.x += press,
-            _ => {}
-        }
-        // Clamp movement values
-        self.movement.x = self.movement.x.min(1.0).max(-1.0);
-        self.movement.y = self.movement.y.min(1.0).max(-1.0);
-    }
+    fn update_movement(&mut self, input: &InputManager) {
+        // Update flip state
+        let should_flip = input.get_cursor_pos()[0] < self.rect.get_position().x;
+        self.rect.set_flip_h(should_flip);
 
-    /// Called whenever the player presses a button
-    ///
-    /// This function mostly serves as a wrapper function around a `match` statement, passing the
-    /// input into other functions like `on_key`
-    fn on_button(&mut self, args: &ButtonArgs) {
-        match args.button {
-            Button::Keyboard(key) => {
-                self.on_key(&key, args.state);
-            }
-            _ => {}
-        }
-    }
+        // Get key states
+        let move_x = (input.is_key_down(Key::A), input.is_key_down(Key::D));
+        let move_y = input.is_key_down(Key::W);
 
-    /// Called whenever the main window recieves input
-    ///
-    /// This function mostly serves as a wrapper function around a `match` statement, passing the
-    /// input into other functions like `on_button`
-    pub fn on_input(&mut self, input: &Input) {
-        match input {
-            Input::Move(args) => match args {
-                Motion::MouseCursor(args) => {
-                    let should_flip = args[0] < self.rect.get_position().x;
-                    self.rect.set_flip_h(should_flip);
-                }
-                _ => {}
-            },
-            Input::Button(args) => {
-                self.on_button(&args);
-            }
-            _ => {}
-        };
+        // Reset movement variable
+        self.movement = Point::from([0., 0.]);
+
+        if move_x.0 {
+            self.movement.x -= 1.0;
+        }
+        if move_x.1 {
+            self.movement.x += 1.0;
+        }
+        if move_y {
+            self.movement.y -= 1.0;
+        }
     }
 
     fn set_sprite(&mut self) {
@@ -135,8 +103,11 @@ impl LocalPlayer {
     }
 
     /// Called once per frame, updates velocity, position, animation, etc.
-    pub fn update(&mut self, delta: f64) {
+    pub fn update(&mut self, delta: f64, input: &InputManager) {
         let mut pos = self.rect.get_position();
+
+        // Update movement
+        self.update_movement(input);
 
         // Update velocity
         self.vel.y += skyfall::GRAVITY_RATE;

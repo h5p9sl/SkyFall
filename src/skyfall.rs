@@ -2,6 +2,7 @@ use crate::gamestate::GameState;
 use crate::main_menu::MainMenu;
 use crate::scenemanager::SceneManager;
 use ::backend::RenderWindow;
+use ::input::InputManager;
 use piston::Input;
 
 use ::backend::shapes;
@@ -14,6 +15,7 @@ pub struct SkyFall {
     state: GameState,
     main_menu: MainMenu,
     game: SceneManager,
+    input: InputManager,
 }
 
 impl SkyFall {
@@ -25,6 +27,7 @@ impl SkyFall {
             state: GameState::MainMenu,
             main_menu: MainMenu::new(size),
             game: SceneManager::new(),
+            input: InputManager::new(),
         }
     }
 
@@ -54,6 +57,7 @@ impl SkyFall {
     /// This function passes the input event down to the entities
     /// so that they can respond to the input event
     pub fn on_input(&mut self, input: &Input) {
+        self.input.on_input(input);
         if self.ensure_valid_state() {
             match self.state {
                 GameState::MainMenu => self.next_state = self.main_menu.on_input(input),
@@ -84,7 +88,7 @@ impl SkyFall {
     pub fn update(&mut self, delta: f64) {
         match self.state {
             GameState::MainMenu => self.main_menu.update(delta),
-            GameState::InGame => self.game.update(delta),
+            GameState::InGame => self.game.update(delta, &self.input),
             _ => panic!("Invalid GameState in SkyFall::update"),
         }
         self.update_state();

@@ -1,4 +1,5 @@
 use crate::gamestate::GameState;
+use ::input::InputManager;
 use ::backend::{shapes, RenderWindow};
 use piston::{keyboard::Key, Button, Input};
 
@@ -20,7 +21,6 @@ impl SceneManager {
     pub fn resize(&mut self, size: shapes::Size) {}
 
     pub fn on_input(&mut self, input: &Input) -> GameState {
-        self.local_player.on_input(input);
         match input {
             Input::Button(args) => {
                 if args.button == Button::Keyboard(Key::Escape) {
@@ -32,8 +32,8 @@ impl SceneManager {
         GameState::InGame
     }
 
-    pub fn update(&mut self, delta: f64) {
-        self.local_player.update(delta);
+    pub fn update(&mut self, delta: f64, input: &InputManager) {
+        self.local_player.update(delta, input);
     }
 
     pub fn draw(&mut self, window: &mut RenderWindow) {
