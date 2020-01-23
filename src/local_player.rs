@@ -40,9 +40,33 @@ impl LocalPlayer {
         }
     }
 
+    fn update_head(&mut self, input: &InputManager) {
+        let cursor_pos = input.get_cursor_pos();
+        let rect_pos = self.rect.get_position();
+
+        // Get angle between cursor and player head
+        let head_pos = [rect_pos.x, rect_pos.y + 16.0];
+        let mut pos = [cursor_pos[0] - head_pos[0], cursor_pos[1] - head_pos[1]];
+        let hyp = pos[0].hypot(pos[1]);
+        pos[0] /= hyp;
+        pos[1] /= hyp;
+
+        if (pos[1] <= -0.5) {
+            self.current_frame[1] = 1; // Looking up
+        }
+        else if (pos[1] >= 0.5) {
+            self.current_frame[1] = 2; // Looking down
+        }
+        else {
+            self.current_frame[1] = 0; // Looking straight
+        }
+    }
+
     fn update_movement(&mut self, input: &InputManager) {
         // Update flip state
-        self.flipped = input.get_cursor_pos()[0] < self.rect.get_position().x;
+        let cursor_pos = input.get_cursor_pos();
+        let rect_pos = self.rect.get_position();
+        self.flipped = cursor_pos[0] < rect_pos.x;
 
         // Get key states
         let move_x = (input.is_key_down(Key::A), input.is_key_down(Key::D));
@@ -137,6 +161,7 @@ impl LocalPlayer {
             self.on_ground = false;
         }
 
+        self.update_head(input);
         self.update_animation(delta);
         self.rect.set_position(pos);
     }
