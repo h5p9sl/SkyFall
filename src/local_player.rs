@@ -13,18 +13,16 @@ pub struct LocalPlayer {
     on_ground: bool,
 
     counter: f32,
-    current_frame: [u32; 2],
+    current_frame: [u16; 2],
 }
 
 impl LocalPlayer {
     pub fn new() -> LocalPlayer {
-        let sprite = SpriteSheet::new(Asset::graphic("player/original_light.png"))
-            .rows(3)
-            .columns(7)
-            .size([20., 32.]);
+        let sprite = SpriteSheet::new(Asset::graphic("player/original_light.sprite"));
         LocalPlayer {
             sprite: sprite.clone(),
-            rect: RectangleShape::new().size([80., 120.])
+            rect: RectangleShape::new()
+                .size([80., 120.])
                 .sprite(&sprite)
                 .origin([0.5, 0.0]),
             vel: Point::from([0., 0.]),
@@ -78,15 +76,13 @@ impl LocalPlayer {
     /// input into other functions like `on_button`
     pub fn on_input(&mut self, input: &Input) {
         match input {
-            Input::Move(args) => {
-                match args {
-                    Motion::MouseCursor(args) => {
-                        let should_flip = args[0] < self.rect.get_position().x;
-                        self.rect.set_flip_h(should_flip);
-                    }
-                    _ => {}
+            Input::Move(args) => match args {
+                Motion::MouseCursor(args) => {
+                    let should_flip = args[0] < self.rect.get_position().x;
+                    self.rect.set_flip_h(should_flip);
                 }
-            }
+                _ => {}
+            },
             Input::Button(args) => {
                 self.on_button(&args);
             }

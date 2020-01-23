@@ -1,5 +1,5 @@
-use opengl_graphics::{Texture, TextureSettings, Filter};
 use graphics::*;
+use opengl_graphics::{Filter, Texture, TextureSettings};
 use shapes::*;
 
 use graphics::types::Color;
@@ -24,9 +24,9 @@ impl RectangleShape {
         let texture_settings = RectangleShape::get_texture_settings();
         RectangleShape {
             color: [1., 1., 1., 1.],
-            bounds: Rect::from([0., 0., 0., 0.,]),
-            pos: Point::from([0., 0.,]),
-            origin: Point::from([0., 0.,]),
+            bounds: Rect::from([0., 0., 0., 0.]),
+            pos: Point::from([0., 0.]),
+            origin: Point::from([0., 0.]),
             image: Image::new(),
             texture: Texture::empty(&texture_settings).unwrap(),
             texture_loaded: false,
@@ -145,18 +145,24 @@ impl Drawable for RectangleShape {
         let pos = self.pos;
         let size = self.bounds.size;
         let origin = self.get_origin_offset();
-        let mut transform = args.context.transform
+        let mut transform = args
+            .context
+            .transform
             .trans(pos.x, pos.y)
             .trans(origin.x, origin.y);
 
         if self.flip_h {
-            transform = transform.flip_h()
-                .trans(-size.w, 0.)
+            transform = transform.flip_h().trans(-size.w, 0.)
         }
 
         if self.texture_loaded {
             self.update_image();
-            self.image.draw(&self.texture, &DrawState::default(), transform, args.graphics_api);
+            self.image.draw(
+                &self.texture,
+                &DrawState::default(),
+                transform,
+                args.graphics_api,
+            );
         } else {
             let bounds: Rect = Rect::from([pos.x, pos.y, size.w, size.h]);
             graphics::rectangle(self.color, bounds, transform, args.graphics_api);
