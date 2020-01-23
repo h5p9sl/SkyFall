@@ -51,10 +51,10 @@ impl LocalPlayer {
         pos[0] /= hyp;
         pos[1] /= hyp;
 
-        if (pos[1] <= -0.5) {
+        if pos[1] <= -0.5 {
             self.current_frame[1] = 1; // Looking up
         }
-        else if (pos[1] >= 0.5) {
+        else if pos[1] >= 0.5 {
             self.current_frame[1] = 2; // Looking down
         }
         else {
