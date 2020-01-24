@@ -30,9 +30,6 @@ pub fn start_game() {
 
     let mut clock: Instant = Instant::now();
     while let Some(e) = window.poll_event() {
-        // Get delta time
-        let delta = get_delta_time(&mut clock).max(0.01);
-
         // Check event type and run code accordingly
         let input: Option<Input> = e.clone().into();
         if input.is_some() {
@@ -48,6 +45,9 @@ pub fn start_game() {
             window.display(&args);
         }
         if let Some(_args) = e.update_args() {
+            // Get delta time
+            let delta = get_delta_time(&mut clock);
+
             game.update(delta);
         }
     }
