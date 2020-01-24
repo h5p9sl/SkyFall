@@ -28,7 +28,7 @@ impl LocalPlayer {
             rect: RectangleShape::new()
                 .size([80., 120.])
                 .sprite(&sprite)
-                .origin([0.5, 0.0]),
+                .origin([0.5, 1.0]),
             vel: Point::from([0., 0.]),
             movement: Point::from([0., 0.]),
             on_ground: false,
@@ -45,7 +45,7 @@ impl LocalPlayer {
         let rect_pos = self.rect.get_position();
 
         // Get angle between cursor and player head
-        let head_pos = [rect_pos.x, rect_pos.y + 16.0];
+        let head_pos = [rect_pos.x, rect_pos.y - 100.0];
         let mut pos = [cursor_pos[0] - head_pos[0], cursor_pos[1] - head_pos[1]];
         let hyp = pos[0].hypot(pos[1]);
         pos[0] /= hyp;
@@ -153,8 +153,8 @@ impl LocalPlayer {
         // Update position
         pos.y += self.vel.y * delta;
         pos.x += self.vel.x * delta;
-        if pos.y >= 600.0 - 120.0 {
-            pos.y = 600.0 - 120.0;
+        if pos.y >= 600.0 {
+            pos.y = 600.0;
             self.vel.y = 0.0;
             self.on_ground = true;
         } else {
