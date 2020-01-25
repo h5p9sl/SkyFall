@@ -74,7 +74,7 @@ impl MainMenu {
         GameState::MainMenu
     }
 
-    pub fn update(&mut self, delta: f64) {}
+    pub fn update(&mut self, _delta: f64) {}
 
     pub fn draw(&mut self, window: &mut RenderWindow) {
         window.clear(self.bg_color);

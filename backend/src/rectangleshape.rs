@@ -11,11 +11,21 @@ use crate::sprite_sheet::SpriteSheet;
 pub struct RectangleShape {
     color: Color,
     bounds: Rect,
+    /// The parent rectangle's (if any) position
+    parent: Point,
+    /// The position of the rectangle
     pos: Point,
+    /// Whether or not the origin is measured in pixels
+    origin_pixels: bool,
     origin: Point,
     image: Image,
     texture: Texture,
     texture_loaded: bool,
+
+    rotation: f64,
+
+    /// Whether or not to offset the flipped sprite with it's width
+    flip_offset_h: bool,
     flip_h: bool,
 }
 
@@ -25,11 +35,15 @@ impl RectangleShape {
         RectangleShape {
             color: [1., 1., 1., 1.],
             bounds: Rect::from([0., 0., 0., 0.]),
+            parent: Point::from([0., 0.]),
             pos: Point::from([0., 0.]),
             origin: Point::from([0., 0.]),
+            origin_pixels: false,
             image: Image::new(),
             texture: Texture::empty(&texture_settings).unwrap(),
             texture_loaded: false,
+            rotation: 0.0,
+            flip_offset_h: true,
             flip_h: false,
         }
     }
@@ -45,6 +59,15 @@ impl RectangleShape {
     //
     // ****************************************
     // ****************************************
+
+    pub fn rotate(&mut self, degrees: f64) {
+        self.rotation = degrees;
+    }
+
+    pub fn flip_offset_h(mut self, should: bool) -> Self {
+        self.flip_offset_h = should;
+        self
+    }
 
     pub fn set_flip_h(&mut self, should: bool) {
         self.flip_h = should;
@@ -89,9 +112,24 @@ impl RectangleShape {
         self.origin = pos.into();
     }
 
+    pub fn origin_px<P: Into<Point>>(mut self, pos: P) -> Self {
+        self.origin_pixels = true;
+        self.set_origin(pos);
+        self
+    }
+
     pub fn origin<P: Into<Point>>(mut self, pos: P) -> Self {
         self.set_origin(pos);
         self
+    }
+
+    pub fn move_<P: Into<Point>>(&mut self, pos: P) {
+        self.pos = self.pos +  pos.into();
+    }
+
+    /// Sets position based on parent rectangle
+    pub fn parent(&mut self, other: &RectangleShape) {
+        self.parent = other.get_position();
     }
 
     pub fn set_position<P: Into<Point>>(&mut self, pos: P) {
@@ -104,7 +142,7 @@ impl RectangleShape {
     }
 
     pub fn get_position(&self) -> Point {
-        self.pos
+        self.pos + self.parent
     }
 
     pub fn set_color(&mut self, r: f32, g: f32, b: f32, a: f32) {
@@ -131,28 +169,40 @@ impl RectangleShape {
         self
     }
 
+    /// Return calculated offset
     fn get_origin_offset(&self) -> Point {
         let size = self.bounds.size;
         let mut origin = self.origin;
-        origin.x *= -size.w;
-        origin.y *= -size.h;
+        if !self.origin_pixels {
+            origin.x *= size.w;
+            origin.y *= size.h;
+        }
+
+        // Negate origin
+        origin.x = -origin.x;
+        origin.y = -origin.y;
+
         origin
     }
 }
 
 impl Drawable for RectangleShape {
     fn draw(&mut self, args: &mut RenderingArguments) {
-        let pos = self.pos;
+        let pos = self.pos + self.parent;
         let size = self.bounds.size;
         let origin = self.get_origin_offset();
         let mut transform = args
             .context
             .transform
             .trans(pos.x, pos.y)
+            .rot_deg(self.rotation)
             .trans(origin.x, origin.y);
 
         if self.flip_h {
-            transform = transform.flip_h().trans(-size.w, 0.)
+            transform = transform.flip_h();
+            if self.flip_offset_h {
+                transform = transform.trans(-size.w, 0.0);
+            }
         }
 
         if self.texture_loaded {

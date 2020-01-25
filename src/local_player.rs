@@ -7,8 +7,12 @@ use ::backend::shapes::Point;
 use ::backend::{Asset, RectangleShape, RenderWindow, SpriteSheet};
 
 pub struct LocalPlayer {
-    sprite: SpriteSheet,
-    rect: RectangleShape,
+    body_sprite: SpriteSheet,
+    body_rect: RectangleShape,
+
+    arm_sprite: SpriteSheet,
+    arm_rect: RectangleShape,
+
     vel: Point,
     movement: Point,
     on_ground: bool,
@@ -22,13 +26,22 @@ pub struct LocalPlayer {
 
 impl LocalPlayer {
     pub fn new() -> LocalPlayer {
-        let sprite = SpriteSheet::new(Asset::graphic("player/original_light.sprite"));
+        let body_sprite = SpriteSheet::new(Asset::graphic("player/original_light.sprite"));
+        let arm_sprite = SpriteSheet::new(Asset::graphic("weapon/pistol.sprite"));
         LocalPlayer {
-            sprite: sprite.clone(),
-            rect: RectangleShape::new()
-                .size([80., 120.])
-                .sprite(&sprite)
+            body_sprite: body_sprite.clone(),
+            body_rect: RectangleShape::new()
+                .size(body_sprite.get_size() * 4.0)
+                .sprite(&body_sprite)
                 .origin([0.5, 1.0]),
+
+            arm_sprite: arm_sprite.clone(),
+            arm_rect: RectangleShape::new()
+                .size(arm_sprite.get_size() * 4.0)
+                .sprite(&arm_sprite)
+                .origin_px([1.5 * 4.0, 7.5 * 4.0])
+                .flip_offset_h(false),
+
             vel: Point::from([0., 0.]),
             movement: Point::from([0., 0.]),
             on_ground: false,
@@ -40,9 +53,22 @@ impl LocalPlayer {
         }
     }
 
+    fn update_arm(&mut self, input: &InputManager) {
+        self.arm_rect.parent(&self.body_rect);
+        self.arm_rect.set_position([0.0, -74.0]);
+        self.arm_rect.set_flip_h(self.flipped);
+
+        let mouse_pos = input.get_cursor_pos();
+        let arm_pos = self.arm_rect.get_position();
+        let diffs = [mouse_pos[0] - arm_pos.x, mouse_pos[1] - arm_pos.y];
+        let angle = f64::atan(diffs[1] / diffs[0]);
+
+        self.arm_rect.rotate(angle * 180.0 / std::f64::consts::PI);
+    }
+
     fn update_head(&mut self, input: &InputManager) {
         let cursor_pos = input.get_cursor_pos();
-        let rect_pos = self.rect.get_position();
+        let rect_pos = self.body_rect.get_position();
 
         // Get angle between cursor and player head
         let head_pos = [rect_pos.x, rect_pos.y - 100.0];
@@ -65,7 +91,7 @@ impl LocalPlayer {
     fn update_movement(&mut self, input: &InputManager) {
         // Update flip state
         let cursor_pos = input.get_cursor_pos();
-        let rect_pos = self.rect.get_position();
+        let rect_pos = self.body_rect.get_position();
         self.flipped = cursor_pos[0] < rect_pos.x;
 
         // Get key states
@@ -88,8 +114,8 @@ impl LocalPlayer {
 
     fn set_sprite(&mut self) {
         let frame = [self.current_frame[0] as u16, self.current_frame[1] as u16];
-        self.rect
-            .set_texture_rect(self.sprite.get_sprite_at(frame));
+        self.body_rect
+            .set_texture_rect(self.body_sprite.get_sprite_at(frame));
     }
 
     /// Sets the current sprite animation to the next frame
@@ -110,10 +136,10 @@ impl LocalPlayer {
         }
 
         // Clamp sprite animation
-        if self.current_frame[0] >= self.sprite.get_columns() as i16 {
+        if self.current_frame[0] >= self.body_sprite.get_columns() as i16 {
             self.current_frame[0] = 1;
         } else if self.current_frame[0] <= 0 {
-            self.current_frame[0] = self.sprite.get_columns() as i16 - 1;
+            self.current_frame[0] = self.body_sprite.get_columns() as i16 - 1;
         }
         self.set_sprite();
     }
@@ -130,12 +156,12 @@ impl LocalPlayer {
             self.current_frame[0] = 0;
             self.set_sprite();
         }
-        self.rect.set_flip_h(self.flipped);
+        self.body_rect.set_flip_h(self.flipped);
     }
 
     /// Called once per frame, updates velocity, position, animation, etc.
     pub fn update(&mut self, delta: f64, input: &InputManager) {
-        let mut pos = self.rect.get_position();
+        let mut pos = self.body_rect.get_position();
 
         // Update movement
         self.update_movement(input);
@@ -163,10 +189,14 @@ impl LocalPlayer {
 
         self.update_head(input);
         self.update_animation(delta);
-        self.rect.set_position(pos);
+
+        // Set positions
+        self.body_rect.set_position(pos);
+        self.update_arm(input);
     }
 
     pub fn draw(&mut self, window: &mut RenderWindow) {
-        window.draw(&mut self.rect);
+        window.draw(&mut self.body_rect);
+        window.draw(&mut self.arm_rect);
     }
 }

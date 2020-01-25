@@ -18,7 +18,7 @@ impl SceneManager {
         }
     }
 
-    pub fn resize(&mut self, size: shapes::Size) {}
+    pub fn resize(&mut self, _size: shapes::Size) {}
 
     pub fn on_input(&mut self, input: &Input) -> GameState {
         match input {
