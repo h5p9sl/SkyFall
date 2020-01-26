@@ -2,9 +2,9 @@ use piston::keyboard::Key;
 
 use crate::skyfall;
 
-use ::input::InputManager;
 use ::backend::shapes::Point;
 use ::backend::{Asset, RectangleShape, RenderWindow, SpriteSheet};
+use ::input::InputManager;
 
 pub struct LocalPlayer {
     body_sprite: SpriteSheet,
@@ -81,11 +81,9 @@ impl LocalPlayer {
 
         if pos[1] <= -0.5 {
             self.current_frame[1] = 1; // Looking up
-        }
-        else if pos[1] >= 0.5 {
+        } else if pos[1] >= 0.5 {
             self.current_frame[1] = 2; // Looking down
-        }
-        else {
+        } else {
             self.current_frame[1] = 0; // Looking straight
         }
     }

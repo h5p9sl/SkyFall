@@ -1,6 +1,6 @@
 use crate::gamestate::GameState;
-use ::input::InputManager;
 use ::backend::{shapes, RenderWindow};
+use ::input::InputManager;
 use piston::{keyboard::Key, Button, Input};
 
 use crate::local_player::LocalPlayer;
