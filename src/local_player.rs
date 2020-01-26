@@ -151,7 +151,7 @@ impl LocalPlayer {
     fn update_animation(&mut self, delta: f64) {
         self.counter += delta as f32;
         if self.movement.x != 0.0 {
-            if self.counter > 0.2 {
+            if self.counter > 0.15 {
                 self.next_frame();
                 self.counter = 0.0;
             }
