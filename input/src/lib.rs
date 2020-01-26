@@ -3,6 +3,7 @@ use piston::*;
 
 pub struct InputManager {
     keys: [bool; 256],
+    buttons: [bool; 16],
     cursor_pos: [f64; 2],
 }
 
@@ -10,6 +11,7 @@ impl InputManager {
     pub fn new() -> InputManager {
         InputManager {
             keys: [false; 256],
+            buttons: [false; 16],
             cursor_pos: [0., 0.],
         }
     }
@@ -25,7 +27,14 @@ impl InputManager {
                 } else {
                     println!("key.code() was {}", key.code());
                 }
-            }
+            },
+            Mouse(key) => {
+                if let Some(x) = self.buttons.get_mut(key as usize) {
+                    *x = state;
+                } else {
+                    println!("button.code() was {}", key as usize);
+                }
+            },
             _ => {}
         }
     }
@@ -55,12 +64,15 @@ impl InputManager {
     pub fn was_key_down(&self, _key: Key) -> bool {
         unimplemented!();
     }
-    pub fn is_button_down(&self, _button: Button) -> bool {
+
+    pub fn is_button_down(&self, button: MouseButton) -> bool {
+        *self.buttons.get(button as usize).unwrap_or(&false)
+    }
+
+    pub fn was_button_down(&self, _button: MouseButton) -> bool {
         unimplemented!();
     }
-    pub fn was_button_down(&self, _button: Button) -> bool {
-        unimplemented!();
-    }
+
     pub fn get_cursor_pos(&self) -> [f64; 2] {
         self.cursor_pos
     }

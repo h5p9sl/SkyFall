@@ -33,8 +33,7 @@ impl LocalPlayer {
             body_rect: RectangleShape::new()
                 .size(body_sprite.get_size() * 4.0)
                 .sprite(&body_sprite)
-                .origin([0.5, 1.0])
-                .debug_outline(true),
+                .origin([0.5, 1.0]),
 
             arm: Arm::new(),
 

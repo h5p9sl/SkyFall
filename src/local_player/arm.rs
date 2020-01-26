@@ -1,11 +1,14 @@
 use ::backend::{Asset, RectangleShape, RenderWindow, SpriteSheet};
 use ::input::InputManager;
 
+use piston::*;
+
 pub struct Arm {
     arm_sprite: SpriteSheet,
     arm_rect: RectangleShape,
     current_frame: [i16; 2],
     counter: f32,
+    shooting: bool,
 }
 
 impl Arm {
@@ -20,6 +23,7 @@ impl Arm {
                 .flip_offset_h(false),
             current_frame: [0, 0],
             counter: std::f32::MAX,
+            shooting: false,
         }
     }
 
@@ -35,17 +39,18 @@ impl Arm {
         // Clamp sprite animation
         if self.current_frame[0] >= self.arm_sprite.get_columns() as i16 {
             self.current_frame[0] = 0;
-        } else if self.current_frame[0] <= 0 {
-            self.current_frame[0] = self.arm_sprite.get_columns() as i16 - 1;
+            self.shooting = false;
         }
         self.set_sprite();
     }
 
     fn update_animation(&mut self, delta: f64) {
-        self.counter += delta as f32;
-        if self.counter > 0.15 {
-            self.next_frame();
-            self.counter = 0.0;
+        if self.shooting {
+            self.counter += delta as f32;
+            if self.counter > 0.1 {
+                self.next_frame();
+                self.counter = 0.0;
+            }
         }
     }
 
@@ -70,6 +75,9 @@ impl Arm {
             self.arm_rect.rotate(angle);
         }
 
+        if !self.shooting && input.is_button_down(MouseButton::Left) {
+            self.shooting = true;
+        }
         self.update_animation(delta);
     }
 
