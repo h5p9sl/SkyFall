@@ -66,8 +66,8 @@ impl LocalPlayer {
             let arm_pos = self.arm_rect.get_position();
             let diffs = [mouse_pos[0] - arm_pos.x, mouse_pos[1] - arm_pos.y];
             let angle = f64::atan(diffs[1] / diffs[0]);
-
-            self.arm_rect.rotate(angle * 180.0 / std::f64::consts::PI);
+            let angle = angle * 180.0 / std::f64::consts::PI;
+            self.arm_rect.rotate(angle);
         }
     }
 
@@ -92,11 +92,6 @@ impl LocalPlayer {
     }
 
     fn update_movement(&mut self, input: &InputManager) {
-        // Update flip state
-        let cursor_pos = input.get_cursor_pos();
-        let rect_pos = self.body_rect.get_position();
-        self.flipped = cursor_pos[0] < rect_pos.x;
-
         // Get key states
         let move_x = (input.is_key_down(Key::A), input.is_key_down(Key::D));
         let move_y = input.is_key_down(Key::W);
@@ -162,6 +157,13 @@ impl LocalPlayer {
         self.body_rect.set_flip_h(self.flipped);
     }
 
+    fn update_flipped_state(&mut self, input: &InputManager) {
+        // Update flipped state
+        let cursor_pos = input.get_cursor_pos();
+        let rect_pos = self.body_rect.get_position();
+        self.flipped = cursor_pos[0] < rect_pos.x;
+    }
+
     /// Called once per frame, updates velocity, position, animation, etc.
     pub fn update(&mut self, delta: f64, input: &InputManager) {
         let mut pos = self.body_rect.get_position();
@@ -189,12 +191,14 @@ impl LocalPlayer {
         } else {
             self.on_ground = false;
         }
-
+        // Set position
+        self.body_rect.set_position(pos);
+        // Check if our sprite should be flipped based on the cursor position
+        // This is checked AFTER updating our position & velocity variables.
+        self.update_flipped_state(input);
+        // Next, we can update our sprite
         self.update_head(input);
         self.update_animation(delta);
-
-        // Set positions
-        self.body_rect.set_position(pos);
         self.update_arm(input);
     }
 
