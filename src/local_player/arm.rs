@@ -1,4 +1,4 @@
-use ::backend::{Asset, RectangleShape, SpriteSheet, RenderWindow};
+use ::backend::{Asset, RectangleShape, RenderWindow, SpriteSheet};
 use ::input::InputManager;
 
 pub struct Arm {
@@ -17,8 +17,7 @@ impl Arm {
                 .size(arm_sprite.get_size() * 4.0)
                 .sprite(&arm_sprite)
                 .origin_px([1.5 * 4.0, 7.5 * 4.0])
-                .flip_offset_h(false)
-                .debug_outline(true),
+                .flip_offset_h(false),
             current_frame: [0, 0],
             counter: std::f32::MAX,
         }
@@ -50,7 +49,13 @@ impl Arm {
         }
     }
 
-    pub fn update(&mut self, input: &InputManager, parent: &RectangleShape, flipped: bool, delta: f64) {
+    pub fn update(
+        &mut self,
+        input: &InputManager,
+        parent: &RectangleShape,
+        flipped: bool,
+        delta: f64,
+    ) {
         self.arm_rect.parent(parent);
         self.arm_rect.set_position([0.0, -74.0]);
         self.arm_rect.set_flip_h(flipped);

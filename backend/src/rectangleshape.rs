@@ -132,7 +132,7 @@ impl RectangleShape {
     }
 
     pub fn move_<P: Into<Point>>(&mut self, pos: P) {
-        self.pos = self.pos +  pos.into();
+        self.pos = self.pos + pos.into();
     }
 
     /// Sets position based on parent rectangle
@@ -196,7 +196,6 @@ impl RectangleShape {
 
 use graphics::types::Matrix2d;
 fn draw_debug_outline(bounds: Rect, transform: Matrix2d, args: &mut RenderingArguments) {
-    if false { return; }
     let color: [f32; 4] = [1.0, 0.5, 0.5, 1.0];
     let radius = 1.5;
 
@@ -240,7 +239,9 @@ impl Drawable for RectangleShape {
         }
 
         let bounds: Rect = Rect::from([0.0, 0.0, size.w, size.h]);
-        draw_debug_outline(bounds, transform, args);
+        if self.debug_outline {
+            draw_debug_outline(bounds, transform, args);
+        }
 
         if self.texture_loaded {
             self.update_image();

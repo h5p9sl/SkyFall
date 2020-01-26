@@ -35,7 +35,8 @@ impl SpriteSheet {
         let mut file_path = file.into();
 
         // Get the last element of file_path, ex. "/tmp/a.txt" => "a.txt"
-        let string = file_path.iter()
+        let string = file_path
+            .iter()
             .last()
             .expect("Failed to get last element of file_path")
             .to_str()
@@ -43,17 +44,19 @@ impl SpriteSheet {
         eprintln!("Loading sprite \"{}\" ...", string);
 
         // Use TOML deserialization to load Sprite information
-        let mut sprite_sheet: SpriteSheet = toml::from_str(SpriteSheet::load_sprite_file(&file_path).as_str())
-            .expect("Failed to parse TOML information");
+        let mut sprite_sheet: SpriteSheet =
+            toml::from_str(SpriteSheet::load_sprite_file(&file_path).as_str())
+                .expect("Failed to parse TOML information");
 
         // Append the path found in sprite_sheet onto our working directory
         // ex. "/tmp/my_sprite.sprite" => "/tmp/" => "/tmp/aaa.png"
         file_path.pop();
         let path = file_path.join(sprite_sheet.path);
-        sprite_sheet.path = path.to_str()
+        sprite_sheet.path = path
+            .to_str()
             .expect("Failed to join sprite.path")
             .to_string();
-        
+
         // Return result
         sprite_sheet
     }
@@ -65,8 +68,7 @@ impl SpriteSheet {
         self.columns
     }
     pub fn get_size(&self) -> Size {
-        Size::from((self.size.0 as f64,
-                   self.size.1 as f64))
+        Size::from((self.size.0 as f64, self.size.1 as f64))
     }
     pub fn get_sprite_path(&self) -> String {
         self.path.clone()

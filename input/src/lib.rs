@@ -1,5 +1,5 @@
-use piston::*;
 use piston::keyboard::Key;
+use piston::*;
 
 pub struct InputManager {
     keys: [bool; 256],
@@ -25,7 +25,7 @@ impl InputManager {
                 } else {
                     println!("key.code() was {}", key.code());
                 }
-            },
+            }
             _ => {}
         }
     }
@@ -52,9 +52,15 @@ impl InputManager {
         *self.keys.get(key.code() as usize).unwrap_or(&false)
     }
 
-    pub fn was_key_down(&self, _key: Key) -> bool { unimplemented!(); }
-    pub fn is_button_down(&self, _button: Button) -> bool { unimplemented!(); }
-    pub fn was_button_down(&self, _button: Button) -> bool { unimplemented!(); }
+    pub fn was_key_down(&self, _key: Key) -> bool {
+        unimplemented!();
+    }
+    pub fn is_button_down(&self, _button: Button) -> bool {
+        unimplemented!();
+    }
+    pub fn was_button_down(&self, _button: Button) -> bool {
+        unimplemented!();
+    }
     pub fn get_cursor_pos(&self) -> [f64; 2] {
         self.cursor_pos
     }
