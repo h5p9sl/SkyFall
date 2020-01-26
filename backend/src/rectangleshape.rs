@@ -230,6 +230,12 @@ impl Drawable for RectangleShape {
             transform = transform.flip_h();
             if self.flip_offset_h {
                 transform = transform.trans(-size.w, 0.0);
+            } else {
+                // NOTE: This is a mindless bug fix for the localplayer's
+                // arm. This line may cause bugs in the future, so keep
+                // that in mind if you start seeing strange bugs around
+                // non flip_offset_h rectangles
+                transform = transform.trans(origin.x * 2.0, 0.0);
             }
         }
 

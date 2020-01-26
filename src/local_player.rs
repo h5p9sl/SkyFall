@@ -60,12 +60,15 @@ impl LocalPlayer {
         self.arm_rect.set_position([0.0, -74.0]);
         self.arm_rect.set_flip_h(self.flipped);
 
-        let mouse_pos = input.get_cursor_pos();
-        let arm_pos = self.arm_rect.get_position();
-        let diffs = [mouse_pos[0] - arm_pos.x, mouse_pos[1] - arm_pos.y];
-        let angle = f64::atan(diffs[1] / diffs[0]);
+        // Update arm rotation
+        {
+            let mouse_pos = input.get_cursor_pos();
+            let arm_pos = self.arm_rect.get_position();
+            let diffs = [mouse_pos[0] - arm_pos.x, mouse_pos[1] - arm_pos.y];
+            let angle = f64::atan(diffs[1] / diffs[0]);
 
-        self.arm_rect.rotate(angle * 180.0 / std::f64::consts::PI);
+            self.arm_rect.rotate(angle * 180.0 / std::f64::consts::PI);
+        }
     }
 
     fn update_head(&mut self, input: &InputManager) {
