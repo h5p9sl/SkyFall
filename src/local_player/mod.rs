@@ -44,7 +44,7 @@ impl LocalPlayer {
 
             flipped: false,
 
-            counter: 999.0,
+            counter: std::f32::MAX,
             current_frame: [0, 0],
         }
     }
@@ -177,7 +177,7 @@ impl LocalPlayer {
         // Next, we can update our sprite
         self.update_head(input);
         self.update_animation(delta);
-        self.arm.update(input, &self.body_rect, self.flipped);
+        self.arm.update(input, &self.body_rect, self.flipped, delta);
     }
 
     pub fn draw(&mut self, window: &mut RenderWindow) {
