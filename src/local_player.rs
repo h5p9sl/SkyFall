@@ -33,14 +33,16 @@ impl LocalPlayer {
             body_rect: RectangleShape::new()
                 .size(body_sprite.get_size() * 4.0)
                 .sprite(&body_sprite)
-                .origin([0.5, 1.0]),
+                .origin([0.5, 1.0])
+                .debug_outline(true),
 
             arm_sprite: arm_sprite.clone(),
             arm_rect: RectangleShape::new()
                 .size(arm_sprite.get_size() * 4.0)
                 .sprite(&arm_sprite)
                 .origin_px([1.5 * 4.0, 7.5 * 4.0])
-                .flip_offset_h(false),
+                .flip_offset_h(false)
+                .debug_outline(true),
 
             vel: Point::from([0., 0.]),
             movement: Point::from([0., 0.]),

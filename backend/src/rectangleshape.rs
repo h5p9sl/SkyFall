@@ -27,6 +27,8 @@ pub struct RectangleShape {
     /// Whether or not to offset the flipped sprite with it's width
     flip_offset_h: bool,
     flip_h: bool,
+
+    debug_outline: bool,
 }
 
 impl RectangleShape {
@@ -45,6 +47,7 @@ impl RectangleShape {
             rotation: 0.0,
             flip_offset_h: true,
             flip_h: false,
+            debug_outline: false,
         }
     }
 
@@ -59,6 +62,11 @@ impl RectangleShape {
     //
     // ****************************************
     // ****************************************
+
+    pub fn debug_outline(mut self, should: bool) -> Self {
+        self.debug_outline = should;
+        self
+    }
 
     pub fn rotate(&mut self, degrees: f64) {
         self.rotation = degrees;
@@ -186,11 +194,31 @@ impl RectangleShape {
     }
 }
 
+use graphics::types::Matrix2d;
+fn draw_debug_outline(bounds: Rect, transform: Matrix2d, args: &mut RenderingArguments) {
+    if false { return; }
+    let color: [f32; 4] = [1.0, 0.5, 0.5, 1.0];
+    let radius = 1.5;
+
+    // Create lines
+    let mut lines: [[f64; 4]; 4] = [[0.0; 4]; 4];
+    lines[0] = [0.0, 0.0, 0.0, bounds.size.h];
+    lines[1] = [0.0, bounds.size.h, bounds.size.w, bounds.size.h];
+    lines[2] = [bounds.size.w, bounds.size.h, bounds.size.w, 0.0];
+    lines[3] = [bounds.size.w, 0.0, 0.0, 0.0];
+
+    // Draw lines
+    for i in &lines {
+        graphics::line(color, radius, *i, transform, args.graphics_api);
+    }
+}
+
 impl Drawable for RectangleShape {
     fn draw(&mut self, args: &mut RenderingArguments) {
         let pos = self.pos + self.parent;
         let size = self.bounds.size;
         let origin = self.get_origin_offset();
+
         let mut transform = args
             .context
             .transform
@@ -205,6 +233,9 @@ impl Drawable for RectangleShape {
             }
         }
 
+        let bounds: Rect = Rect::from([0.0, 0.0, size.w, size.h]);
+        draw_debug_outline(bounds, transform, args);
+
         if self.texture_loaded {
             self.update_image();
             self.image.draw(
@@ -214,7 +245,6 @@ impl Drawable for RectangleShape {
                 args.graphics_api,
             );
         } else {
-            let bounds: Rect = Rect::from([pos.x, pos.y, size.w, size.h]);
             graphics::rectangle(self.color, bounds, transform, args.graphics_api);
         }
     }
