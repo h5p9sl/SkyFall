@@ -60,7 +60,7 @@ impl SkyFall {
         self.input.on_input(input);
         if self.ensure_valid_state() {
             match self.state {
-                GameState::MainMenu => self.next_state = self.main_menu.on_input(input),
+                GameState::MainMenu | GameState::Paused => self.next_state = self.main_menu.on_input(input),
                 GameState::InGame => self.next_state = self.game.on_input(input),
                 _ => panic!("Invalid GameState in SkyFall::on_input"),
             }
@@ -87,7 +87,7 @@ impl SkyFall {
     /// For example, if the current game-state is MainMenu, the main menu will be **updated**.
     pub fn update(&mut self, delta: f64) {
         match self.state {
-            GameState::MainMenu => self.main_menu.update(delta),
+            GameState::MainMenu | GameState::Paused => self.main_menu.update(delta, self.state),
             GameState::InGame => self.game.update(delta, &self.input),
             _ => panic!("Invalid GameState in SkyFall::update"),
         }
@@ -101,7 +101,7 @@ impl SkyFall {
         // Ensure that our state is initialized
         if self.ensure_valid_state() {
             match self.state {
-                GameState::MainMenu => self.main_menu.draw(window),
+                GameState::MainMenu | GameState::Paused => self.main_menu.draw(window),
                 GameState::InGame => self.game.draw(window),
                 _ => panic!("Invalid GameState in SkyFall::draw"),
             }

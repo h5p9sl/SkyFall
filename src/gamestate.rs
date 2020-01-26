@@ -3,4 +3,5 @@ pub enum GameState {
     Invalid,
     MainMenu,
     InGame,
+    Paused,
 }

@@ -47,6 +47,10 @@ impl GuiButton<'_> {
         button
     }
 
+    pub fn set_label(&mut self, new_label: &str) {
+        self.label.set_label(new_label.to_owned());
+    }
+
     /// Sets the text label's position to the center of the button
     fn set_label_pos(&mut self) {
         let size = self.bounds.size;

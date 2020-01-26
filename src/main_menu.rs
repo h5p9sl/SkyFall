@@ -12,6 +12,7 @@ pub struct MainMenu {
     exit_button: GuiButton<'static>,
     music: Music,
     bg_color: [f32; 4],
+    paused: bool,
 }
 
 impl MainMenu {
@@ -33,6 +34,7 @@ impl MainMenu {
                 .origin((0.5, 0.5)),
             music: Music::new(Asset::music("skullcrusher.ogg").as_str()).unwrap(),
             bg_color: [0.14, 0.58, 0.68, 1.0],
+            paused: false,
         };
         menu.music.play();
         menu.resize(window_size);
@@ -74,7 +76,13 @@ impl MainMenu {
         GameState::MainMenu
     }
 
-    pub fn update(&mut self, _delta: f64) {}
+    pub fn update(&mut self, _delta: f64, state: GameState) {
+        self.paused = state == GameState::Paused;
+        if self.paused {
+            self.bg_color = [0.44, 0.58, 0.68, 1.0];
+            self.start_button.set_label("Unpause")
+        }
+    }
 
     pub fn draw(&mut self, window: &mut RenderWindow) {
         window.clear(self.bg_color);

@@ -24,7 +24,7 @@ impl SceneManager {
         match input {
             Input::Button(args) => {
                 if args.button == Button::Keyboard(Key::Escape) {
-                    return GameState::MainMenu;
+                    return GameState::Paused;
                 }
             }
             _ => {}

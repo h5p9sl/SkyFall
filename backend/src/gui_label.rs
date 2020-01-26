@@ -33,6 +33,9 @@ impl GuiLabel<'_> {
             .expect("GlyphCache creation failed!"),
         }
     }
+    pub fn set_label(&mut self, new_label: String) {
+        self.text = new_label;
+    }
     pub fn set_color(&mut self, new_color: [f32; 4]) {
         self.color = new_color;
     }
