@@ -38,6 +38,9 @@ impl MainMenu {
             bg_color: [0.14, 0.58, 0.68, 1.0],
             paused: false,
         };
+        menu.music.set_looping(true);
+        menu.pause_music.set_looping(true);
+
         menu.music.play();
         menu.resize(window_size);
         menu
@@ -59,8 +62,8 @@ impl MainMenu {
 
     /// Stops all playing music
     fn stop_all_music(&mut self) {
-        self.music.stop();
-        self.pause_music.stop();
+        self.music.pause();
+        self.pause_music.pause();
     }
 
     /// Called whenever the main window recieves input from the user. This input is then passed
