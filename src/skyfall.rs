@@ -65,6 +65,7 @@ impl SkyFall {
                 _ => panic!("Invalid GameState in SkyFall::on_input"),
             }
         }
+        self.update_state();
     }
 
     /// Called whenever the main window is resized
