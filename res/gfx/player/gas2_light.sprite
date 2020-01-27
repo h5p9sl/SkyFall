@@ -1,0 +1,4 @@
+path = 'gas2_light.png'
+size = [ 20, 32 ]
+rows = 3
+columns = 7

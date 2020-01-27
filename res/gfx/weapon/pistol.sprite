@@ -1,0 +1,4 @@
+path = 'pistol.png'
+size = [ 16, 9 ]
+rows = 1
+columns = 3
