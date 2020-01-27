@@ -28,8 +28,10 @@ impl SceneManager {
                 if args.button == Button::Keyboard(Key::Escape) {
                     return GameState::Paused;
                 }
-                if args.button == Button::Keyboard(Key::Right) {
-                    self.point.x -= 1.0;
+                if args.button == Button::Keyboard(Key::F2) {
+                    if args.state == piston::ButtonState::Press {
+                        self.local_player.toggle_debug();
+                    }
                 }
             }
             _ => {}

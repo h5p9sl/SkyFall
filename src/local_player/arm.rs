@@ -9,6 +9,7 @@ pub struct Arm {
     current_frame: [i16; 2],
     counter: f32,
     shooting: bool,
+    debug: bool,
 }
 
 impl Arm {
@@ -24,7 +25,13 @@ impl Arm {
             current_frame: [0, 0],
             counter: std::f32::MAX,
             shooting: false,
+            debug: false,
         }
+    }
+
+    pub fn toggle_debug(&mut self) {
+        self.debug = !self.debug;
+        self.arm_rect.set_debug_outline(self.debug);
     }
 
     fn set_sprite(&mut self) {

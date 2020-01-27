@@ -63,8 +63,12 @@ impl RectangleShape {
     // ****************************************
     // ****************************************
 
-    pub fn debug_outline(mut self, should: bool) -> Self {
+    pub fn set_debug_outline(&mut self, should: bool) {
         self.debug_outline = should;
+    }
+
+    pub fn debug_outline(mut self, should: bool) -> Self {
+        self.set_debug_outline(should);
         self
     }
 

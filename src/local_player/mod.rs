@@ -23,6 +23,7 @@ pub struct LocalPlayer {
 
     counter: f32,
     current_frame: [i16; 2],
+    debug: bool,
 }
 
 impl LocalPlayer {
@@ -45,7 +46,14 @@ impl LocalPlayer {
 
             counter: std::f32::MAX,
             current_frame: [0, 0],
+            debug: false,
         }
+    }
+
+    pub fn toggle_debug(&mut self) {
+        self.debug = !self.debug;
+        self.body_rect.set_debug_outline(self.debug);
+        self.arm.toggle_debug();
     }
 
     pub fn get_position(&self) -> Point {
