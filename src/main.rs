@@ -16,7 +16,7 @@ mod local_player;
 
 pub use skyfall::SkyFall;
 
-const SKYFALL_VERSION: &str = "0.1.0";
+const SKYFALL_VERSION: &str = "0.2.0";
 
 fn get_delta_time(clock: &mut Instant) -> f64 {
     let delta = clock.elapsed().as_secs_f64();
