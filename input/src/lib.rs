@@ -27,14 +27,14 @@ impl InputManager {
                 } else {
                     println!("key.code() was {}", key.code());
                 }
-            },
+            }
             Mouse(key) => {
                 if let Some(x) = self.buttons.get_mut(key as usize) {
                     *x = state;
                 } else {
                     println!("button.code() was {}", key as usize);
                 }
-            },
+            }
             _ => {}
         }
     }

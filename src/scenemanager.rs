@@ -1,5 +1,5 @@
 use crate::gamestate::GameState;
-use ::backend::{Camera, shapes, RenderWindow};
+use ::backend::{shapes, Camera, RenderWindow};
 use ::input::InputManager;
 use piston::{keyboard::Key, Button, Input};
 

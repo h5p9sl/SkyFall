@@ -62,7 +62,9 @@ impl SkyFall {
         self.input.on_input(input);
         if self.ensure_valid_state() {
             match self.state {
-                GameState::MainMenu | GameState::Paused => self.next_state = self.main_menu.on_input(input),
+                GameState::MainMenu | GameState::Paused => {
+                    self.next_state = self.main_menu.on_input(input)
+                }
                 GameState::InGame => self.next_state = self.game.on_input(input),
                 _ => panic!("Invalid GameState in SkyFall::on_input"),
             }
@@ -107,10 +109,10 @@ impl SkyFall {
                 GameState::MainMenu | GameState::Paused => {
                     self.main_menu.draw(window);
                     self.camera.set_position([0., 0.]);
-                },
+                }
                 GameState::InGame => {
                     self.game.draw(window, &mut self.camera);
-                },
+                }
                 _ => panic!("Invalid GameState in SkyFall::draw"),
             }
             self.camera.set_window_view(window);

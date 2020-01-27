@@ -1,4 +1,4 @@
-use ::backend::{Camera, Asset, RectangleShape, RenderWindow, SpriteSheet};
+use ::backend::{Asset, Camera, RectangleShape, RenderWindow, SpriteSheet};
 use ::input::InputManager;
 
 use piston::*;

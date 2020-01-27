@@ -3,7 +3,7 @@ use piston::keyboard::Key;
 use crate::skyfall;
 
 use ::backend::shapes::Point;
-use ::backend::{Camera, Asset, RectangleShape, RenderWindow, SpriteSheet};
+use ::backend::{Asset, Camera, RectangleShape, RenderWindow, SpriteSheet};
 use ::input::InputManager;
 
 mod arm;
@@ -187,7 +187,8 @@ impl LocalPlayer {
         // Next, we can update our sprite
         self.update_head(cursor_pos);
         self.update_animation(delta);
-        self.arm.update(input, camera, &self.body_rect, self.flipped, delta);
+        self.arm
+            .update(input, camera, &self.body_rect, self.flipped, delta);
     }
 
     pub fn draw(&mut self, window: &mut RenderWindow) {

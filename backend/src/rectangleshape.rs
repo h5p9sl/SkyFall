@@ -200,7 +200,7 @@ impl RectangleShape {
 
 use graphics::types::Matrix2d;
 fn draw_debug_outline(bounds: Rect, transform: Matrix2d, args: &mut RenderingArguments) {
-    let color: [f32; 4] = [1.0, 0.5, 0.5, 1.0];
+    let color: [f32; 4] = [0.0, 1.0, 0.0, 1.0];
     let radius = 1.5;
 
     // Create lines
