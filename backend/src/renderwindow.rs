@@ -6,11 +6,14 @@ use piston::*;
 use crate::drawable::Drawable;
 use crate::rendering_arguments::RenderingArguments;
 
+use shapes::Point;
+
 pub struct RenderWindow {
     gl: GlGraphics,
     window: GlutinWindow,
     events: Events,
     objects: Vec<*mut dyn Drawable>,
+    view: Point,
 }
 
 impl RenderWindow {
@@ -19,6 +22,7 @@ impl RenderWindow {
         N: Into<String>,
         S: Into<Size>,
     {
+        let size = size.into();
         const VERSION: OpenGL = OpenGL::V3_2;
         RenderWindow {
             window: WindowSettings::new(name, size)
@@ -29,7 +33,12 @@ impl RenderWindow {
             gl: GlGraphics::new(VERSION),
             events: Events::new(EventSettings::new()),
             objects: Vec::new(),
+            view: Point::from([0., 0.]),
         }
+    }
+
+    pub fn set_view(&mut self, view: Point) {
+        self.view = view;
     }
 
     pub fn size(&self) -> shapes::Size {
@@ -55,7 +64,9 @@ impl RenderWindow {
     }
 
     pub fn display(&mut self, args: &RenderArgs) {
+        use graphics::Transformed;
         let mut context = self.gl.draw_begin(args.viewport());
+        context.transform = context.transform.trans(self.view.x, self.view.y);
         let mut args = RenderingArguments {
             graphics_api: &mut self.gl,
             context: &mut context,

@@ -17,6 +17,7 @@ pub use crate::drawable::Drawable;
 pub use crate::rectangleshape::RectangleShape;
 pub use crate::rendering_arguments::RenderingArguments;
 pub use crate::renderwindow::RenderWindow;
+pub use crate::camera::Camera;
 
 // GUI
 pub use crate::gui_button::GuiButton;
@@ -28,6 +29,7 @@ pub mod sprite_sheet;
 pub mod drawable;
 mod rendering_arguments;
 pub mod renderwindow;
+pub mod camera;
 
 pub mod circleshape;
 pub mod gui_button;

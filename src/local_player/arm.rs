@@ -1,4 +1,4 @@
-use ::backend::{Asset, RectangleShape, RenderWindow, SpriteSheet};
+use ::backend::{Camera, Asset, RectangleShape, RenderWindow, SpriteSheet};
 use ::input::InputManager;
 
 use piston::*;
@@ -57,17 +57,18 @@ impl Arm {
     pub fn update(
         &mut self,
         input: &InputManager,
+        camera: &Camera,
         parent: &RectangleShape,
         flipped: bool,
         delta: f64,
     ) {
+        let mouse_pos = camera.get_cursor_pos(input.get_cursor_pos());
         self.arm_rect.parent(parent);
         self.arm_rect.set_position([0.0, -74.0]);
         self.arm_rect.set_flip_h(flipped);
 
         // Update arm rotation
         {
-            let mouse_pos = input.get_cursor_pos();
             let arm_pos = self.arm_rect.get_position();
             let diffs = [mouse_pos[0] - arm_pos.x, mouse_pos[1] - arm_pos.y];
             let angle = f64::atan(diffs[1] / diffs[0]);

@@ -1,7 +1,7 @@
 use crate::gamestate::GameState;
 use crate::main_menu::MainMenu;
 use crate::scenemanager::SceneManager;
-use ::backend::RenderWindow;
+use ::backend::{Camera, RenderWindow};
 use ::input::InputManager;
 use piston::Input;
 
@@ -13,6 +13,7 @@ pub struct SkyFall {
     next_state: GameState,
     last_state: GameState,
     state: GameState,
+    camera: Camera,
     main_menu: MainMenu,
     game: SceneManager,
     input: InputManager,
@@ -25,6 +26,7 @@ impl SkyFall {
             last_state: GameState::Invalid,
             next_state: GameState::MainMenu,
             state: GameState::MainMenu,
+            camera: Camera::new(),
             main_menu: MainMenu::new(size),
             game: SceneManager::new(),
             input: InputManager::new(),
@@ -89,7 +91,7 @@ impl SkyFall {
     pub fn update(&mut self, delta: f64) {
         match self.state {
             GameState::MainMenu | GameState::Paused => self.main_menu.update(delta, self.state),
-            GameState::InGame => self.game.update(delta, &self.input),
+            GameState::InGame => self.game.update(delta, &self.input, &self.camera),
             _ => panic!("Invalid GameState in SkyFall::update"),
         }
         self.update_state();
@@ -102,10 +104,16 @@ impl SkyFall {
         // Ensure that our state is initialized
         if self.ensure_valid_state() {
             match self.state {
-                GameState::MainMenu | GameState::Paused => self.main_menu.draw(window),
-                GameState::InGame => self.game.draw(window),
+                GameState::MainMenu | GameState::Paused => {
+                    self.main_menu.draw(window);
+                    self.camera.set_position([0., 0.]);
+                },
+                GameState::InGame => {
+                    self.game.draw(window, &mut self.camera);
+                },
                 _ => panic!("Invalid GameState in SkyFall::draw"),
             }
+            self.camera.set_window_view(window);
         }
     }
 }

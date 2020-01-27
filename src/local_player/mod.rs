@@ -3,7 +3,7 @@ use piston::keyboard::Key;
 use crate::skyfall;
 
 use ::backend::shapes::Point;
-use ::backend::{Asset, RectangleShape, RenderWindow, SpriteSheet};
+use ::backend::{Camera, Asset, RectangleShape, RenderWindow, SpriteSheet};
 use ::input::InputManager;
 
 mod arm;
@@ -48,8 +48,11 @@ impl LocalPlayer {
         }
     }
 
-    fn update_head(&mut self, input: &InputManager) {
-        let cursor_pos = input.get_cursor_pos();
+    pub fn get_position(&self) -> Point {
+        self.body_rect.get_position()
+    }
+
+    fn update_head(&mut self, cursor_pos: [f64; 2]) {
         let rect_pos = self.body_rect.get_position();
 
         // Get angle between cursor and player head
@@ -134,15 +137,15 @@ impl LocalPlayer {
         self.body_rect.set_flip_h(self.flipped);
     }
 
-    fn update_flipped_state(&mut self, input: &InputManager) {
+    fn update_flipped_state(&mut self, cursor_pos: [f64; 2]) {
         // Update flipped state
-        let cursor_pos = input.get_cursor_pos();
         let rect_pos = self.body_rect.get_position();
         self.flipped = cursor_pos[0] < rect_pos.x;
     }
 
     /// Called once per frame, updates velocity, position, animation, etc.
-    pub fn update(&mut self, delta: f64, input: &InputManager) {
+    pub fn update(&mut self, delta: f64, input: &InputManager, camera: &Camera) {
+        let cursor_pos = camera.get_cursor_pos(input.get_cursor_pos());
         let mut pos = self.body_rect.get_position();
 
         // Update movement
@@ -172,11 +175,11 @@ impl LocalPlayer {
         self.body_rect.set_position(pos);
         // Check if our sprite should be flipped based on the cursor position
         // This is checked AFTER updating our position & velocity variables.
-        self.update_flipped_state(input);
+        self.update_flipped_state(cursor_pos);
         // Next, we can update our sprite
-        self.update_head(input);
+        self.update_head(cursor_pos);
         self.update_animation(delta);
-        self.arm.update(input, &self.body_rect, self.flipped, delta);
+        self.arm.update(input, camera, &self.body_rect, self.flipped, delta);
     }
 
     pub fn draw(&mut self, window: &mut RenderWindow) {
