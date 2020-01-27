@@ -93,7 +93,7 @@ impl SkyFall {
     pub fn update(&mut self, delta: f64) {
         match self.state {
             GameState::MainMenu | GameState::Paused => self.main_menu.update(delta, self.state),
-            GameState::InGame => self.game.update(delta, &self.input, &self.camera),
+            GameState::InGame => self.game.update(delta, &self.input, &mut self.camera),
             _ => panic!("Invalid GameState in SkyFall::update"),
         }
         self.update_state();
@@ -108,13 +108,17 @@ impl SkyFall {
             match self.state {
                 GameState::MainMenu | GameState::Paused => {
                     self.main_menu.draw(window);
+                    // If we're in the main menu, we want the camera
+                    // to be at [0, 0], otherwise we can't see the menu!
                     self.camera.set_position([0., 0.]);
                 }
                 GameState::InGame => {
-                    self.game.draw(window, &mut self.camera);
+                    self.game.draw(window);
                 }
                 _ => panic!("Invalid GameState in SkyFall::draw"),
             }
+            // Update window.view based on the camera position
+            // This will adjust the viewport and set it to the camera pos.
             self.camera.set_window_view(window);
         }
     }

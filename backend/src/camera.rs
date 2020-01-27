@@ -23,7 +23,7 @@ impl Camera {
     pub fn get_cursor_pos(&self, cursor: [f64; 2]) -> [f64; 2] {
         let mut pos = [self.pos.x, self.pos.y];
         pos[0] = -(pos[0] - cursor[0]);
-        pos[1] += cursor[1];
+        pos[1] = -(pos[1] - cursor[1]);
         pos
     }
 }
