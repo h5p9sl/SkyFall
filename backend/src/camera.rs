@@ -27,6 +27,6 @@ impl Camera {
         pos[0] -= cursor[0];
         pos[1] += cursor[1];
         pos[0] = -pos[0];
-        dbg!(pos)
+        pos
     }
 }
