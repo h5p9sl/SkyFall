@@ -1,22 +1,35 @@
 # SkyFall
 A WIP open-source video game: SkyFall
 
-## Building
-### Linux
-Make sure you have the following packages installed:
-- git
-- cmake
-- make
-- libsfml-dev
+# Building
+Make sure you have the following packages installed on your computer:
++ Git
++ Rust
 
-If you don't have one or more of those packages, or you simply don't know run the following command **(Ubuntu)**:
-```bash
-sudo apt install git cmake make libsfml-dev
+## Linux
+### Arch
+For arch users, you can install all of the dependancies with one command:
+```sh
+sudo pacman -S rust git
 ```
-And then, run these commands.
-```bash
-git clone https://github.com/h5p9sl/SkyFall.git
+Then, you ***should*** be able to run this project with the following commands:
+```sh
+git clone https://github.com/h5p9sl/SkyFall
 cd SkyFall
-cmake .
-make
+cargo run --release
 ```
+If any errors occur, please make an issue!
+### Ubuntu
+For Ubuntu users, you can install all of the dependancies with one command:
+```sh
+sudo apt install rustc git
+```
+Then, you ***should*** be able to run this project with the following commands:
+```sh
+git clone https://github.com/h5p9sl/SkyFall
+cd SkyFall
+cargo run --release
+```
+If any errors occur, please make an issue!
+
+
