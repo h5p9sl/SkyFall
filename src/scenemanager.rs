@@ -8,7 +8,6 @@ use crate::local_player::LocalPlayer;
 pub struct SceneManager {
     bg_color: [f32; 4],
     local_player: LocalPlayer,
-    point: shapes::Point,
     window_size: shapes::Size,
 }
 
@@ -17,7 +16,6 @@ impl SceneManager {
         SceneManager {
             bg_color: [0.40, 0.14, 0.16, 1.0],
             local_player: LocalPlayer::new(),
-            point: shapes::Point::from([0., 0.]),
             window_size: shapes::Size::from([0., 0.]),
         }
     }
