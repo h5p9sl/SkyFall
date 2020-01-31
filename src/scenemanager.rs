@@ -42,16 +42,21 @@ impl SceneManager {
     }
 
     pub fn update_camera(&mut self, input: &InputManager, camera: &mut Camera) {
-        // Half way through the window width
+        // Half way through the window
         let window_width = self.window_size.w;
-        // Get cursor position -width -> 0.0
-        let mouse_pos = shapes::Point::from(input.get_cursor_pos()) - window_width;
-        let mut player_pos = self.local_player.get_position();
-        // Offset player position by cursor position
-        player_pos.x = -player_pos.x - mouse_pos.x;
-        player_pos.y = -player_pos.y - mouse_pos.y;
+        let window_height = self.window_size.h;
 
-        camera.set_position(player_pos);
+        // Get cursor position from -width to 0.0
+        let mut mouse_pos = shapes::Point::from(input.get_cursor_pos());
+        mouse_pos.x -= window_width;
+        mouse_pos.y -= window_height;
+
+        let mut camera_pos = self.local_player.get_position();
+        // Offset player position by cursor position
+        camera_pos.x = -camera_pos.x - mouse_pos.x;
+        camera_pos.y = -camera_pos.y - mouse_pos.y;
+ 
+        camera.set_position(camera_pos);
     }
 
     pub fn update(&mut self, delta: f64, input: &InputManager, camera: &mut Camera) {

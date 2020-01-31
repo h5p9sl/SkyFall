@@ -25,7 +25,7 @@ fn get_delta_time(clock: &mut Instant) -> f64 {
 }
 
 pub fn start_game() {
-    let mut window = RenderWindow::new("SkyFall", [800, 600], false);
+    let mut window = RenderWindow::new("SkyFall", [800, 600], true);
     let mut game = SkyFall::new(&mut window);
 
     let mut clock: Instant = Instant::now();
