@@ -172,8 +172,8 @@ impl LocalPlayer {
         // Update position
         pos.y += self.vel.y * delta;
         pos.x += self.vel.x * delta;
-        if pos.y >= 600.0 {
-            pos.y = 600.0;
+        if pos.y >= 0.0 {
+            pos.y = 0.0;
             self.vel.y = 0.0;
             self.on_ground = true;
         } else {

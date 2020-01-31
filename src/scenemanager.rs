@@ -1,5 +1,5 @@
 use crate::gamestate::GameState;
-use ::backend::{shapes, Camera, RenderWindow};
+use ::backend::{RectangleShape, shapes, Camera, RenderWindow};
 use ::input::InputManager;
 use piston::{keyboard::Key, Button, Input};
 
@@ -9,6 +9,7 @@ pub struct SceneManager {
     bg_color: [f32; 4],
     local_player: LocalPlayer,
     window_size: shapes::Size,
+    ground: RectangleShape,
 }
 
 impl SceneManager {
@@ -17,6 +18,7 @@ impl SceneManager {
             bg_color: [0.40, 0.14, 0.16, 1.0],
             local_player: LocalPlayer::new(),
             window_size: shapes::Size::from([0., 0.]),
+            ground: RectangleShape::new().size([800.0, 400.0]).position([0.0, 0.0]),
         }
     }
 
@@ -59,6 +61,7 @@ impl SceneManager {
 
     pub fn draw(&mut self, window: &mut RenderWindow) {
         window.clear(self.bg_color);
+        window.draw(&mut self.ground);
         self.local_player.draw(window);
         self.window_size = window.size();
     }
