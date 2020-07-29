@@ -8,7 +8,7 @@ Make sure you have the following packages installed on your computer:
 
 ## Linux
 ### Arch
-For arch users, you can install all of the dependancies with one command:
+For arch users, you can install all of the dependencies with one command:
 ```sh
 sudo pacman -S rust git
 ```
@@ -20,7 +20,7 @@ cargo run --release
 ```
 If any errors occur, please make an issue!
 ### Ubuntu
-For Ubuntu users, you can install all of the dependancies with one command:
+For Ubuntu users, you can install all of the dependencies with one command:
 ```sh
 sudo apt install rustc git
 ```
